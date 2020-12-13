@@ -1,5 +1,5 @@
 | Last name | Name | GitLab username |
-|-----------|------------|-----------|
+|-|-|-|
 | Curreri | Dario | dariocurr |
 | Di Fina | Domenico | domenicodifina |
 | Domingo | Emanuele | emanueledomingo |
