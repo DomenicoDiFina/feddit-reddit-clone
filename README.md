@@ -1,4 +1,4 @@
-| Last name | Name | GitLab username |
+| Last name | First name | GitLab username |
 |-|-|-|
 | Curreri | Dario | dariocurr |
 | Di Fina | Domenico | domenicodifina |
