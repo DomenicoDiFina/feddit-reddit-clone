@@ -1,3 +1,5 @@
+# Java EE project
+
 | Last name | First name | GitLab username |
 |-|-|-|
 | Curreri | Dario | dariocurr |
