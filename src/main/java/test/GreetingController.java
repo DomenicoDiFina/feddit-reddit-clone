@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class GreetingController {
+
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
         // Ajout de données au modèle
@@ -14,4 +15,5 @@ public class GreetingController {
         //Envoi vers la vue
         return "greeting";
     }
+
 }
