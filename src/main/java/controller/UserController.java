@@ -9,7 +9,7 @@ import test.Post;
 public class UserController {
 
     @GetMapping("/sign-up")
-    public String getMyArticle(Model model) {
+    public String getSignupPage(Model model) {
         return "sign-up";
     }
 }
