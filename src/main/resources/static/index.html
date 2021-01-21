@@ -3,15 +3,19 @@
 <head>
     <title>Login page</title>
 </head>
-<body>
-<h1>Login page</h1>
-<p th:if="${loginError}" class="error">Wrong user or password</p>
-<form th:action="@{/login.html}" method="post">
-    <label for="username">Username</label>:
-    <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-    <label for="password">Password</label>:
-    <input type="password" id="password" name="password" /> <br />
-    <input type="submit" value="Log in" />
-</form>
-</body>
+    <body>
+    <img src="images/logo.png" />
+    <!--<p th:if="${loginError}" class="error">Wrong user or password</p>-->
+    <!--when we check session move login to templates-->
+    <!--inside index.html we check if session exist and then we redirect to homepage or login-->
+        <form th:action="@{/login.html}" method="post">
+            <label for="username">Username</label>:
+            <input type="text" id="username" name="username" autofocus="autofocus" /><br />
+            <label for="password">Password</label>:
+            <input type="password" id="password" name="password" /><br />
+            <input type="button" value="Enter as guest" />
+            <input type="submit" value="Log in" /> <br />
+            <p>Don't have an account? <a href="/sign-up">Sign up</a></p>
+        </form>
+    </body>
 </html>

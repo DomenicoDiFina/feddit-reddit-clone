@@ -1,15 +1,19 @@
-package controller;
+package feddit.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import test.Post;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 @Controller
 public class UserController {
 
     @GetMapping("/sign-up")
-    public String getSignupPage(Model model) {
+    public String getSignUpPage(Model model) {
         return "sign-up";
     }
+
 }
