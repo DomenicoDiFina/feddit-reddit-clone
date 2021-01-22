@@ -1,9 +1,10 @@
-package feddit.model;
+/*package feddit.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
+import feddit.User;
 
 @Entity
 public class Comment {
@@ -89,4 +90,4 @@ public class Comment {
     public void setVoteCount(int voteCount) {
         this.voteCount = voteCount;
     }
-}
+}*/

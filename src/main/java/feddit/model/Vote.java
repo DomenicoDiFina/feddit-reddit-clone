@@ -1,8 +1,9 @@
-package feddit.model;
+/*package feddit.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
+import java.sql.Date;
+import feddit.User;
 
 @Entity
 public class Vote {
@@ -78,4 +79,4 @@ public class Vote {
     @JoinColumn(name = "postID", referencedColumnName = "postID")
     private Post post;
 
-}
+}*/
