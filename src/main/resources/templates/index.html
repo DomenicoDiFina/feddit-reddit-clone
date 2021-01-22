@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Welcome to CodeJava Home</title>
+</head>
+<body>
+<!-- HEADER -->
+<div>
+    <div style="display: flex; justify-content: space-between">
+        <h2>Feddit</h2>
+        <div sec:authorize="isAuthenticated()">
+            <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
+            <h3><a href="/myaccount">Account</a></h3>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <h3><a href="/login">Login</a></h3>
+        </div>
+    </div>
+</div>
+<!-- MAIN BODY -->
+<div>
+    <h1>Body</h1>
+</div>
+
+</body>
+</html>

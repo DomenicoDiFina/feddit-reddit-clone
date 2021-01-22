@@ -6,24 +6,27 @@
 <body>
 <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
 <!--<p th:if="${signupError}" class="error">email already used or password doesn't match</p>-->
-<form th:action="@{/sign-up.html}" method="post">
+<form th:action="@{/process_signup}" th:object="${user}" method="post">
     <label for="name">name</label>:
-    <input type="text" id="name" name="name" autofocus="autofocus" /> <br />
+    <input type="text" th:field="*{name}" id="name" name="name" autofocus="autofocus" required/> <br />
 
     <label for="surname">surname</label>:
-    <input type="text" id="surname" name="surname" autofocus="autofocus" /> <br />
+    <input type="text" th:field="*{surname}" id="surname" name="surname" autofocus="autofocus" /> <br />
 
     <label for="email">email</label>:
-    <input type="email" id="email" name="email" autofocus="autofocus" /> <br />
+    <input type="email" th:field="*{email}" id="email" name="email" autofocus="autofocus" /> <br />
+
+    <label for="username">username</label>:
+    <input type="username" th:field="*{username}" id="username" name="username" autofocus="autofocus" /> <br />
 
     <label for="birth">birth</label>:
-    <input type="date" id="birth" name="birth" autofocus="autofocus" /> <br />
+    <input type="date" th:field="*{birth}" id="birth" name="birth" autofocus="autofocus" /> <br />
 
     <label for="password">Password</label>:
-    <input type="password" id="password" name="password" /> <br />
+    <input type="password" th:field="*{password}" id="password" name="password" /> <br />
 
-    <label for="password">Confirm Password</label>:
-    <input type="password" id="confirm password" name="confirmpassword" /> <br />
+    <!--<label for="confirmpassword">Confirm Password</label>:
+    <input type="password" id="confirmpassword" name="confirmpassword" /> <br />-->
 
     <a href="/">Go back</a>
 

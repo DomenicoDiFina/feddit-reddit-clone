@@ -8,7 +8,7 @@ import java.sql.Date;
 
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private long id;
 
@@ -24,15 +24,19 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "username", unique = true)
+    private String username;
+
     @Column(name = "password")
     private String password;
 
     public User() {}
 
-    public User(String name, String surname, Date birth, String email, String password ) {
+    public User(String name, String surname, Date birth, String username, String email, String password ) {
         this.name = name;
         this.surname = surname;
         this.birth = birth;
+        this.username = username;
         this.email = email;
         this.password = password;
     }
@@ -67,6 +71,14 @@ public class User {
 
     public void setBirth(Date birth) {
         this.birth = birth;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

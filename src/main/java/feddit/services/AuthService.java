@@ -1,33 +1,25 @@
 package feddit.services;
 
-import feddit.HibernateUtils;
+
 import feddit.User;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
+import feddit.repositories.UserRepository;
+import feddit.security.FedditUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-public class AuthService {
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
-    public boolean getUser(String username, String password) {
-        var isValidUser = false;
-        var sessionFactory = HibernateUtils.getSessionFactory();
+public class AuthService implements UserDetailsService {
+    @Autowired
+    private UserRepository userRepo;
 
-        try (Session session = sessionFactory.openSession()) {
-            Query<User> query = session.createQuery("from User u where u.usr=usr and u.password=psw", User.class);
-            query.setParameter("usr", username);
-            query.setParameter("psw", password);
-            List<User> user = query.getResultList();
-            if(user != null && user.size() > 0) {
-                isValidUser = true;
-            }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepo.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
         }
-
-        return isValidUser;
+        return new FedditUserDetails(user);
     }
-
 }
