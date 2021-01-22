@@ -28,6 +28,12 @@ public class ApplicationController {
         return "index";
     }
 
+    @GetMapping("/changepassword")
+    public String viewChangePassword() {
+        //TODO
+        return "changepassword";
+    }
+
     @GetMapping("/sign-up")
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new User());
@@ -42,7 +48,7 @@ public class ApplicationController {
 
         userRepo.save(user);
 
-        return "signup_success";
+        return "index";
     }
 
     @RequestMapping("/login_error")

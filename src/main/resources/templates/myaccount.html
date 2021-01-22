@@ -12,6 +12,10 @@
                 Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
             </p>
             <input type="submit" value="Sign Out" />
+            <!--
+            <button name="logout" th:onclick="|window.location.href='/logout'|">>Logout</button>-->
+        <a href="/changepassword">Change Password</a>
+
         </form>
     </div>
     <div>
