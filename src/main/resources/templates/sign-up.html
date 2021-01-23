@@ -7,6 +7,7 @@
 <body>
 <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
 <!--<p th:if="${signupError}" class="error">email already used or password doesn't match</p>-->
+<p th:if="${usernameError}" th:text="${usernameError}" />
 <form th:action="@{/process_signup}" th:object="${user}" method="post">
     <label for="name">name</label>:
     <input type="text" th:field="*{name}" id="name" name="name" autofocus="autofocus" required/> <br />

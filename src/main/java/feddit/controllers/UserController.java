@@ -5,19 +5,26 @@ import feddit.model.User;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserRepository userRepo;
+
 
     @GetMapping("")
     public String viewHomePage() {
@@ -62,15 +69,26 @@ public class UserController {
     }
 
     @PostMapping("/process_signup")
-    public String processSignUp(User user) {
+    public String processSignUp(User user, Model model) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-
-        userRepo.save(user);
-
-        return "index";
+        user.setRole("USER");
+        if(userRepo.findByUsername(user.getUsername()) == null) {
+            userRepo.save(user);
+            model.addAttribute("name", user.getName());
+        } else {
+            model.addAttribute("usernameError", "Username already exists");
+            return showSignUpForm(model);
+        }
+        return "sign-up_success";
     }
+
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
+
 
     @RequestMapping("/login_error")
     public String loginError(Model model) {
