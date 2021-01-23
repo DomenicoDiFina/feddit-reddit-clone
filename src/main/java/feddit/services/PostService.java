@@ -7,6 +7,7 @@ import feddit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -24,4 +25,15 @@ public class PostService {
                 .stream()
                 .collect(toList());
     }
+
+
+    List<Post> findAllByUsername(String username){
+        User user = userRepository.findByUsername(username);
+
+        return postRepository.findAllByUser(user)
+                .stream()
+                .collect(toList());
+    }
+
+
 }
