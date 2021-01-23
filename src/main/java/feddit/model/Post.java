@@ -55,12 +55,20 @@ public class Post {
         this.comments = comments;
     }
 
-    public int getVoteCount() {
-        return voteCount;
+    public int getUpvotes() {
+        return upvotes;
     }
 
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    public int getDownvotes() {
+        return downvotes;
+    }
+
+    public void setDownvotes(int downvotes) {
+        this.downvotes = downvotes;
     }
 
     @Id
@@ -86,7 +94,10 @@ public class Post {
     @OneToMany
     private List<Comment> comments;
 
-    @Column(name = "voteCount")
-    private int voteCount;
+    @Column(name = "upvotes")
+    private int upvotes;
+
+    @Column(name = "downvotes")
+    private int downvotes;
 
 }
