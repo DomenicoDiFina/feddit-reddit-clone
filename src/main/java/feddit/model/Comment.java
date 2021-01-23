@@ -31,8 +31,11 @@ public class Comment {
     @OneToMany
     private List<Comment> comments;
 
-    @Column(name = "voteCount")
-    private int voteCount;
+    @Column(name = "upvotes")
+    private int upvotes;
+
+    @Column(name = "downvotes")
+    private int downvotes;
 
     public long getCommentID() {
         return commentID;
@@ -78,15 +81,24 @@ public class Comment {
         return comments;
     }
 
+    public int getUpvotes() {
+        return upvotes;
+    }
+
+    public void setUpvotes(int upvotes) {
+        this.upvotes = upvotes;
+    }
+
+    public int getDownvotes() {
+        return downvotes;
+    }
+
+    public void setDownvotes(int downvotes) {
+        this.downvotes = downvotes;
+    }
+
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
-    public int getVoteCount() {
-        return voteCount;
-    }
-
-    public void setVoteCount(int voteCount) {
-        this.voteCount = voteCount;
-    }
 }
