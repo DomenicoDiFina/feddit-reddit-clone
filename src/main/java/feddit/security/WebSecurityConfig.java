@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/myaccount").authenticated() //<- list of pages that need to be authorized (my account? change password?)
-                //.antMatchers("/changepassword").authenticated()
+                .antMatchers("/changepassword").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin().loginPage("/login")

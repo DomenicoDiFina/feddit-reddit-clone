@@ -12,11 +12,10 @@
                 Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
             </p>
             <input type="submit" value="Sign Out" />
-            <!--
-            <button name="logout" th:onclick="|window.location.href='/logout'|">>Logout</button>-->
-        <a href="/changepassword">Change Password</a>
-
         </form>
+        <a href="/changepassword">Change Password</a>
+        <a href="/">Go back</a>
+        <p th:if="${passwordChanged != null}" th:text="${passwordChanged}"></p>
     </div>
     <div>
         <h1>My account</h1>
@@ -26,17 +25,17 @@
         <table >
             <thead >
             <tr>
-                <th>E-mail</th>
-                <th>Birth Date</th>
                 <th>First Name</th>
                 <th>Last Name</th>
+                <th>E-mail</th>
+                <th>Birth Date</th>
             </tr>
             </thead>
             <tbody>
-                <td th:text="${user.email}">E-mail</td>
-                <td th:text="${user.birth}">E-mail</td>
-                <td th:text="${user.name}">First Name</td>
-                <td th:text="${user.surname}">Last Name</td>
+                <td th:text="${name}">First Name</td>
+                <td th:text="${surname}">Last Name</td>
+                <td th:text="${email}">E-mail</td>
+                <td th:text="${birth}">E-mail</td>
             </tbody>
         </table>
     </div>

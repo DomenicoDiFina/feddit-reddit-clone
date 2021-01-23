@@ -3,6 +3,7 @@ package feddit.security;
 import feddit.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import  java.sql.Date;
 
 import java.util.Collection;
 
@@ -53,11 +54,11 @@ public class FedditUserDetails implements UserDetails {
     }
 
     //i don't know if this is secure or it need to be encapsulated (see below)
-    public User getUser() {
+    /*public User getUser() {
         return this.user;
-    }
+    }*/
 
-    /*
+
     public String getName() {
         return this.user.getName();
     }
@@ -73,5 +74,5 @@ public class FedditUserDetails implements UserDetails {
     public Date getBirth() {
         return this.user.getBirth();
     }
-    */
+
 }
