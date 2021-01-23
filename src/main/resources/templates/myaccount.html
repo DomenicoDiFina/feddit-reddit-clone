@@ -1,44 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="ISO-8859-1">
-    <title>List Users</title>
-</head>
-<body>
-<div>
-    <div>
-        <form th:action="@{/logout}" method="post">
-            <p>
-                Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
-            </p>
-            <input type="submit" value="Sign Out" />
-        </form>
-        <a href="/changepassword">Change Password</a>
-        <a href="/">Go back</a>
-        <p th:if="${passwordChanged}" th:text="${passwordChanged}"></p>
-    </div>
-    <div>
-        <h1>My account</h1>
-    </div>
-
-    <div>
-        <table >
-            <thead >
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>E-mail</th>
-                <th>Birth Date</th>
-            </tr>
-            </thead>
-            <tbody>
-                <td th:text="${name}">First Name</td>
-                <td th:text="${surname}">Last Name</td>
-                <td th:text="${email}">E-mail</td>
-                <td th:text="${birth}">E-mail</td>
-            </tbody>
-        </table>
-    </div>
-</div>
-</body>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Account - Feddit</title>
+        <link th:href="@{/css/main.css}" rel="styLesheet" />
+    </head>
+    <body>
+        <div class="header">
+            <form th:action="@{/logout}" method="post">
+                <p>
+                    Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
+                </p>
+                <input type="submit" value="Sign Out" />
+                <p th:if="${passwordChanged}" th:text="${passwordChanged}" class="success"></p>
+            </form>
+            <div class="left_sub_header">
+                <a href="/changepassword" class="button">Change Password</a>
+                <a href="/" class="button">Go back</a>
+            </div>
+        </div>
+        <div class="main">
+            <h2>My account</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>E-mail</th>
+                    <th>Birth Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <td th:text="${name}">First Name</td>
+                    <td th:text="${surname}">Last Name</td>
+                    <td th:text="${email}">E-mail</td>
+                    <td th:text="${birth}">Birth Date</td>
+                </tbody>
+            </table>
+        </div>
+    </body>
 </html>

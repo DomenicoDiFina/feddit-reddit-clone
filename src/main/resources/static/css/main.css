@@ -9,6 +9,15 @@ h1, h2, h3, h4, h5, h6 {
     align-items: center;
 }
 
+.header img {
+    margin: 10px;
+    width: 100px;
+}
+
+.header p {
+    margin: 0.5rem;
+}
+
 .left_sub_header {
     display: flex;
     justify-content: space-between;
@@ -22,13 +31,26 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
 }
 
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
 .button:hover {
     text-shadow:0px 0px 1px black;
 }
 
 .main {
+    padding: 1rem;
     margin-top: 0.5rem;
     border: 1px solid black;
+}
+
+table {
+    margin: 0.5rem;
 }
 
 .page_centered_div {
@@ -38,7 +60,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 5rem;
 }
 
-.login {
+.container {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -52,16 +74,11 @@ h1, h2, h3, h4, h5, h6 {
     margin: 10px;
 }
 
-.row p {
-    color: red;
-    margin: 0;
-}
-
 label {
     margin-right: 5px;
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=date] {
     border: 1px solid black;
 }
 

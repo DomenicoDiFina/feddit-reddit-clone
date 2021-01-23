@@ -8,7 +8,7 @@
     <body>
         <!-- HEADER -->
         <div class="header">
-            <h2>Feddit</h2>
+            <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
             <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
             <div>
                 <div class="left_sub_header" sec:authorize="isAuthenticated()">

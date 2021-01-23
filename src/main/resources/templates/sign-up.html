@@ -1,38 +1,58 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Sign-up page</title>
-    <link th:href="@{/css/main.css}" rel="styLesheet" />
-</head>
-<body>
-<img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
-<!--<p th:if="${signupError}" class="error">email already used or password doesn't match</p>-->
-<p th:if="${usernameError}" th:text="${usernameError}" />
-<form th:action="@{/process_signup}" th:object="${user}" method="post">
-    <label for="name">name</label>:
-    <input type="text" th:field="*{name}" id="name" name="name" autofocus="autofocus" required/> <br />
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>SignUp - Feddit</title>
+        <link th:href="@{/css/main.css}" rel="styLesheet" />
+    </head>
+    <body class="page_centered_div">
+        <div class="container">
+            <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
+            <h3>F(ake R)eddit, ugly by choice</h3>
+            <p class="error" th:if="${usernameError}" th:text="${usernameError}" />
+            <form class="form" th:action="@{/process_signup}" th:object="${user}" method="post">
+                <div class="row">
+                    <label for="name">Name</label>
+                    <input type="text" th:field="*{name}" id="name" name="name" autofocus="autofocus" required/>
+                </div>
 
-    <label for="surname">surname</label>:
-    <input type="text" th:field="*{surname}" id="surname" name="surname" autofocus="autofocus" /> <br />
+                <div class="row">
+                    <label for="surname">Surname</label>
+                    <input type="text" th:field="*{surname}" id="surname" name="surname" autofocus="autofocus" />
+                </div>
 
-    <label for="email">email</label>:
-    <input type="email" th:field="*{email}" id="email" name="email" autofocus="autofocus" /> <br />
+                <div class="row">
+                    <label for="email">Email</label>
+                    <input type="text" th:field="*{email}" id="email" name="email" autofocus="autofocus" />
+                </div>
 
-    <label for="username">username</label>:
-    <input type="username" th:field="*{username}" id="username" name="username" autofocus="autofocus" /> <br />
+                <div class="row">
+                    <label for="username">Username</label>
+                    <input type="text" th:field="*{username}" id="username" name="username" autofocus="autofocus" />
+                </div>
 
-    <label for="birth">birth</label>:
-    <input type="date" th:field="*{birth}" id="birth" name="birth" autofocus="autofocus" /> <br />
+                <div class="row">
+                    <label for="birth">Birth</label>
+                    <input type="date" th:field="*{birth}" id="birth" name="birth" autofocus="autofocus"/>
+                </div>
 
-    <label for="password">Password</label>:
-    <input type="password" th:field="*{password}" id="password" name="password" /> <br />
+                <div class="row">
+                    <label for="password">Password</label>
+                    <input type="password" th:field="*{password}" id="password" name="password"/>
+                </div>
 
-    <!--<label for="confirmpassword">Confirm Password</label>:
-    <input type="password" id="confirmpassword" name="confirmpassword" /> <br />-->
+                <!--
+                <div class="row">
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input type="password" id="confirmpassword" name="confirmpassword" />
+                </div>
+                -->
 
-    <a href="/">Go back</a>
-
-    <input type="submit" value="Sign up" />
-</form>
-</body>
+                <div class="row">
+                    <a class="button" href="/">Go back</a>
+                    <input type="submit" value="Sign up" />
+                </div>
+            </form>
+        </div>
+    </body>
 </html>

@@ -6,21 +6,21 @@
         <link th:href="@{/css/main.css}" rel="styLesheet" />
     </head>
     <body class="page_centered_div">
-        <div class="login">
+        <div class="container">
             <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
             <h3>F(ake R)eddit, ugly by choice</h3>
+            <p th:if="${loginError}" class="error">Wrong username or password</p>
             <form class="form" th:action="@{/login}" method="post">
                 <div class="row">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" autofocus="autofocus" />
                 </div>
+
                 <div class="row">
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" />
                 </div>
-                <div class="row">
-                    <p th:if="${loginError}" class="error">Wrong username or password</p>
-                </div>
+                
                 <div class="row">
                     <a href="/" class="button" >Enter as guest</a></p>
                     <input type="submit" value="Log in" />
