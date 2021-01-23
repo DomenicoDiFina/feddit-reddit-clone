@@ -4,8 +4,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
-@Table(name = "Users")
-
+@Table(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +31,14 @@ public class User {
 
     public User() {}
 
-    public User(String name, String surname, Date birth, String username, String email, String password ) {
+    /*public User(String name, String surname, Date birth, String username, String email, String password ) {
         this.name = name;
         this.surname = surname;
         this.birth = birth;
         this.username = username;
         this.email = email;
         this.password = password;
-    }
+    }*/
 
     public long getUserID() {
         return userID;
