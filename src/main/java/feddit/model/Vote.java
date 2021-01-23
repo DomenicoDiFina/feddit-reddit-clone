@@ -79,4 +79,5 @@ public class Vote {
     @JoinColumn(name = "postID", referencedColumnName = "postID")
     private Post post;
 
-}*/
+}
+*/
