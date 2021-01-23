@@ -1,7 +1,7 @@
 package feddit.services;
 
 
-import feddit.User;
+import feddit.model.User;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;

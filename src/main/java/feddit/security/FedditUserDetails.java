@@ -1,10 +1,9 @@
 package feddit.security;
 
-import feddit.User;
+import feddit.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.sql.Date;
 import java.util.Collection;
 
 public class FedditUserDetails implements UserDetails {

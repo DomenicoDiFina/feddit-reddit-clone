@@ -1,10 +1,9 @@
-/*package feddit.model;
+package feddit.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 import java.util.List;
-import feddit.User;
 
 @Entity
 public class Post {
@@ -84,9 +83,10 @@ public class Post {
     @Column(name = "creationDate")
     private Date creationDate;
 
+    @OneToMany
     private List<Comment> comments;
 
     @Column(name = "voteCount")
     private int voteCount;
 
-}*/
+}

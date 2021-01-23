@@ -1,4 +1,4 @@
-package feddit;
+package feddit.model;
 
 import javax.persistence.*;
 import java.sql.Date;

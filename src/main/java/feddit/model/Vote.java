@@ -3,7 +3,7 @@
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
-import feddit.User;
+import feddit.model.User;
 
 @Entity
 public class Vote {
