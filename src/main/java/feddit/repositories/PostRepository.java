@@ -9,4 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
+    @Query("SELECT p FROM Post p WHERE p.userID = ?1")
+    List<Post> findAllByUser(long userID);
+
+
+
+
+
 }
