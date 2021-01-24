@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "posts")
 public class Post {
     public long getPostID() {
         return postID;

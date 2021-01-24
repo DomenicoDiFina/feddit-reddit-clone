@@ -1,6 +1,7 @@
 package feddit.services;
 
 
+import feddit.model.Role;
 import feddit.model.User;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
@@ -10,16 +11,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 
-public class AuthService implements UserDetailsService {
+public class UserAuthService implements UserDetailsService {
     @Autowired
     private UserRepository userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
-        if (user == null) {
+        if(user == null) {
             throw new UsernameNotFoundException("User not found");
         }
+        /*if(user.getRoles().contains(new Role("ADMIN"))) {
+            //TODO find the right exception
+            throw new UsernameNotFoundException("User is an admnistrator");
+        }*/
         return new FedditUserDetails(user);
     }
 }

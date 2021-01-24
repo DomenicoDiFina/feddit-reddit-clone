@@ -1,7 +1,9 @@
 package feddit.controllers;
 
 //import feddit.model.ChangePasswordObj;
+import feddit.model.Role;
 import feddit.model.User;
+import feddit.repositories.RoleRepository;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +20,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 public class UserController {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private RoleRepository roleRepo;
 
 
     @GetMapping("")
@@ -46,7 +54,6 @@ public class UserController {
         FedditUserDetails userDetails = (FedditUserDetails) auth.getPrincipal();
 
         if(!oldPassword.equals(newPassword)){
-            System.out.println("old e new sono diverse "+oldPassword+", "+newPassword);
             if(passwordEncoder.matches(oldPassword, userDetails.getPassword())){
                 userRepo.changeUserPassword(userDetails.getUsername(), passwordEncoder.encode(newPassword));
                 model.addAttribute("passwordChanged", "Password changed successfully");
@@ -73,7 +80,7 @@ public class UserController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setRole("USER");
+        user.setRoles(Set.of(roleRepo.findByName("USER")));
         if(userRepo.findByUsername(user.getUsername()) == null) {
             userRepo.save(user);
             model.addAttribute("name", user.getName());
@@ -84,17 +91,28 @@ public class UserController {
         return "sign-up_success";
     }
 
-    @RequestMapping("/login")
-    public String login() {
+    @RequestMapping("login")
+    public String showLogin() {
         return "login";
     }
 
 
-    @RequestMapping("/login_error")
-    public String loginError(Model model) {
+    @RequestMapping("login_error")
+    public String showLoginError(Model model) {
         model.addAttribute("loginError", true);
         return "login";
     }
+
+    /*@RequestMapping("/admin")
+    public String showLoginAdmin() {
+        return "admin";
+    }
+
+    @RequestMapping("login_admin_error")
+    public String showAdminLoginError(Model model) {
+        model.addAttribute("loginError", true);
+        return "admin";
+    }*/
 
     @GetMapping("/myaccount")
     public String showMyAccount(@AuthenticationPrincipal FedditUserDetails userDetails, Model model) {

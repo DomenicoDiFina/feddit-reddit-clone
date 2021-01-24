@@ -1,4 +1,4 @@
-package feddit;
+/*package feddit;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -22,4 +22,4 @@ public class HibernateUtils {
     static public SessionFactory getSessionFactory(){
         return sessionFactory;
     }
-}
+}*/
