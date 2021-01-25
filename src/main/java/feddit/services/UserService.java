@@ -9,15 +9,16 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository repository;
 
-    public User findUserByUsername(String username){
+    public User findByUsername(String username){
 
-        System.out.println("Ciao " + username);
-        User user = userRepo.findByUsername(username);
-
-        System.out.println(user.getUsername());
+        User user = repository.findByUsername(username);
 
         return user;
+    }
+
+    public void save(User user) {
+        repository.save(user);
     }
 }

@@ -39,9 +39,8 @@ public class PostController {
     public String processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails,Post post, Model model) {
         String username = userDetails.getUsername();
 
-        User user = userService.findUserByUsername(username);
-        System.out.println(user.getUsername() + " " + user.getName());
-        post.setUser(userService.findUserByUsername(userDetails.getUsername()));
+        User user = userService.findByUsername(username);
+        post.setUser(userService.findByUsername(userDetails.getUsername()));
         postService.savePost(post);
 
         return "add-post_success";
