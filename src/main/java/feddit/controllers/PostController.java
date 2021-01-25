@@ -26,35 +26,17 @@ public class PostController {
     private UserRepository userRepo;
 
     @GetMapping("/add-post")
-    public String showAddPostForm(@AuthenticationPrincipal FedditUserDetails userDetails, Model model) {
-        System.out.println("Ciao");
-        User user = userRepo.findByUsername(userDetails.getUsername());
-        model.addAttribute("post", new Post(user));
+    public String showAddPostForm(Model model) {
+
+        model.addAttribute("post", new Post());
         return "add-post";
     }
 
     @PostMapping("/process_add-post")
-    public String processAddPost(Post post, Model model) {
-        System.out.println("id: " + post.getPostID());
-        System.out.println("title: " + post.getTitle());
-        System.out.println("description: " + post.getDescription());
-        System.out.println("creation_date: " + post.getCreationDate());
-        System.out.println("comments: " + post.getComments());
-        System.out.println("upvotes: " + post.getUpvotes());
-        System.out.println("downvotes: " + post.getDownvotes());
-        System.out.println("userID: " + post.getUser());
-        
+    public String processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails,Post post, Model model) {
+        post.setUser(userRepo.findByUsername(userDetails.getUsername()));
         postRepository.save(post);
 
-        /*
-        if(userRepo.findByUsername(user.getUsername()) == null) {
-            userRepo.save(user);
-            model.addAttribute("name", user.getName());
-        } else {
-            model.addAttribute("usernameError", "Username already exists");
-            return showSignUpForm(model);
-        }
-        */
         return "add-post_success";
     }
 }
