@@ -37,10 +37,29 @@
                     <div class="row">
                         <input type="submit" value="Add Post" />
                     </div>
+
+                    <br>
+                    <br>
                 </form>
             </div>
 
-            <h1>Body</h1>
+            <tr >
+                <td th:text="Username" />
+                <td th:text="Title" />
+                <td th:text="Description" />
+                <br />
+                <br />
+
+            </tr>
+            <tr th:each="post: ${posts}">
+                <td th:text="${post.user.username}" />
+                <td th:text="${post.title}" />
+                <td th:text="${post.description}" />
+                <br />
+                <br />
+                <br />
+            </tr>
+
             <div sec:authorize="hasAuthority('ADMIN')">
                 This content is only shown to administrators.
             </div>

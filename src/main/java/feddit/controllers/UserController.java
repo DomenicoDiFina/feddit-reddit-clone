@@ -40,6 +40,13 @@ public class UserController {
     @GetMapping("")
     public String viewHomePage(Model model) {
         model.addAttribute("post", new Post());
+        List<Post> posts = (List<Post>) postRepository.findAll();
+        Collections.sort(posts, new Comparator<Post>() {
+            public int compare(Post p1, Post p2) {
+                return Integer.compare((p1.getUpvotes() - p1.getDownvotes()), p2.getUpvotes() - p2.getDownvotes());
+            }
+        });
+        model.addAttribute("posts", posts);
         return "index";
     }
 

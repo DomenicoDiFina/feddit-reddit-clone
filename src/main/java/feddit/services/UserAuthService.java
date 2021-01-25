@@ -27,4 +27,5 @@ public class UserAuthService implements UserDetailsService {
         }*/
         return new FedditUserDetails(user);
     }
+
 }

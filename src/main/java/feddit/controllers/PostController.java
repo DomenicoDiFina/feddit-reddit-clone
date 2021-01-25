@@ -5,6 +5,9 @@ import feddit.model.User;
 import feddit.repositories.PostRepository;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
+import feddit.services.PostService;
+import feddit.services.UserAuthService;
+import feddit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,10 +24,10 @@ import java.util.Set;
 public class PostController {
 
     @Autowired
-    private PostRepository postRepository;
+    private PostService postService;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserService userService;
 
     /*@GetMapping("/index")
     public String showAddPostForm(Model model) {
@@ -35,8 +38,12 @@ public class PostController {
 
     @PostMapping("/process_add-post")
     public String processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails,Post post, Model model) {
-        post.setUser(userRepo.findByUsername(userDetails.getUsername()));
-        postRepository.save(post);
+        String username = userDetails.getUsername();
+
+        User user = userService.findUserByUsername(username);
+        System.out.println(user.getUsername() + " " + user.getName());
+        post.setUser(userService.findUserByUsername(userDetails.getUsername()));
+        postService.savePost(post);
 
         return "add-post_success";
     }
