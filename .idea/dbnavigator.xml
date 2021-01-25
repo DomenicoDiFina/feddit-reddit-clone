@@ -485,7 +485,7 @@
     <operation-settings>
       <transactions>
         <uncommitted-changes>
-          <on-project-close value="ASK" />
+          <on-project-close value="REVIEW_CHANGES" />
           <on-disconnect value="ASK" />
           <on-autocommit-toggle value="ASK" />
         </uncommitted-changes>

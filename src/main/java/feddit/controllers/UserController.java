@@ -143,15 +143,4 @@ public class UserController {
 
         return "myaccount";
     }
-
-    @PostMapping("/myaccount")
-    public String getAllPosts(@AuthenticationPrincipal FedditUserDetails userDetails, Model model){
-        User user = userRepo.findByUsername(userDetails.getUsername());
-
-        return "my_account";
-    }
-
-
-
-
 }
