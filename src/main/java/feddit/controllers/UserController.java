@@ -4,6 +4,7 @@ package feddit.controllers;
 import feddit.model.Post;
 import feddit.model.Role;
 import feddit.model.User;
+import feddit.repositories.PostRepository;
 import feddit.repositories.RoleRepository;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -34,11 +36,21 @@ public class UserController {
     @Autowired
     private RoleRepository roleRepo;
 
+    @Autowired
+    private PostRepository postRepository;
+
 
     @GetMapping("")
-    public String viewHomePage() {
+    public String viewHomePage(Model model) {
+        model.addAttribute("post", new Post());
         return "index";
     }
+
+    /*@GetMapping("/index")
+    public String index(Model model) {
+        model.addAttribute("post", new Post());
+        return "index";
+    }*/
 
     @GetMapping("/changepassword")
     public String showChangePasswordForm(Model model) {
@@ -123,11 +135,22 @@ public class UserController {
         model.addAttribute("surname", userDetails.getSurname());
         model.addAttribute("email", userDetails.getEmail());
         model.addAttribute("birth", userDetails.getBirth());
+        User user = userRepo.findByUsername(userDetails.getUsername());
+
+        List<Post> posts = postRepository.findAllByUser(user);
+        model.addAttribute("posts", posts);
 
 
         return "myaccount";
     }
+/*
+    @PostMapping("/myaccount")
+    public String getAllPosts(@AuthenticationPrincipal FedditUserDetails userDetails, Model model){
+        User user = userRepo.findByUsername(userDetails.getUsername());
 
+        return "my_account";
+    }
+*/
 
 
 

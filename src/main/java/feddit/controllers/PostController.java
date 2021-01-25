@@ -13,7 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.awt.*;
+import java.util.*;
+import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
@@ -25,12 +26,12 @@ public class PostController {
     @Autowired
     private UserRepository userRepo;
 
-    @GetMapping("/add-post")
+    /*@GetMapping("/index")
     public String showAddPostForm(Model model) {
 
         model.addAttribute("post", new Post());
-        return "add-post";
-    }
+        return "index";
+    }*/
 
     @PostMapping("/process_add-post")
     public String processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails,Post post, Model model) {
