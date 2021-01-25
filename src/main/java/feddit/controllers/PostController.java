@@ -6,7 +6,6 @@ import feddit.repositories.PostRepository;
 import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
 import feddit.services.PostService;
-import feddit.services.UserAuthService;
 import feddit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
