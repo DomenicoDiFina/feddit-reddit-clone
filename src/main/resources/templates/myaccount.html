@@ -3,7 +3,8 @@
     <head>
         <meta charset="ISO-8859-1">
         <title>Account - Feddit</title>
-        <link th:href="@{/css/main.css}" rel="styLesheet" />
+        <link th:href="@{/css/main.css}" rel="stylesheet" />
+        <script type="text/javascript" th:src="@{/js/functions.js}"></script>
     </head>
     <body>
         <div class="header">
@@ -13,11 +14,35 @@
                 </p>
                 <input type="submit" value="Sign Out" />
                 <p th:if="${passwordChanged}" th:text="${passwordChanged}" class="success"></p>
+                <p th:if="${passwordError}" th:text="${passwordError}" class="error"></p>
             </form>
             <div class="left_sub_header">
-                <a href="/changepassword" class="button">Change Password</a>
+                <!--<a href="/changepassword" class="button">Change Password</a>-->
+                <button type="button" th:onclick="${'javascript:showChangePasswordForm()'}">Change password</button>
                 <a href="/" class="button">Go back</a>
             </div>
+        </div>
+        <div id="changePasswordForm" class="container hidden">
+            <form th:action="@{/process_changepassword}" class="form" method="post">
+                <div class="row">
+                    <label for="old_password">Old password</label>
+                    <input type="password" id="old_password" name="old_password" autofocus="autofocus" />
+                </div>
+
+                <div class="row">
+                    <label for="new_password">New Password</label>
+                    <input type="password" id="new_password" name="new_password" />
+                </div>
+
+                <div class="row">
+                    <label for="repeat_new_password">Repeat new Password</label>
+                    <input type="password" id="repeat_new_password" name="repeat_new_password" />
+                </div>
+
+                <div class="row item-right">
+                    <input type="submit" value="Change Password" />
+                </div>
+            </form>
         </div>
         <div class="main">
             <h2>My account</h2>
