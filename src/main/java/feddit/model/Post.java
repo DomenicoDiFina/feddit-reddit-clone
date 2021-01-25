@@ -2,12 +2,37 @@ package feddit.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "posts")
 public class Post {
+
+    public Post(User user, String title, String description){
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.creationDate = new Date();
+        this.upvotes = 0;
+        this.downvotes = 0;
+    }
+
+    public Post(User user) {
+        this.user = user;
+        this.creationDate = new Date();
+        this.upvotes = 0;
+        this.downvotes = 0;
+    }
+
+    public Post(){
+        this.creationDate = new Date();
+        this.upvotes = 0;
+        this.downvotes = 0;
+        this.comments = new ArrayList<>();
+    };
+
     public long getPostID() {
         return postID;
     }
@@ -72,8 +97,10 @@ public class Post {
         this.downvotes = downvotes;
     }
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "postID")
     private long postID;
 
     @NotEmpty
@@ -88,7 +115,7 @@ public class Post {
     @JoinColumn(name = "userID", referencedColumnName = "userID")
     private User user;
 
-    @NotEmpty
+
     @Column(name = "creationDate")
     private Date creationDate;
 

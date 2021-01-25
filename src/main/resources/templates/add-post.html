@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Add Post - Feddit</title>
+    <link th:href="@{/css/main.css}" rel="styLesheet" />
+</head>
+<body class="page_centered_div">
+<div class="container">
+    <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
+    <h3>F(ake R)eddit, ugly by choice</h3>
+    <!--<p class="error" th:if="${addPostError}" th:text="${addPostError}" />-->
+    <form class="form" th:action="@{/process_add-post}" th:object="${post}" method="post">
+        <div class="row">
+            <label for="title">Title</label>
+            <input type="text" th:field="*{title}" id="title" name="title" autofocus="autofocus" required/>
+        </div>
+
+        <div class="row">
+            <label for="description">Content</label>
+            <input type="text" th:field="*{description}" id="description" name="description" autofocus="autofocus" required/>
+        </div>
+
+        <!--
+        <div class="row">
+            <label for="confirmpassword">Confirm Password</label>
+            <input type="password" id="confirmpassword" name="confirmpassword" />
+        </div>
+        -->
+
+        <div class="row">
+            <a class="button" href="/">Go back</a>
+            <input type="submit" value="Add Post" />
+        </div>
+    </form>
+</div>
+</body>
+</html>

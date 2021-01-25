@@ -1,6 +1,7 @@
 package feddit.controllers;
 
 //import feddit.model.ChangePasswordObj;
+import feddit.model.Post;
 import feddit.model.Role;
 import feddit.model.User;
 import feddit.repositories.RoleRepository;
@@ -126,6 +127,8 @@ public class UserController {
 
         return "myaccount";
     }
+
+
 
 
 }

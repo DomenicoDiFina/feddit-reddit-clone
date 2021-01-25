@@ -22,6 +22,9 @@
         </div>
         <!-- MAIN BODY -->
         <div class="main">
+            <div class="add_post" sec:authorize="isAuthenticated()">
+                <p><a href="/add-post" class="button" >Add a Post</a></p>
+            </div>
             <h1>Body</h1>
             <div sec:authorize="hasAuthority('ADMIN')">
                 This content is only shown to administrators.

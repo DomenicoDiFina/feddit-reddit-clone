@@ -26,16 +26,12 @@ public class CommentService {
 
     List<Comment> findAllByUser(long userID) throws Exception {
         User user = userRepository.findById(userID).orElseThrow(() -> new Exception("User didn't find"));
-        return commentRepository.findAllByUser(user)
-                .stream()
-                .collect(toList());
+        return commentRepository.findAllByUser(user);
     }
 
 
     List<Comment> findAllByPost(long postID) throws Exception {
         Post post = postRepository.findById(postID).orElseThrow(() -> new Exception("User didn't find"));
-        return commentRepository.findAllByPost(post)
-                .stream()
-                .collect(toList());
+        return commentRepository.findAllByPost(post);
     }
 }
