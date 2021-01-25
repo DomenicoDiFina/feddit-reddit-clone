@@ -137,7 +137,7 @@ public class UserController {
         List<Post> posts = postRepository.findAllByUser(user);
         Collections.sort(posts, new Comparator<Post>() {
             public int compare(Post p1, Post p2) {
-                return o2.getCreationDate().compareTo(o1.getCreationDate());
+                return p2.getCreationDate().compareTo(p1.getCreationDate());
             }
         });
         model.addAttribute("posts", posts);
