@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class UserController {
@@ -138,6 +135,11 @@ public class UserController {
         User user = userRepo.findByUsername(userDetails.getUsername());
 
         List<Post> posts = postRepository.findAllByUser(user);
+        Collections.sort(posts, new Comparator<Post>() {
+            public int compare(Post o1, Post o2) {
+                return o2.getCreationDate().compareTo(o1.getCreationDate());
+            }
+        });
         model.addAttribute("posts", posts);
 
 
