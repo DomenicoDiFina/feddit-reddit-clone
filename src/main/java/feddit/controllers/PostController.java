@@ -35,15 +35,16 @@ public class PostController {
 
     @PostMapping("/process_add-post")
     public String processAddPost(Post post, Model model) {
-        System.out.println(post.getPostID());
-        System.out.println(post.getTitle());
-        System.out.println(post.getDescription());
-        System.out.println(post.getCreationDate());
-        System.out.println(post.getComments());
-        System.out.println(post.getUpvotes());
-        System.out.println(post.getDownvotes());
+        System.out.println("id: " + post.getPostID());
+        System.out.println("title: " + post.getTitle());
+        System.out.println("description: " + post.getDescription());
+        System.out.println("creation_date: " + post.getCreationDate());
+        System.out.println("comments: " + post.getComments());
+        System.out.println("upvotes: " + post.getUpvotes());
+        System.out.println("downvotes: " + post.getDownvotes());
+        System.out.println("userID: " + post.getUser());
+        
         postRepository.save(post);
-        System.out.println(post.getTitle());
 
         /*
         if(userRepo.findByUsername(user.getUsername()) == null) {
