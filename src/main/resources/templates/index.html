@@ -22,6 +22,7 @@
         </div>
         <!-- MAIN BODY -->
         <div class="main">
+
             <div class="add_post" sec:authorize="isAuthenticated()">
                 <form class="form" th:action="@{/process_add-post}" th:object="${post}" method="post">
                     <div class="row">
@@ -43,26 +44,36 @@
                 </form>
             </div>
 
-            <tr >
-                <td th:text="Username" />
-                <td th:text="Title" />
-                <td th:text="Description" />
-                <br />
-                <br />
-
-            </tr>
-            <tr th:each="post: ${posts}">
-                <td th:text="${post.user.username}" />
-                <td th:text="${post.title}" />
-                <td th:text="${post.content}" />
-                <br />
-                <br />
-                <br />
-            </tr>
-
             <div sec:authorize="hasAuthority('ADMIN')">
                 This content is only shown to administrators.
             </div>
+
+
+            <div th:each="post: ${posts}" class="post">
+                <div class="post-sidebar">
+                    <button>up</button>
+                    <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
+                    <button>down</button>
+                </div>
+                <div class="post-content">
+                    <div class="post-header">
+                        Posted by <p class="user" th:text="${post.user.username}"></p>
+                        <p class="date" th:text="${post.creationDate}"></p>
+                    </div>
+                    <div class="post-title">
+                        <p th:text="${post.title}"></p>
+                    </div>
+                    <div class="post-text">
+                        <p th:text="${post.content}"></p>
+                    </div>
+                    <div class="post-footer">
+                        <p>?? ALL comments</p>
+                        <a class="button" href="/viewpost">View full discussion</a>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </body>
 </html>

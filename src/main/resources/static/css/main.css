@@ -108,3 +108,75 @@ input[type=submit] {
     border: 1px solid black;
     cursor: pointer;
 }
+
+.post {
+    border: 1px black solid;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 5% 95%;
+    max-width: 60%;
+    min-height: 10rem;
+    margin-bottom: 1rem;
+}
+
+.post-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-sidebar button {
+    margin: 0;
+    padding: 5px;
+    border: none;
+}
+
+.post-sidebar p {
+    margin: 5px;
+}
+
+.post-content {
+    border: 1px black dotted;
+    margin-left: 0.5rem;
+}
+
+.post-content p{
+    margin: 0;
+}
+
+.post-header {
+    padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.post-header .user {
+    margin: 0.5rem;
+    font-weight: bold;
+}
+
+.post-header .date {
+    font-size: small;
+    font-weight: normal;
+}
+
+.post-title {
+    font-size: x-large;
+    margin-left: 0.5rem;
+}
+
+.post-text {
+    margin-left: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+.post-footer {
+    justify-content: space-around;
+    display: flex;
+    align-items: center;
+    margin-left: 0.5rem;
+}
+
+.post-footer p {
+m   argin: 0.5rem;
+}

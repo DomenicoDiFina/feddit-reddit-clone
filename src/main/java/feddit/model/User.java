@@ -49,6 +49,7 @@ public class User extends DatabaseObject {
     private List<Comment> comments;
 
     public User() {
+        this.creationDate = new java.util.Date();
     }
 
     public String getUsername() {
