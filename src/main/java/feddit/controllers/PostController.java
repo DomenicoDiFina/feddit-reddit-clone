@@ -10,6 +10,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
 
@@ -29,15 +31,16 @@ public class PostController {
         return "index";
     }*/
 
-    @PostMapping("/process_add-post")
-    public String processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails, Post post, Model model) {
-        String username = userDetails.getUsername();
+    @PostMapping("/addpost")
+    public ModelAndView processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails,
+                                       ModelAndView mav,
+                                       RedirectAttributes redirectAttributes,
+                                       Post post) {
 
-        User user = userService.findByUsername(username);
         post.setUser(userService.findByUsername(userDetails.getUsername()));
-
         postService.save(post);
-
-        return "add-post_success";
+        redirectAttributes.addFlashAttribute("postAdded", "Post added successfully");
+        mav.setViewName("redirect:/");
+        return mav;
     }
 }

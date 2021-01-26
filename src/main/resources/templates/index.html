@@ -15,7 +15,7 @@
                     <p><a href="/myaccount" class="button">Account</a></p>
                 </div>
                 <div class="left_sub_header" sec:authorize="isAnonymous()">
-                    <p><a href="/sign-up" class="button" >Sign Up</a></p>
+                    <p><a href="/signup" class="button" >Sign Up</a></p>
                     <p><a href="/login" class="button" >Login</a></p>
                 </div>
             </div>
@@ -24,7 +24,7 @@
         <div class="main">
 
             <div class="add_post" sec:authorize="isAuthenticated()">
-                <form class="form" th:action="@{/process_add-post}" th:object="${post}" method="post">
+                <form class="form" th:action="@{/addpost}" th:object="${post}" method="post">
                     <div class="row">
                         <label for="title">Title</label>
                         <input type="text" th:field="*{title}" id="title" name="title" autofocus="autofocus" required/>
@@ -42,12 +42,8 @@
                     <br>
                     <br>
                 </form>
+                <p th:text="${postAdded}" class="success"></p>
             </div>
-
-            <div sec:authorize="hasAuthority('ADMIN')">
-                This content is only shown to administrators.
-            </div>
-
 
             <div th:each="post: ${posts}" class="post">
                 <div class="post-sidebar">
@@ -59,6 +55,7 @@
                     <div class="post-header">
                         Posted by <p class="user" th:text="${post.user.username}"></p>
                         <p class="date" th:text="${post.creationDate}"></p>
+                        <button sec:authorize="hasAuthority('ADMIN')" class="remove-post">X</button>
                     </div>
                     <div class="post-title">
                         <p th:text="${post.title}"></p>

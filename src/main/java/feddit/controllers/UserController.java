@@ -78,10 +78,10 @@ public class UserController {
         return mav;
     }
 
-    @GetMapping("/sign-up")
+    @GetMapping("/signup")
     public String showSignUpForm(Model model) {
         model.addAttribute("user", new User());
-        return "sign-up";
+        return "signup";
     }
 
     @PostMapping("/process_signup")
@@ -97,7 +97,7 @@ public class UserController {
             model.addAttribute("usernameError", "Username already exists");
             return showSignUpForm(model);
         }
-        return "sign-up_success";
+        return "signup_success";
     }
 
     @RequestMapping("login")
