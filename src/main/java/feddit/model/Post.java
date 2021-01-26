@@ -2,6 +2,8 @@ package feddit.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,6 +18,7 @@ public class Post extends ForumObject {
     private List<Comment> comments;
 
     public Post() {
+        this.creationDate = new Date();
     }
 
     public String getTitle() {

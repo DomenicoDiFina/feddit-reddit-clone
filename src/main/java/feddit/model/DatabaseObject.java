@@ -2,7 +2,7 @@ package feddit.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.sql.Date;
+import java.util.Date;
 
 @MappedSuperclass
 public abstract class DatabaseObject {

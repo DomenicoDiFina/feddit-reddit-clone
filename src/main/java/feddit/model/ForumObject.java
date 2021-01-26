@@ -13,17 +13,17 @@ public abstract class ForumObject extends DatabaseObject {
     @Column(name = "content")
     protected String content;
 
-    @NotEmpty
+
     @Column(name = "up_votes")
     protected int upVotes;
 
-    @NotEmpty
+
     @Column(name = "down_votes")
     protected int downVotes;
 
-    @NotEmpty
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     protected User user;
 
     public ForumObject() {

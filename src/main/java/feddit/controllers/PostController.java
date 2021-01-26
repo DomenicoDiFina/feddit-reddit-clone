@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.Date;
+
 @Controller
 public class PostController {
 
@@ -33,6 +35,7 @@ public class PostController {
 
         User user = userService.findByUsername(username);
         post.setUser(userService.findByUsername(userDetails.getUsername()));
+
         postService.save(post);
 
         return "add-post_success";
