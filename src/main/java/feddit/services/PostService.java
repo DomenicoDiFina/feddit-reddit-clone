@@ -14,10 +14,10 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    /*public List<Post> findAll() {
-        return this.postRepository.findAll();
+    public List<Post> findAll() {
+        return (List<Post>) this.postRepository.findAll();
     }
-    */
+
 
     public Post save(Post post) {
         return this.postRepository.save(post);
