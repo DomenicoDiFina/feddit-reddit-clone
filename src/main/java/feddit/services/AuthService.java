@@ -12,14 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class AuthService implements UserDetailsService {
 
-    /*** TO CHECK IF IS CORRECT ***/
-
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if(user == null) {
             throw new UsernameNotFoundException("User not found");
         }
