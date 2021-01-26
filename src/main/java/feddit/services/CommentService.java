@@ -7,13 +7,14 @@ import feddit.repositories.CommentRepository;
 import feddit.repositories.PostRepository;
 import feddit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 
 public class CommentService {
+
+    /*** TO CHECK IF IS CORRECT ***/
+
     @Autowired
     private CommentRepository commentRepository;
 
@@ -25,13 +26,17 @@ public class CommentService {
 
 
     List<Comment> findAllByUser(long userID) throws Exception {
-        User user = userRepository.findById(userID).orElseThrow(() -> new Exception("User didn't find"));
-        return commentRepository.findAllByUser(user);
+        User user = userRepository.findById(userID).orElseThrow(() -> new IllegalArgumentException("User didn't find"));
+        return user.getComments();
     }
-
 
     List<Comment> findAllByPost(long postID) throws Exception {
-        Post post = postRepository.findById(postID).orElseThrow(() -> new Exception("User didn't find"));
-        return commentRepository.findAllByPost(post);
+        Post post = postRepository.findById(postID).orElseThrow(() -> new IllegalArgumentException("User didn't find"));
+        return post.getComments();
     }
+
+    public Comment save(Comment comment){
+        return commentRepository.save(comment);
+    }
+
 }

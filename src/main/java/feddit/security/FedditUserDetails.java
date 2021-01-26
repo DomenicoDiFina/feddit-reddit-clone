@@ -5,14 +5,16 @@ import feddit.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import  java.sql.Date;
 
-import java.util.ArrayList;
+import java.sql.Date;
+
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
 
 public class FedditUserDetails implements UserDetails {
+
     private User user;
 
     public FedditUserDetails(User user) {
@@ -52,17 +54,16 @@ public class FedditUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Role> roles = user.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole()));
-        }
-
-        return authorities;
+        return roles
+                .stream()
+                .map(role -> new SimpleGrantedAuthority(role.getDescription()))
+                .collect(Collectors.toList());
     }
 
+    /*** TO CHECK IF IS CORRECT ***/
+
     public String getFullName() {
-        return user.getName() + " " + user.getSurname();
+        return user.getFirstName() + " " + user.getLastName();
     }
 
     //i don't know if this is secure or it need to be encapsulated (see below)
@@ -70,21 +71,20 @@ public class FedditUserDetails implements UserDetails {
         return this.user;
     }*/
 
-
-    public String getName() {
-        return this.user.getName();
+    public String getFirstName() {
+        return this.user.getFirstName();
     }
 
-    public String getSurname() {
-        return this.user.getSurname();
+    public String getLastName() {
+        return this.user.getLastName();
     }
 
     public String getEmail() {
         return this.user.getEmail();
     }
 
-    public Date getBirth() {
-        return this.user.getBirth();
+    public Date getBirthDate() {
+        return this.user.getBirthDate();
     }
 
 }

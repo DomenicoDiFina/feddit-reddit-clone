@@ -1,7 +1,7 @@
 package feddit.security;
 
 //import feddit.services.AdminAuthService;
-import feddit.services.UserAuthService;
+import feddit.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -91,7 +91,7 @@ public class SecurityConfig {
 
         @Bean
         public UserDetailsService userDetailsService() {
-            return new UserAuthService();
+            return new AuthService();
         }
 
         @Bean

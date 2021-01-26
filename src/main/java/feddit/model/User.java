@@ -1,88 +1,54 @@
 package feddit.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userID")
-    private long userID;
+public class User extends DatabaseObject {
 
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Column(name = "surname", nullable = false)
-    private String surname;
-
-    @Column(name = "birth", nullable = false)
-    private Date birth;
-
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @Column(name = "username", unique = true, nullable = false)
+    @NotEmpty
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @NotEmpty
+    @Column(name = "email")
+    private String email;
+
+    @NotEmpty
+    @Column(name = "password")
     private String password;
 
-    /*@Column(name = "role", nullable = false)
-    private String role;*/
+    @NotEmpty
+    @Column(name = "first_name")
+    private String firstName;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @NotEmpty
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
-            joinColumns = @JoinColumn(name = "userID"),
-            inverseJoinColumns = @JoinColumn(name = "roleID")
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User() {}
+    @OneToMany(mappedBy = "user")
+    private List<Post> posts;
 
-    /*public User(String name, String surname, Date birth, String username, String email, String password ) {
-        this.name = name;
-        this.surname = surname;
-        this.birth = birth;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }*/
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments;
 
-    public long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(long userID) {
-        this.userID = userID;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public Date getBirth() {
-        return birth;
-    }
-
-    public void setBirth(Date birth) {
-        this.birth = birth;
+    public User() {
     }
 
     public String getUsername() {
@@ -109,6 +75,30 @@ public class User {
         this.password = password;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
     public Set<Role> getRoles() {
         return roles;
     }
@@ -117,11 +107,19 @@ public class User {
         this.roles = roles;
     }
 
-    /*public String getRole() {
-        return role;
+    public List<Post> getPosts() {
+        return posts;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }*/
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

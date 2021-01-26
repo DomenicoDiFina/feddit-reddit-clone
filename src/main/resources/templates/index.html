@@ -30,17 +30,36 @@
                     </div>
 
                     <div class="row">
-                        <label for="description">Content</label>
-                        <input type="text" th:field="*{description}" id="description" name="description" autofocus="autofocus" required/>
+                        <label for="content">Content</label>
+                        <input type="text" th:field="*{content}" id="content" name="content" autofocus="autofocus" required/>
                     </div>
 
                     <div class="row">
                         <input type="submit" value="Add Post" />
                     </div>
+
+                    <br>
+                    <br>
                 </form>
             </div>
 
-            <h1>Body</h1>
+            <tr >
+                <td th:text="Username" />
+                <td th:text="Title" />
+                <td th:text="Description" />
+                <br />
+                <br />
+
+            </tr>
+            <tr th:each="post: ${posts}">
+                <td th:text="${post.user.username}" />
+                <td th:text="${post.title}" />
+                <td th:text="${post.description}" />
+                <br />
+                <br />
+                <br />
+            </tr>
+
             <div sec:authorize="hasAuthority('ADMIN')">
                 This content is only shown to administrators.
             </div>

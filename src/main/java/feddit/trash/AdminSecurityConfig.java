@@ -1,7 +1,6 @@
-/*package feddit.security;
+package feddit.trash;/*package feddit.security;
 
-import javax.sql.DataSource;
-
+import feddit.services.AdminAuthService;
 import feddit.services.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,10 +15,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
-@Order(2)
-public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private DataSource dataSource;
 
@@ -28,10 +29,9 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
         return new SpringSecurityDialect();
     }
 
-
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserAuthService();
+    public UserDetailsService adminDetailsService() {
+        return new AdminAuthService();
     }
 
     @Bean
@@ -42,7 +42,7 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setUserDetailsService(adminDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
@@ -61,10 +61,10 @@ public class UserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/changepassword").authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/login")
+                .formLogin().loginPage("/admin")
                 .usernameParameter("username")
                 .defaultSuccessUrl("/")
-                .failureUrl("/login_error")
+                .failureUrl("/login_admin_error")
                 .permitAll()
                 .and()
                 .logout().logoutSuccessUrl("/").permitAll();

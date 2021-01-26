@@ -7,6 +7,7 @@ h1, h2, h3, h4, h5, h6 {
     justify-content: space-between;
     border: 1px solid black;
     align-items: center;
+    margin-bottom: 0.5rem;
 }
 
 .header img {
@@ -31,6 +32,19 @@ h1, h2, h3, h4, h5, h6 {
     text-decoration: none;
 }
 
+button {
+    background: white;
+    color: inherit;
+    margin: 0.5rem;
+    padding: 0.5rem;
+    border: 1px solid black;
+    outline:none;
+}
+
+button:hover, .button:hover {
+    text-shadow:0px 0px 1px black;
+}
+
 .error {
     color: red;
 }
@@ -39,13 +53,10 @@ h1, h2, h3, h4, h5, h6 {
     color: green;
 }
 
-.button:hover {
-    text-shadow:0px 0px 1px black;
-}
+
 
 .main {
     padding: 1rem;
-    margin-top: 0.5rem;
     border: 1px solid black;
 }
 
@@ -66,12 +77,21 @@ table {
     flex-direction: column;
     border: 1px black solid;
     padding: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.hidden {
+    display: none;
 }
 
 .row {
     display: flex;
     justify-content: space-between;
     margin: 10px;
+}
+
+.item-right {
+    justify-content: center;
 }
 
 label {

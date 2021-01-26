@@ -2,44 +2,42 @@ package feddit.controllers;
 
 //import feddit.model.ChangePasswordObj;
 import feddit.model.Post;
-import feddit.model.Role;
 import feddit.model.User;
-import feddit.repositories.PostRepository;
-import feddit.repositories.RoleRepository;
-import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
+import feddit.services.PostService;
+import feddit.services.RoleService;
+import feddit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Controller
 public class UserController {
 
     @Autowired
-    private UserRepository userRepo;
+    private UserService userService;
 
     @Autowired
-    private RoleRepository roleRepo;
+    private RoleService roleService;
 
     @Autowired
-    private PostRepository postRepository;
+    private PostService postService;
 
 
     @GetMapping("")
     public String viewHomePage(Model model) {
         model.addAttribute("post", new Post());
+        //List<Post> posts = this.postService.findAll();
+        //Collections.sort(posts, Comparator.comparingInt(p -> p.getUpVotes() - p.getDownVotes()));
+        //model.addAttribute("posts", posts);
         return "index";
     }
 
@@ -49,34 +47,35 @@ public class UserController {
         return "index";
     }*/
 
-    @GetMapping("/changepassword")
+    /*@GetMapping("/changepassword")
     public String showChangePasswordForm(Model model) {
         //model.addAttribute("password", new ChangePasswordObj());
         return "changepassword";
-    }
+    }*/
 
     @RequestMapping(value = "/process_changepassword", method = RequestMethod.POST)
-    public String processChangePassword(Authentication auth,
-                                        Model model,
+    public ModelAndView processChangePassword(ModelAndView mav,
+                                        RedirectAttributes redirectAttributes,
                                         @RequestParam("old_password") String oldPassword,
                                         @RequestParam("new_password") String newPassword) {
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        FedditUserDetails userDetails = (FedditUserDetails) auth.getPrincipal();
+        User u = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
         if(!oldPassword.equals(newPassword)){
-            if(passwordEncoder.matches(oldPassword, userDetails.getPassword())){
-                userRepo.changeUserPassword(userDetails.getUsername(), passwordEncoder.encode(newPassword));
-                model.addAttribute("passwordChanged", "Password changed successfully");
-                return showMyAccount(userDetails, model);
+            if(passwordEncoder.matches(oldPassword, u.getPassword())){
+
+                u.setPassword(passwordEncoder.encode(newPassword));
+                userService.save(u);
+                redirectAttributes.addFlashAttribute("passwordResult", "1");
             } else {
-                System.out.println("Error: old password incorrect");
-                model.addAttribute("passwordError", "Old password isn't correct");
+                redirectAttributes.addFlashAttribute("passwordResult", "-1");
             }
         } else {
-            System.out.println("Error: same passowrd");
-            model.addAttribute("passwordError", "The new password is equal to the old one");
+            redirectAttributes.addFlashAttribute("passwordResult", "-2");
         }
-        return "changepassword";
+        mav.setViewName("redirect:/myaccount");
+        return mav;
     }
 
     @GetMapping("/sign-up")
@@ -90,10 +89,10 @@ public class UserController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
-        user.setRoles(Set.of(roleRepo.findByName("USER")));
-        if(userRepo.findByUsername(user.getUsername()) == null) {
-            userRepo.save(user);
-            model.addAttribute("name", user.getName());
+        user.setRoles(Set.of(roleService.findByName("USER")));
+        if(userService.findByUsername(user.getUsername()) == null) {
+            userService.save(user);
+            model.addAttribute("name", user.getFirstName());
         } else {
             model.addAttribute("usernameError", "Username already exists");
             return showSignUpForm(model);
@@ -125,24 +124,38 @@ public class UserController {
     }*/
 
     @GetMapping("/myaccount")
-    public String showMyAccount(@AuthenticationPrincipal FedditUserDetails userDetails, Model model) {
-        //Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //User user = (User) auth.getDetails();
-        model.addAttribute("name", userDetails.getName());
-        model.addAttribute("surname", userDetails.getSurname());
-        model.addAttribute("email", userDetails.getEmail());
-        model.addAttribute("birth", userDetails.getBirth());
-        User user = userRepo.findByUsername(userDetails.getUsername());
+    public String showMyAccount(Model model,
+                                @AuthenticationPrincipal FedditUserDetails userDetails,
+                                @ModelAttribute("passwordResult") String passwordResult) {
 
-        List<Post> posts = postRepository.findAllByUser(user);
-        Collections.sort(posts, new Comparator<Post>() {
-            public int compare(Post p1, Post p2) {
-                return p2.getCreationDate().compareTo(p1.getCreationDate());
+        try {
+            int errorCode = Integer.parseInt(passwordResult);
+            switch (errorCode) {
+                case 1:
+                    model.addAttribute("passwordChanged", "Password changed successfully.");
+                    break;
+                case -1:
+                    model.addAttribute("passwordError", "Old password isn't correct.");
+                    break;
+                case -2:
+                    model.addAttribute("passwordError", "New password is equal to the old inserted.");
+                    break;
             }
-        });
-        model.addAttribute("posts", posts);
+        } catch (NumberFormatException ex) {
+            // ???
+        }
 
+        model.addAttribute("first_name", userDetails.getFirstName());
+        model.addAttribute("last_name", userDetails.getLastName());
+        model.addAttribute("email", userDetails.getEmail());
+        model.addAttribute("birth_date", userDetails.getBirthDate());
+        User user = userService.findByUsername(userDetails.getUsername());
+
+        List<Post> posts = user.getPosts();
+        Collections.sort(posts, (p1, p2) ->  p2.getCreationDate().compareTo(p1.getCreationDate()));
+        model.addAttribute("posts", posts);
 
         return "myaccount";
     }
+
 }
