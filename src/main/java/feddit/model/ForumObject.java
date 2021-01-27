@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @MappedSuperclass
 public abstract class ForumObject extends DatabaseObject {
 
-    @NotEmpty
+
     @Column(name = "content", columnDefinition = "TEXT")
     protected String content;
 

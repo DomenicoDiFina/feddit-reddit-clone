@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "roles")
 public class Role extends DatabaseObject {
 
-    @NotEmpty
     @Column(name = "description")
     private String description;
 

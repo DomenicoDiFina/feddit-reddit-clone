@@ -24,6 +24,10 @@ public class PostService {
         return comments.size();
     }
 
+    public void remove(long id){
+        this.postRepository.deleteById(id);
+    }
+
 
     public Post save(Post post) {
         return this.postRepository.save(post);

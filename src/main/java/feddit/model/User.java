@@ -11,23 +11,20 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends DatabaseObject {
 
-    @NotEmpty
     @Column(name = "username")
     private String username;
 
-    @NotEmpty
     @Column(name = "email")
     private String email;
 
-    @NotEmpty
     @Column(name = "password")
     private String password;
 
-    @NotEmpty
+
     @Column(name = "first_name")
     private String firstName;
 
-    @NotEmpty
+
     @Column(name = "last_name")
     private String lastName;
 
@@ -42,10 +39,10 @@ public class User extends DatabaseObject {
     )
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval=true)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval=true)
     private List<Comment> comments;
 
     public User() {

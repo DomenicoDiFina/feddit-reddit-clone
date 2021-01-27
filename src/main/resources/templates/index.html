@@ -55,7 +55,15 @@
                     <div class="post-header">
                         Posted by <p class="user" th:text="${post.key.user.username}"></p>
                         <p class="date" th:text="${post.key.creationDate}"></p>
-                        <button sec:authorize="hasAuthority('ADMIN')" class="remove-post">X</button>
+                        <!--<form action="#" th:action="@{/removePost}" th:object="${post.key.id}" method="delete">
+                            <input type="hidden" name="removePost"/>
+                            <button type="submit" sec:authorize="hasAuthority('ADMIN')" class="remove-post" >X</button>
+                        </form>-->
+                        <form action="#" th:action="@{'/removePost/{id}'(id=${post.key.id})}" th:method="delete" >
+                            <input type="hidden" name="_method" value="delete" />
+                            <button type="submit" sec:authorize="hasAuthority('ADMIN')" class="remove-post" >X</button>
+                        </form>
+                        <p th:text="${postRemoved}" class="success"></p>
                     </div>
                     <div class="post-title">
                         <p th:text="${post.key.title}"></p>

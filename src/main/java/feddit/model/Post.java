@@ -10,11 +10,10 @@ import java.util.List;
 @Table(name = "posts")
 public class Post extends ForumObject {
 
-    @NotEmpty
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", orphanRemoval=true)
     private List<Comment> comments;
 
     public Post() {
