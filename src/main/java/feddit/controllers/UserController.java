@@ -69,8 +69,11 @@ public class UserController {
             if(passwordEncoder.matches(oldPassword, u.getPassword())){
 
                 u.setPassword(passwordEncoder.encode(newPassword));
-                userService.save(u);
-                redirectAttributes.addFlashAttribute("passwordResult", "1");
+                if(userService.save(u)) {
+                    redirectAttributes.addFlashAttribute("passwordResult", "1");
+                } else {
+                    redirectAttributes.addFlashAttribute("passwordResult", "0");
+                }
             } else {
                 redirectAttributes.addFlashAttribute("passwordResult", "-1");
             }
@@ -82,24 +85,50 @@ public class UserController {
     }
 
     @GetMapping("/signup")
-    public String showSignUpForm(Model model) {
+    public String showSignUpForm(Model model,
+                                 @ModelAttribute("usernameError") String usernameError) {
+        model.addAttribute("usernameError", usernameError);
         model.addAttribute("user", new User());
         return "signup";
     }
 
     @PostMapping("/process_signup")
-    public String processSignUp(User user, Model model) {
+    public ModelAndView processSignUp(User user,
+                                      ModelAndView mav,
+                                      RedirectAttributes redirectAttributes) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setRoles(Set.of(roleService.findByName("USER")));
+
+        //ModelAndView mav = new ModelAndView();
+
         if(userService.findByUsername(user.getUsername()) == null) {
-            userService.save(user);
-            model.addAttribute("name", user.getFirstName());
+            if(userService.save(user)) {
+                //model.addAttribute("name", user.getFirstName());
+                redirectAttributes.addFlashAttribute("name", user.getFirstName());
+                mav.setViewName("redirect:/signup_success");
+            } else {
+                //model.addAttribute("usernameError", "An error occured");
+                redirectAttributes.addFlashAttribute("usernameError", "An error occured");
+                //return showSignUpForm(model);
+                mav.setViewName("redirect:/signup");
+            }
         } else {
-            model.addAttribute("usernameError", "Username already exists");
-            return showSignUpForm(model);
+            //model.addAttribute("usernameError", "Username already exists");
+            redirectAttributes.addFlashAttribute("usernameError", "Username already exists");
+            //return showSignUpForm(model);
+            mav.setViewName("redirect:/signup");
         }
+        //return "signup_success";
+
+        return mav;
+    }
+
+    @GetMapping("/signup_success")
+    public String showSignUpSuccess(Model model,
+                                    @ModelAttribute("name") String name) {
+        model.addAttribute("name", name);
         return "signup_success";
     }
 
@@ -137,6 +166,9 @@ public class UserController {
                 case 1:
                     model.addAttribute("passwordChanged", "Password changed successfully.");
                     break;
+                case 0:
+                    model.addAttribute("passwordError", "An error occured.");
+                    break;
                 case -1:
                     model.addAttribute("passwordError", "Old password isn't correct.");
                     break;
@@ -145,7 +177,7 @@ public class UserController {
                     break;
             }
         } catch (NumberFormatException ex) {
-            // ???
+            model.addAttribute("passwordError", "An error occured.");
         }
 
         model.addAttribute("first_name", userDetails.getFirstName());
