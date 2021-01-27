@@ -43,6 +43,7 @@
                     <br>
                 </form>
                 <p th:text="${postAdded}" class="success"></p>
+                <p th:text="${postError}" class="error"></p>
             </div>
 
             <div th:each="post: ${posts}" class="post">
