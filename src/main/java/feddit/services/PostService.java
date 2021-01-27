@@ -3,8 +3,10 @@ package feddit.services;
 import feddit.model.Post;
 import feddit.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +30,13 @@ public class PostService {
     }
 
 
-    public Post save(Post post) {
-        return this.postRepository.save(post);
+    public boolean save(Post post) {
+        try {
+            this.postRepository.save(post);
+            return true;
+        } catch (DataAccessException dataAccessException) {
+            return false;
+        }
     }
 
 }

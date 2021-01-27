@@ -41,8 +41,11 @@ public class PostController {
                                        Post post) {
 
         post.setUser(userService.findByUsername(userDetails.getUsername()));
-        postService.save(post);
-        redirectAttributes.addFlashAttribute("postAdded", "Post added successfully");
+        if(postService.save(post)) {
+            redirectAttributes.addFlashAttribute("postAdded", "Post added successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("postError", "An error occured.");
+        }
         mav.setViewName("redirect:/");
         return mav;
     }
