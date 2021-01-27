@@ -17,9 +17,9 @@ public class AuthService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = this.userService.findByUsername(username);
-        if(user == null) {
+        /*if(user == null) {
             throw new UsernameNotFoundException("User not found");
-        }
+        }*/
         /*if(user.getRoles().contains(new Role("ADMIN"))) {
             //TODO find the right exception
             throw new UsernameNotFoundException("User is an admnistrator");
