@@ -2,7 +2,6 @@ package feddit.services;
 
 
 import feddit.model.User;
-import feddit.repositories.UserRepository;
 import feddit.security.FedditUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,14 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public class AuthService implements UserDetailsService {
 
-    /*** TO CHECK IF IS CORRECT ***/
-
     @Autowired
-    private UserRepository userRepo;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+        User user = this.userService.findByUsername(username);
         if(user == null) {
             throw new UsernameNotFoundException("User not found");
         }

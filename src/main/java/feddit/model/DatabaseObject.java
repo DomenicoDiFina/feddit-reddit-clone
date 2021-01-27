@@ -12,7 +12,7 @@ public abstract class DatabaseObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
 
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     protected Date creationDate;
 
     public DatabaseObject() {

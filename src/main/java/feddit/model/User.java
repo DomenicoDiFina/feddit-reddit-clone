@@ -28,7 +28,7 @@ public class User extends DatabaseObject {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "birth_date")
+    @Column(name = "birth_date", nullable = false)
     private Date birthDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
