@@ -12,7 +12,7 @@ public class UserService {
     private UserRepository repository;
 
     public User findByUsername(String username) {
-        return this.repository.findByUsername(username).orElse(null);
+        return this.repository.findByUsername(username);
     }
 
     public void save(User user) {
