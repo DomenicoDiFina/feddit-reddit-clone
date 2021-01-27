@@ -64,8 +64,9 @@ public class PostController {
         return mav;
     }
 
-    @PostMapping("/view_post/{id}")
-    public String showPost(Model model, @PathVariable long id) {
+    @GetMapping("/view_post")
+    public String showPost(Model model,
+                           @RequestParam("id") long id) {
         Post post = this.postService.findById(id);
         model.addAttribute("post", post);
         return "post";
