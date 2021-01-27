@@ -35,9 +35,17 @@ public class UserController {
     @GetMapping("")
     public String viewHomePage(Model model) {
         model.addAttribute("post", new Post());
-        List<Post> posts = this.postService.findAll();
-        Collections.sort(posts, Comparator.comparingInt(p -> p.getUpVotes() - p.getDownVotes()));
+
+        Map<Post, Integer> posts = new HashMap<>();
+
+        List<Post> postsList = this.postService.findAll();
+        Collections.sort(postsList, Comparator.comparingInt(p -> p.getUpVotes() - p.getDownVotes()));
+
+        for(Post post : postsList)
+            posts.put(post, postService.getNComments(post));
+
         model.addAttribute("posts", posts);
+
         return "index";
     }
 

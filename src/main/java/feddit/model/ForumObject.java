@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 public abstract class ForumObject extends DatabaseObject {
 
     @NotEmpty
-    @Column(name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     protected String content;
 
 
