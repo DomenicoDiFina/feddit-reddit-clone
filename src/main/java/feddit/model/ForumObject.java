@@ -57,5 +57,7 @@ public abstract class ForumObject extends DatabaseObject {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public abstract List<Comment> getComments();
     
 }

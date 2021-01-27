@@ -1,12 +1,10 @@
 package feddit.repositories;
 
 import feddit.model.User;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Repository

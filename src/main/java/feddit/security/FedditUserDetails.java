@@ -65,6 +65,8 @@ public class FedditUserDetails implements UserDetails {
 
     /*** TO CHECK IF IS CORRECT ***/
 
+    public long getId() {return user.getId();}
+
     public String getFullName() {
         return user.getFirstName() + " " + user.getLastName();
     }

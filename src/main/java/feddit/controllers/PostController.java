@@ -1,8 +1,10 @@
 package feddit.controllers;
 
+import feddit.model.Comment;
 import feddit.model.Post;
 import feddit.model.User;
 import feddit.security.FedditUserDetails;
+import feddit.services.CommentService;
 import feddit.services.PostService;
 import feddit.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class PostController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentService commentService;
 
     /*@GetMapping("/index")
     public String showAddPostForm(Model model) {
@@ -64,6 +69,22 @@ public class PostController {
         Post post = this.postService.findById(id);
         model.addAttribute("post", post);
         return "post";
+    }
+
+    @PostMapping("/add_comment")
+    public String addComment(Model model,
+                             @RequestParam("content") String content,
+                             //@RequestParam("parent") ForumObject parent,
+                             @RequestParam("post") long postId,
+                             @AuthenticationPrincipal FedditUserDetails userDetails) {
+        Comment comment = new Comment();
+        comment.setContent(content);
+        comment.setUser(this.userService.findByUsername(userDetails.getUsername()));
+        //parent.getComments().add(comment);
+        this.commentService.save(comment);
+        //System.out.println(comment.getPost());
+        //System.out.println(comment.getComment());
+        return "redirect:/";
     }
 
 }

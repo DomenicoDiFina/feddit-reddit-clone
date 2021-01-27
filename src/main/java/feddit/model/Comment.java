@@ -37,6 +37,7 @@ public class Comment extends ForumObject {
         this.comment = comment;
     }
 
+    @Override
     public List<Comment> getComments() {
         return comments;
     }

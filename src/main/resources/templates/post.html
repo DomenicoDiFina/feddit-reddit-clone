@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="ISO-8859-1">
     <title>View Post - Feddit</title>
@@ -25,8 +27,8 @@
         <p th:text="${post.content}"></p>
         <p th:text="${post.creationDate}"></p>
     </div>
-    <div th:each="comment: ${post.comments}">
-        <p th:text="${comment.content}"></p>
+    <div>
+        <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
     </div>
 </body>
 </html>

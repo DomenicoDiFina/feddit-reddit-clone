@@ -1,7 +1,6 @@
 package feddit.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @MappedSuperclass
@@ -16,6 +15,7 @@ public abstract class DatabaseObject {
     protected Date creationDate;
 
     public DatabaseObject() {
+        this.creationDate = new Date();
     }
 
     public long getId() {

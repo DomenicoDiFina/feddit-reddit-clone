@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="ISO-8859-1">
         <title>Feddit</title>
@@ -79,14 +80,10 @@
                     </div>
                     <div class="post-footer">
                         <p th:text="${post.getNumberOfComments()}  + ' comments'"> </p>
-                        <form method="post" th:action="@{'/view_post/{id}'(id=${post.id})}">
-                            <button type="submit" class="button">View full discussion</button>
-                        </form>
+                        <a class="button" th:href="@{/view_post?id={id}(id=${post.id})}">View full discussion</a>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </body>
 </html>
