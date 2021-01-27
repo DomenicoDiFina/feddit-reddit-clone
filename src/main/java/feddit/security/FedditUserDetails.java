@@ -1,5 +1,7 @@
 package feddit.security;
 
+import feddit.model.Comment;
+import feddit.model.Post;
 import feddit.model.Role;
 import feddit.model.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.sql.Date;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,11 +69,6 @@ public class FedditUserDetails implements UserDetails {
         return user.getFirstName() + " " + user.getLastName();
     }
 
-    //i don't know if this is secure or it need to be encapsulated (see below)
-    /*public User getUser() {
-        return this.user;
-    }*/
-
     public String getFirstName() {
         return this.user.getFirstName();
     }
@@ -85,6 +83,14 @@ public class FedditUserDetails implements UserDetails {
 
     public Date getBirthDate() {
         return this.user.getBirthDate();
+    }
+
+    public List<Post> getPosts() {
+        return this.user.getPosts();
+    }
+
+    public List<Comment> getComments() {
+        return this.user.getComments();
     }
 
 }
