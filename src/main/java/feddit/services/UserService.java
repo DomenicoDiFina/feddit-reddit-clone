@@ -14,7 +14,6 @@ public class UserService {
     private UserRepository repository;
 
     public User findByUsername(String username) {
-        System.out.println("searching by username in service");
         try {
             return this.repository.findByUsername(username);
         } catch (DataAccessException | UsernameNotFoundException dataAccessException){
