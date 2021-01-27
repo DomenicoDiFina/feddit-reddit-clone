@@ -50,9 +50,6 @@ public class PostController {
         return mav;
     }
 
-
-
-
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
     public ModelAndView removePost(ModelAndView mav, RedirectAttributes redirectAttributes,
                                    @PathVariable long id){
@@ -65,7 +62,7 @@ public class PostController {
     @GetMapping("/upVotePost/{id}")
     public ModelAndView upVotePost(ModelAndView mav,
                                    @PathVariable long id){
-        Post post = postService.findByID(id);
+        Post post = postService.findById(id);
         post.setUpVotes(post.getUpVotes() + 1);
         postService.save(post);
         mav.setViewName("redirect:/");
@@ -75,11 +72,18 @@ public class PostController {
     @GetMapping("/downVotePost/{id}")
     public ModelAndView downVotePost(ModelAndView mav,
                                    @PathVariable long id){
-        Post post = postService.findByID(id);
+        Post post = postService.findById(id);
         post.setDownVotes(post.getDownVotes() + 1);
         postService.save(post);
         mav.setViewName("redirect:/");
         return mav;
+    }
+
+    @PostMapping("/view_post/{id}")
+    public String showPost(Model model, @PathVariable long id) {
+        Post post = this.postService.findById(id);
+        model.addAttribute("post", post);
+        return "post";
     }
 
 }

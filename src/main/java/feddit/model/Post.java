@@ -40,4 +40,5 @@ public class Post extends ForumObject {
         List<Comment> comments = this.getComments();
         return comments.size();
     }
+
 }

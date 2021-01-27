@@ -9,19 +9,19 @@ import javax.validation.constraints.NotEmpty;
 @MappedSuperclass
 public abstract class ForumObject extends DatabaseObject {
 
-
+    @NotEmpty
     @Column(name = "content", columnDefinition = "TEXT")
     protected String content;
 
-
+    @NotEmpty
     @Column(name = "up_votes")
     protected int upVotes;
 
-
+    @NotEmpty
     @Column(name = "down_votes")
     protected int downVotes;
 
-
+    @NotEmpty
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     protected User user;
