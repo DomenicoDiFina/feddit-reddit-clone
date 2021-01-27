@@ -19,10 +19,6 @@ public class PostService {
         return (List<Post>) this.postRepository.findAll();
     }
 
-    public int getNComments(Post post) {
-        List<Comment> comments = post.getComments();
-        return comments.size();
-    }
 
     public void remove(long id){
         this.postRepository.deleteById(id);

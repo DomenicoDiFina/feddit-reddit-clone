@@ -35,4 +35,9 @@ public class Post extends ForumObject {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public int getNumberOfComments() {
+        List<Comment> comments = this.getComments();
+        return comments.size();
+    }
 }
