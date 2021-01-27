@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>View Post - Feddit</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
+        <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
+        <div>
+            <div class="left_sub_header" sec:authorize="isAuthenticated()">
+                <p><a href="/myaccount" class="button">Account</a></p>
+            </div>
+            <div class="left_sub_header" sec:authorize="isAnonymous()">
+                <p><a href="/signup" class="button" >Sign Up</a></p>
+                <p><a href="/login" class="button" >Login</a></p>
+            </div>
+        </div>
+    </div>
+    <div>
+        <h3 th:text="${post.title}"></h3>
+        <p th:text="${post.content}"></p>
+        <p th:text="${post.creationDate}"></p>
+    </div>
+    <div th:each="comment: ${post.comments}">
+        <p th:text="${comment.content}"></p>
+    </div>
+</body>
+</html>

@@ -47,9 +47,6 @@ public class PostController {
         return mav;
     }
 
-
-
-
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
     public ModelAndView removePost(ModelAndView mav, RedirectAttributes redirectAttributes,
                                    @PathVariable long id){
@@ -77,6 +74,13 @@ public class PostController {
         postService.save(post);
         mav.setViewName("redirect:/");
         return mav;
+    }
+
+    @PostMapping("/view_post/{id}")
+    public String showPost(Model model, @PathVariable long id) {
+        Post post = this.postService.findById(id);
+        model.addAttribute("post", post);
+        return "post";
     }
 
 }

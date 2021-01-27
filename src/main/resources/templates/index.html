@@ -3,7 +3,7 @@
     <head>
         <meta charset="ISO-8859-1">
         <title>Feddit</title>
-        <link th:href="@{/css/main.css}" rel="styLesheet" />
+        <link th:href="@{/css/main.css}" rel="stylesheet" />
     </head>
     <body>
         <!-- HEADER -->
@@ -75,7 +75,9 @@
                     </div>
                     <div class="post-footer">
                         <p th:text="${post.getNumberOfComments()}  + ' comments'"> </p>
-                        <a class="button" href="/viewpost">View full discussion</a>
+                        <form method="post" th:action="@{'/view_post/{id}'(id=${post.id})}">
+                            <button type="submit" class="button">View full discussion</button>
+                        </form>
                     </div>
                 </div>
 

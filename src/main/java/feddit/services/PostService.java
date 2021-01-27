@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -15,12 +14,12 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    public List<Post> findAll() {
-        return (List<Post>) this.postRepository.findAll();
+    public Post findById(long id) {
+        return this.postRepository.findById(id).orElse(null);
     }
 
-    public Post findByID(long id){
-        return this.postRepository.findById(id).orElse(null);
+    public List<Post> findAll() {
+        return (List<Post>) this.postRepository.findAll();
     }
 
     public void remove(long id){
