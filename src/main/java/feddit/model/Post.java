@@ -16,6 +16,9 @@ public class Post extends ForumObject {
     @OneToMany(mappedBy = "post", orphanRemoval=true)
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
+    private List<Vote> votes;
+
     public Post() {
         this.creationDate = new Date();
     }

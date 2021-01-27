@@ -43,6 +43,9 @@ public class User extends DatabaseObject {
     private List<Post> posts;
 
     @OneToMany(mappedBy = "user", orphanRemoval=true)
+    private List<Vote> votes;
+
+    @OneToMany(mappedBy = "user", orphanRemoval=true)
     private List<Comment> comments;
 
     public User() {

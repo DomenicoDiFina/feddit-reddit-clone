@@ -17,12 +17,6 @@ import java.util.stream.StreamSupport;
 public interface VoteRepository extends CrudRepository<Vote, Long> {
 
     default Optional<Vote> findByPostAndUser(User user, Post post){
-        List<Vote> votes = (List<Vote>) this.findAll();
-        for(Vote vote : votes){
-            System.out.println("User: " + vote.getUser());
-            System.out.println("Post: " + vote.getPost());
-        }
-
         return StreamSupport
                 .stream(this.findAll().spliterator(), false)
                 .filter(vote -> vote.getUser().equals(user) && vote.getPost().equals(post))

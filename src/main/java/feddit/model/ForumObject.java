@@ -1,10 +1,8 @@
 package feddit.model;
 
-import javax.persistence.Column;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @MappedSuperclass
 public abstract class ForumObject extends DatabaseObject {

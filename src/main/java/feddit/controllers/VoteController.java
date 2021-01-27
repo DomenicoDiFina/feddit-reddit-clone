@@ -30,13 +30,15 @@ public class VoteController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/votePost/{id}")
+    @PostMapping("/votePost/{id}")
     public ModelAndView processUpVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                        ModelAndView mav,
                                        RedirectAttributes redirectAttributes,
                                       @PathVariable long id, Vote vote) throws Exception {
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
+        System.out.println("USERNAME: " + user.getUsername());
+        System.out.println("post id: " + id);
         Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
 
         if (optVote.isPresent() &&
