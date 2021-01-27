@@ -1,5 +1,6 @@
 package feddit.services;
 
+import feddit.model.Comment;
 import feddit.model.Post;
 import feddit.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,11 @@ public class PostService {
 
     public List<Post> findAll() {
         return (List<Post>) this.postRepository.findAll();
+    }
+
+    public int getNComments(Post post) {
+        List<Comment> comments = post.getComments();
+        return comments.size();
     }
 
 
