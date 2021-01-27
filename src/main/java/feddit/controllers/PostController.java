@@ -59,4 +59,24 @@ public class PostController {
         return mav;
     }
 
+    @GetMapping("/upVotePost/{id}")
+    public ModelAndView upVotePost(ModelAndView mav,
+                                   @PathVariable long id){
+        Post post = postService.findByID(id);
+        post.setUpVotes(post.getUpVotes() + 1);
+        postService.save(post);
+        mav.setViewName("redirect:/");
+        return mav;
+    }
+
+    @GetMapping("/downVotePost/{id}")
+    public ModelAndView downVotePost(ModelAndView mav,
+                                   @PathVariable long id){
+        Post post = postService.findByID(id);
+        post.setDownVotes(post.getDownVotes() + 1);
+        postService.save(post);
+        mav.setViewName("redirect:/");
+        return mav;
+    }
+
 }
