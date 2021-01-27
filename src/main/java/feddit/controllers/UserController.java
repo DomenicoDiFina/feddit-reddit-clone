@@ -37,7 +37,7 @@ public class UserController {
         model.addAttribute("post", new Post());
 
         List<Post> posts = this.postService.findAll();
-        Collections.sort(posts, Comparator.comparingInt(p -> p.getUpVotes() - p.getDownVotes()));
+        Collections.sort(posts, Comparator.comparingInt(p -> p.getDownVotes() - p.getUpVotes()));
 
         model.addAttribute("posts", posts);
 
