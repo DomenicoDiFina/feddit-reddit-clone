@@ -1,9 +1,9 @@
 package feddit.model;
 
+import feddit.model.hierarchy.ForumObject;
+
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -44,9 +44,11 @@ public class Post extends ForumObject {
         this.comments = comments;
     }
 
-    public int getNumberOfComments() {
-        List<Comment> comments = this.getComments();
-        return comments.size();
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", Title: " + this.title +
+                ", Comments: " + this.comments +
+                ", Votes: " + this.votes;
     }
-
 }
