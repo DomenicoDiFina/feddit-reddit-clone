@@ -37,19 +37,51 @@ public class VoteController {
                                       @PathVariable long id, Vote vote) throws Exception {
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
-        System.out.println("USERNAME: " + user.getUsername());
-        System.out.println("post id: " + id);
         Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
 
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
-            redirectAttributes.addFlashAttribute("voteError", "Vote already added");
+            System.out.println("1: " + vote.getType());
+            voteService.remove(optVote.get());
+
+            if(vote.getType().equals("UPVOTE"))
+                post.setUpVotes(post.getUpVotes() - 1);
+            else
+                post.setDownVotes(post.getDownVotes() - 1);
+
+            if(postService.save(post)) {
+            } else {
+                redirectAttributes.addFlashAttribute("postError", "An error occured.");
+            }
+
         }
-        else {
+        else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
+            System.out.println("2: " + vote.getType());
+            voteService.remove(optVote.get());
+
+            if(vote.getType().equals("UPVOTE"))
+                post.setUpVotes(post.getUpVotes() + 2);
+            else
+                post.setDownVotes(post.getDownVotes() + 2);
             vote.setPost(post);
             vote.setUser(user);
-            System.out.println("Il voto è: " + vote.getType());
+
+            if(postService.save(post)) {
+            } else {
+                redirectAttributes.addFlashAttribute("postError", "An error occured.");
+            }
+            if (voteService.save(vote)) {
+                redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
+            } else {
+                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            }
+        }
+        else {
+            System.out.println("3: " + vote.getType());
+            vote.setPost(post);
+            vote.setUser(user);
+
             if("UPVOTE".equals(vote.getType())) {
                 post.setUpVotes(post.getUpVotes() + 1);
             } else if("DOWNVOTE".equals(vote.getType())){

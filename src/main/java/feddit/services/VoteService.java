@@ -35,5 +35,9 @@ public class VoteService {
         }
     }
 
+    public void remove(Vote vote){
+        this.voteRepository.delete(vote);
+    }
+
 
 }
