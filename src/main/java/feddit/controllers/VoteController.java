@@ -31,7 +31,7 @@ public class VoteController {
     private PostService postService;
 
     @PostMapping("/votePost/{id}")
-    public ModelAndView processUpVote(@AuthenticationPrincipal FedditUserDetails userDetails,
+    public ModelAndView processVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                        ModelAndView mav,
                                        RedirectAttributes redirectAttributes,
                                       @PathVariable long id, Vote vote) throws Exception {
