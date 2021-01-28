@@ -5,6 +5,7 @@
         <meta charset="ISO-8859-1">
         <title>Feddit</title>
         <link th:href="@{/css/main.css}" rel="stylesheet" />
+        <script src="https://kit.fontawesome.com/4131186a96.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <!-- HEADER -->
@@ -50,7 +51,7 @@
             <div th:each="post: ${posts}" class="post">
                 <div class="post-sidebar">
                     <form action="#" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-                        <button style="submit" sec:authorize="isAuthenticated()" >up</button>
+                        <button style="submit" sec:authorize="isAuthenticated()"><i class="far fa-thumbs-up"></i></button>
                         <input type="hidden" th:value="UPVOTE" th:attr="name='type'" >
                     </form>
 
@@ -58,7 +59,7 @@
                     <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
 
                     <form action="#" th:action="@{'/votePost/{id}'(id=${post.id})}" th:method="post" th:object="${vote}" >
-                        <button style="submit" sec:authorize="isAuthenticated()">down</button>
+                        <button style="submit" sec:authorize="isAuthenticated()"><i class="far fa-thumbs-down"></i></button>
                         <input type="hidden" th:value="DOWNVOTE" th:attr="name='type'" >
                     </form>
                 </div>
