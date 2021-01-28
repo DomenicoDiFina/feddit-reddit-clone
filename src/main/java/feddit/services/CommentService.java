@@ -22,6 +22,10 @@ public class CommentService {
             return null;
         }
     }
+
+    public void deleteById(long id) {
+        this.commentRepository.deleteById(id);
+    }
     
     public Comment save(Comment comment){
         return commentRepository.save(comment);

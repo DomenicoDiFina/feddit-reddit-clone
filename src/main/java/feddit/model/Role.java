@@ -30,6 +30,6 @@ public class Role extends DatabaseObject {
     @Override
     public String toString() {
         return super.toString() +
-                ", Description: " + this.description;
+                ",\n\tDescription: " + this.description;
     }
 }
