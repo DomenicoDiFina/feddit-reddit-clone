@@ -10,6 +10,7 @@ import feddit.services.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,10 +32,9 @@ public class VoteController {
     private PostService postService;
 
     @PostMapping("/votePost/{id}")
-    public ModelAndView processVote(@AuthenticationPrincipal FedditUserDetails userDetails,
-                                       ModelAndView mav,
+    public String processVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                        RedirectAttributes redirectAttributes,
-                                      @PathVariable long id, Vote vote) throws Exception {
+                                      @PathVariable long id, Vote vote, Model model) throws Exception {
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
         Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
@@ -88,8 +88,8 @@ public class VoteController {
         } else {
             redirectAttributes.addFlashAttribute("postError", "An error occured.");
         }
-        mav.setViewName("redirect:/");
-        return mav;
+
+        return "redirect:/";
     }
 
 }
