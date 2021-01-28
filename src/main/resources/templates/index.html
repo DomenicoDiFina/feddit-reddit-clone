@@ -51,17 +51,15 @@
 
             <div th:each="post: ${posts}" class="post">
                 <div class="post-sidebar">
-                    <form action="#" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-                        <button style="submit" sec:authorize="isAuthenticated()"><i class="far fa-thumbs-up"></i></button>
-                        <input type="hidden" th:value="UPVOTE" th:attr="name='type'" >
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                        <button type="submit" th:value="UPVOTE" th:attr="name='type'" ><i class="far fa-thumbs-up"></i></button>
                     </form>
 
 
                     <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
 
-                    <form action="#" th:action="@{'/votePost/{id}'(id=${post.id})}" th:method="post" th:object="${vote}" >
-                        <button style="submit" sec:authorize="isAuthenticated()"><i class="far fa-thumbs-down"></i></button>
-                        <input type="hidden" th:value="DOWNVOTE" th:attr="name='type'" >
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                        <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" ><i class="far fa-thumbs-down"></i></button>
                     </form>
                 </div>
                 <div class="post-content">

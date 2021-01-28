@@ -136,6 +136,10 @@ input[type=submit] {
     margin: 5px;
 }
 
+.upvote {
+
+}
+
 .post-content {
     border: 1px black dotted;
     margin-left: 0.5rem;
@@ -193,5 +197,5 @@ input[type=submit] {
 }
 
 .post-footer p {
-    margin: 0.5rem;
+    margin: 0.5rem 0.5rem 0.5rem 0;
 }
