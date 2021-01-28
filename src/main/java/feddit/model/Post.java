@@ -44,6 +44,32 @@ public class Post extends ForumObject {
         this.comments = comments;
     }
 
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    public boolean hasDownVoteByUser(long userID){
+        List<Vote> votes = this.getVotes();
+        for(Vote vote : votes){
+            if(vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE"))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasUpVoteByUser(long userID){
+        List<Vote> votes = this.getVotes();
+        for(Vote vote : votes){
+            if(vote.getUser().getId() == userID && vote.getType().equals("UPVOTE"))
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return super.toString() +

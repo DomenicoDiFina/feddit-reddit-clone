@@ -199,3 +199,11 @@ input[type=submit] {
 .post-footer p {
     margin: 0.5rem 0.5rem 0.5rem 0;
 }
+
+.likeClicked{
+    color: blue;
+}
+
+.dislikeClicked{
+    color: red;
+}
