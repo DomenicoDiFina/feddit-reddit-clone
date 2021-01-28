@@ -1,14 +1,18 @@
 package feddit.model;
 
+import feddit.model.hierarchy.DatabaseObject;
+
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "votes")
-public class Vote extends DatabaseObject{
+public class Vote extends DatabaseObject {
 
-    public Vote(){
-        this.creationDate = new Date();
+    public Vote() {}
+
+    @Override
+    public String getClazz() {
+        return "Vote";
     }
 
     @ManyToOne
@@ -56,5 +60,14 @@ public class Vote extends DatabaseObject{
 
     public void setComment(Comment comment) {
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", Post: " + this.post +
+                ", User: " + this.user +
+                ", Type: " + this.type +
+                ", Comment: " + this.comment;
     }
 }

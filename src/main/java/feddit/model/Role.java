@@ -1,7 +1,8 @@
 package feddit.model;
 
+import feddit.model.hierarchy.DatabaseObject;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "roles")
@@ -13,6 +14,11 @@ public class Role extends DatabaseObject {
     public Role() {
     }
 
+    @Override
+    public String getClazz() {
+        return "Role";
+    }
+
     public String getDescription() {
         return description;
     }
@@ -21,4 +27,9 @@ public class Role extends DatabaseObject {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", Description: " + this.description;
+    }
 }

@@ -1,7 +1,8 @@
 package feddit.model;
 
+import feddit.model.hierarchy.DatabaseObject;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -20,10 +21,8 @@ public class User extends DatabaseObject {
     @Column(name = "password")
     private String password;
 
-
     @Column(name = "first_name")
     private String firstName;
-
 
     @Column(name = "last_name")
     private String lastName;
@@ -49,6 +48,11 @@ public class User extends DatabaseObject {
     private List<Comment> comments;
 
     public User() {
+    }
+
+    @Override
+    public String getClazz() {
+        return "User";
     }
 
     public String getUsername() {
@@ -121,5 +125,20 @@ public class User extends DatabaseObject {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", Username: " + this.username +
+                ", Email: " + this.email +
+                ", Password: " + this.password +
+                ", FirstName: " + this.firstName +
+                ", LastName: " + this.lastName +
+                ", BirthDate: " + this.birthDate +
+                ", Roles: " + this.roles +
+                ", Posts: " + this.posts +
+                ", Votes: " + this.votes +
+                ", Comments: " + this.comments;
     }
 }

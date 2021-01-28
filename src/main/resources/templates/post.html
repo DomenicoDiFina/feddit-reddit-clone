@@ -29,6 +29,18 @@
     </div>
     <div>
         <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
+        <form class="form" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
+            <div class="row">
+                <input type="text" placeholder="Insert your comment here" required
+                       name="content" th:value="${content}"/>
+                <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
+                <input type="hidden" name="parent_id" th:value="${post.id}"/>
+                <input type="hidden" name="post" th:value="${post.id}"/>
+            </div>
+            <div class="row item-right">
+                <input type="submit" value="Add comment" />
+            </div>
+        </form>
     </div>
 </body>
 </html>

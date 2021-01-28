@@ -1,20 +1,19 @@
-package feddit.model;
+package feddit.model.hierarchy;
+
+import feddit.model.Comment;
+import feddit.model.User;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @MappedSuperclass
 public abstract class ForumObject extends DatabaseObject {
-
-
+    
     @Column(name = "content", columnDefinition = "TEXT")
     protected String content;
 
-
     @Column(name = "up_votes")
     protected int upVotes;
-
 
     @Column(name = "down_votes")
     protected int downVotes;
@@ -59,5 +58,13 @@ public abstract class ForumObject extends DatabaseObject {
     }
 
     public abstract List<Comment> getComments();
-    
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", Content: " + this.content +
+                ", Up votes: " + this.upVotes +
+                ", Down votes: " + this.downVotes +
+                ", User: " + this.user;
+    }
 }

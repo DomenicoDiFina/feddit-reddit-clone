@@ -1,5 +1,7 @@
 package feddit.model;
 
+import feddit.model.hierarchy.ForumObject;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -19,6 +21,11 @@ public class Comment extends ForumObject {
     private List<Comment> comments;
 
     public Comment() {
+    }
+
+    @Override
+    public String getClazz() {
+        return "Comment";
     }
 
     public Post getPost() {
@@ -44,6 +51,14 @@ public class Comment extends ForumObject {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                ", Post: " + this.post +
+                ", Comment: " + this.comment +
+                ", Comments: " + this.comments;
     }
 }
 

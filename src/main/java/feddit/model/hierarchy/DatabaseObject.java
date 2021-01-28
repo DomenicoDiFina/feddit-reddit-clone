@@ -1,4 +1,4 @@
-package feddit.model;
+package feddit.model.hierarchy;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -34,4 +34,12 @@ public abstract class DatabaseObject {
         this.creationDate = creationDate;
     }
 
+    public abstract String getClazz();
+
+    @Override
+    public String toString() {
+        return "Class: " + this.getClazz() +
+                ", Creation date: " + this.creationDate +
+                ", Id: " + this.id;
+    }
 }

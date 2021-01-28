@@ -29,4 +29,5 @@ public interface VoteRepository extends CrudRepository<Vote, Long> {
                 .filter(vote -> vote.getUser().equals(user) && vote.getComment().equals(comment))
                 .findAny();
     }
+
 }
