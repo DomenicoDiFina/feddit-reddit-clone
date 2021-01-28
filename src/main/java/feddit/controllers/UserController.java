@@ -160,24 +160,26 @@ public class UserController {
                                 @AuthenticationPrincipal FedditUserDetails userDetails,
                                 @ModelAttribute("passwordResult") String passwordResult) {
 
-        try {
-            int errorCode = Integer.parseInt(passwordResult);
-            switch (errorCode) {
-                case 1:
-                    model.addAttribute("passwordChanged", "Password changed successfully.");
-                    break;
-                case 0:
-                    model.addAttribute("passwordError", "An error occured.");
-                    break;
-                case -1:
-                    model.addAttribute("passwordError", "Old password isn't correct.");
-                    break;
-                case -2:
-                    model.addAttribute("passwordError", "New password is equal to the old inserted.");
-                    break;
+        if(!passwordResult.equals("")) {
+            try {
+                int errorCode = Integer.parseInt(passwordResult);
+                switch (errorCode) {
+                    case 1:
+                        model.addAttribute("passwordChanged", "Password changed successfully.");
+                        break;
+                    case 0:
+                        model.addAttribute("passwordError", "An error occured.");
+                        break;
+                    case -1:
+                        model.addAttribute("passwordError", "Old password isn't correct.");
+                        break;
+                    case -2:
+                        model.addAttribute("passwordError", "New password is equal to the old inserted.");
+                        break;
+                }
+            } catch (NumberFormatException ex) {
+                model.addAttribute("passwordError", "An error occured.");
             }
-        } catch (NumberFormatException ex) {
-            model.addAttribute("passwordError", "An error occured.");
         }
 
         model.addAttribute("first_name", userDetails.getFirstName());
