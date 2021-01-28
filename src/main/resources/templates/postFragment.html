@@ -5,7 +5,10 @@
         <ul>
             <li th:each="c : ${object.comments}">
                 <p th:text="${c.content}"></p>
-                <form method="post" sec:authorize="hasAuthority('ADMIN')" th:action="@{/delete_comment}">
+                <form method="post"
+                      th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or
+                      (#authorization.expression('isAuthenticated()') and c.user.id == #request.userPrincipal.principal.id) }"
+                      th:action="@{/delete_comment}">
                     <input type="hidden" name="id" th:value="${c.id}" />
                     <input type="submit" value="X" />
                 </form>
