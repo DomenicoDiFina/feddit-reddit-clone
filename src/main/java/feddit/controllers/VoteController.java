@@ -42,7 +42,6 @@ public class VoteController {
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
-            System.out.println("1: " + vote.getType());
             voteService.remove(optVote.get());
 
             if(vote.getType().equals("UPVOTE"))
@@ -52,7 +51,6 @@ public class VoteController {
 
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
-            System.out.println("2: " + vote.getType());
             voteService.remove(optVote.get());
 
             if(vote.getType().equals("UPVOTE"))
@@ -70,7 +68,6 @@ public class VoteController {
             }
         }
         else {
-            System.out.println("3: " + vote.getType());
             vote.setPost(post);
             vote.setUser(user);
 
