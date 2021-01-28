@@ -79,7 +79,7 @@
                         <p th:text="${post.content}"></p>
                     </div>
                     <div class="post-footer">
-                        <p th:text="${post.comments.size()}  + ' comments'"> </p>
+                        <p th:text="${post.getCommentsNumber()}  + ' comments'"> </p>
                         <a class="button" th:href="@{/view_post?id={id}(id=${post.id})}">View full discussion</a>
                     </div>
                 </div>

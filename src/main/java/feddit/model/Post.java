@@ -71,7 +71,6 @@ public class Post extends ForumObject {
         return false;
     }
 
-
     @Override
     public String toString() {
         return super.toString() +
@@ -79,4 +78,5 @@ public class Post extends ForumObject {
                 ",\n\tComments: " + this.comments +
                 ",\n\tVotes: " + this.votes;
     }
+
 }

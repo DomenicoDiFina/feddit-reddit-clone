@@ -59,6 +59,10 @@ public abstract class ForumObject extends DatabaseObject {
 
     public abstract List<Comment> getComments();
 
+    public int getCommentsNumber() {
+        return this.getComments().stream().mapToInt(comment -> comment.getCommentsNumber() + 1).sum();
+    }
+
     @Override
     public String toString() {
         return super.toString() +
