@@ -61,7 +61,6 @@ public class VoteController {
             vote.setPost(post);
             vote.setUser(user);
 
-
             if (voteService.save(vote)) {
                 redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
             } else {
