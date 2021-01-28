@@ -3,6 +3,7 @@ package feddit.services;
 import feddit.model.Comment;
 import feddit.repositories.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,8 +28,13 @@ public class CommentService {
         this.commentRepository.deleteById(id);
     }
     
-    public Comment save(Comment comment){
-        return commentRepository.save(comment);
+    public boolean save(Comment comment){
+        try {
+            commentRepository.save(comment);
+            return true;
+        } catch (DataAccessException dataAccessException) {
+            return false;
+        }
     }
 
 }

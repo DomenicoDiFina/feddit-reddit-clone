@@ -4,6 +4,7 @@ import feddit.model.hierarchy.ForumObject;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -69,6 +70,7 @@ public class Post extends ForumObject {
         }
         return false;
     }
+
 
     @Override
     public String toString() {
