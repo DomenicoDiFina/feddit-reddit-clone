@@ -1,6 +1,7 @@
 package feddit.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,6 +20,11 @@ public class Comment extends ForumObject {
     private List<Comment> comments;
 
     public Comment() {
+    }
+
+    @Override
+    public String getClazz() {
+        return "Comment";
     }
 
     public Post getPost() {

@@ -9,7 +9,8 @@
                     <div class="row">
                         <input type="text" placeholder="Insert your comment here" required
                                name="content" th:value="${content}"/>
-                        <!--<input type="hidden" name="parent" th:value="${c}"/>-->
+                        <input type="hidden" name="parent_type" th:value="${c.getClazz()}"/>
+                        <input type="hidden" name="parent_id" th:value="${c.id}"/>
                         <input type="hidden" name="post" th:value="${post.id}"/>
                     </div>
                     <div class="row item-right">
@@ -20,15 +21,4 @@
             </li>
         </ul>
     </section>
-    <form class="form" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
-        <div class="row">
-            <input type="text" placeholder="Insert your comment here" required
-                   name="content" th:value="${content}"/>
-            <!--<input type="hidden" name="parent" th:value="${post}"/>-->
-            <input type="hidden" name="post" th:value="${post.id}"/>
-        </div>
-        <div class="row item-right">
-            <input type="submit" value="Add comment" />
-        </div>
-    </form>
 </html>

@@ -13,6 +13,11 @@ public class Role extends DatabaseObject {
     public Role() {
     }
 
+    @Override
+    public String getClazz() {
+        return "Role";
+    }
+
     public String getDescription() {
         return description;
     }

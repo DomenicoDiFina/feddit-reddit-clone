@@ -2,6 +2,7 @@ package feddit.model;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,11 @@ public class Post extends ForumObject {
     private List<Vote> votes;
 
     public Post() {
+    }
+
+    @Override
+    public String getClazz() {
+        return "Post";
     }
 
     public String getTitle() {

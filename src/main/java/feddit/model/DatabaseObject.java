@@ -34,4 +34,6 @@ public abstract class DatabaseObject {
         this.creationDate = creationDate;
     }
 
+    public abstract String getClazz();
+
 }

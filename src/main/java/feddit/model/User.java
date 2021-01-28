@@ -51,6 +51,11 @@ public class User extends DatabaseObject {
     public User() {
     }
 
+    @Override
+    public String getClazz() {
+        return "User";
+    }
+
     public String getUsername() {
         return username;
     }

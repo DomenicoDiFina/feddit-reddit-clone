@@ -1,6 +1,7 @@
 package feddit.controllers;
 
 import feddit.model.Comment;
+import feddit.model.ForumObject;
 import feddit.model.Post;
 import feddit.model.User;
 import feddit.security.FedditUserDetails;
@@ -75,16 +76,21 @@ public class PostController {
     @PostMapping("/add_comment")
     public String addComment(Model model,
                              @RequestParam("content") String content,
-                             //@RequestParam("parent") ForumObject parent,
+                             @RequestParam("parent_type") String parentType,
+                             @RequestParam("parent_id") long parentId,
                              @RequestParam("post") long postId,
                              @AuthenticationPrincipal FedditUserDetails userDetails) {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setUser(this.userService.findByUsername(userDetails.getUsername()));
-        //parent.getComments().add(comment);
+        if (parentType.equals("Comment")) {
+            Comment parent = this.commentService.findById(parentId);
+            comment.setComment(parent);
+        } else if (parentType.equals("Post")) {
+            Post parent = this.postService.findById(parentId);
+            comment.setPost(parent);
+        }
         this.commentService.save(comment);
-        //System.out.println(comment.getPost());
-        //System.out.println(comment.getComment());
         return "redirect:/";
     }
 

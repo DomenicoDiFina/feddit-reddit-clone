@@ -5,10 +5,13 @@ import java.util.Date;
 
 @Entity
 @Table(name = "votes")
-public class Vote extends DatabaseObject{
+public class Vote extends DatabaseObject {
 
-    public Vote(){
-        this.creationDate = new Date();
+    public Vote() {}
+
+    @Override
+    public String getClazz() {
+        return "Vote";
     }
 
     @ManyToOne
