@@ -72,7 +72,8 @@ public class PostController {
                              @RequestParam("parent_type") String parentType,
                              @RequestParam("parent_id") long parentId,
                              @RequestParam("post") long postId,
-                             @AuthenticationPrincipal FedditUserDetails userDetails) {
+                             @AuthenticationPrincipal FedditUserDetails userDetails,
+                             RedirectAttributes redirectAttributes) {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setUser(this.userService.findByUsername(userDetails.getUsername()));
@@ -83,7 +84,12 @@ public class PostController {
             Post parent = this.postService.findById(parentId);
             comment.setPost(parent);
         }
-        this.commentService.save(comment);
+        if(commentService.save(comment)) {
+            redirectAttributes.addFlashAttribute("commentAdded", "Comment added successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("commentError", "An error occured.");
+        }
+
         return "redirect:/";
     }
 
