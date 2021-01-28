@@ -46,6 +46,7 @@
                 </form>
                 <p th:text="${postAdded}" class="success"></p>
                 <p th:text="${postError}" class="error"></p>
+                <p th:text="${postRemoved}" class="success"></p>
             </div>
 
             <div th:each="post: ${posts}" class="post">
@@ -67,11 +68,11 @@
                     <div class="post-header">
                         Posted by <p class="user" th:text="${post.user.username}"></p>
                         <p class="date" th:text="${post.creationDate}"></p>
-                        <form action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
+                        <form class="remove-post" sec:authorize="hasAuthority('ADMIN')" action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
                             <input type="hidden" name="_method" value="delete" />
-                            <button type="submit" sec:authorize="hasAuthority('ADMIN')" class="remove-post" >X</button>
+                            <input type="submit" value="X" />
                         </form>
-                        <p th:text="${postRemoved}" class="success"></p>
+                        <!--<p th:text="${postRemoved}" class="success"></p>-->
                     </div>
                     <div class="post-title">
                         <p th:text="${post.title}"></p>

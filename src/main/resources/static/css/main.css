@@ -162,9 +162,13 @@ input[type=submit] {
 }
 
 .post-header .remove-post {
-    cursor: pointer;
     margin-left: auto;
-    order: 2;
+}
+
+.post-header .remove-post input[type="submit"] {
+    border: none;
+    background-color: red;
+    color: white;
 }
 
 .post-title {
@@ -182,7 +186,7 @@ input[type=submit] {
 }
 
 .post-footer {
-    justify-content: space-around;
+    justify-content: space-between;
     display: flex;
     align-items: flex-end;
     margin-left: 0.5rem;
