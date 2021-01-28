@@ -57,6 +57,7 @@ public class VoteController {
                 post.setUpVotes(post.getUpVotes() + 2);
             else
                 post.setDownVotes(post.getDownVotes() + 2);
+
             vote.setPost(post);
             vote.setUser(user);
 
@@ -68,14 +69,15 @@ public class VoteController {
             }
         }
         else {
-            vote.setPost(post);
-            vote.setUser(user);
-
             if("UPVOTE".equals(vote.getType())) {
                 post.setUpVotes(post.getUpVotes() + 1);
             } else if("DOWNVOTE".equals(vote.getType())){
                 post.setDownVotes(post.getDownVotes() + 1);
             }
+
+            vote.setPost(post);
+            vote.setUser(user);
+
             if (voteService.save(vote)) {
                 redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
             } else {
