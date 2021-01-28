@@ -1,6 +1,7 @@
 package feddit.controllers;
 
 //import feddit.model.ChangePasswordObj;
+import feddit.model.ResultObject;
 import feddit.model.Post;
 import feddit.model.User;
 import feddit.security.FedditUserDetails;
@@ -44,18 +45,6 @@ public class UserController {
         return "index";
     }
 
-    /*@GetMapping("/index")
-    public String index(Model model) {
-        model.addAttribute("post", new Post());
-        return "index";
-    }*/
-
-    /*@GetMapping("/changepassword")
-    public String showChangePasswordForm(Model model) {
-        //model.addAttribute("password", new ChangePasswordObj());
-        return "changepassword";
-    }*/
-
     @RequestMapping(value = "/process_changepassword", method = RequestMethod.POST)
     public ModelAndView processChangePassword(ModelAndView mav,
                                         RedirectAttributes redirectAttributes,
@@ -64,22 +53,23 @@ public class UserController {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User u = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-
+        ResultObject result;
         if(!oldPassword.equals(newPassword)){
             if(passwordEncoder.matches(oldPassword, u.getPassword())){
 
                 u.setPassword(passwordEncoder.encode(newPassword));
                 if(userService.save(u)) {
-                    redirectAttributes.addFlashAttribute("passwordResult", "1");
+                    result = new ResultObject("S1", "success", "Password changed successfully.");
                 } else {
-                    redirectAttributes.addFlashAttribute("passwordResult", "0");
+                    result = new ResultObject("E1", "error", "An error occured.");
                 }
             } else {
-                redirectAttributes.addFlashAttribute("passwordResult", "-1");
+                result = new ResultObject("E2", "error", "Old password isn't correct.");
             }
         } else {
-            redirectAttributes.addFlashAttribute("passwordResult", "-2");
+            result = new ResultObject("E3", "error", "New password is equal to the old inserted.");
         }
+        redirectAttributes.addFlashAttribute("passwordResult", result);
         mav.setViewName("redirect:/myaccount");
         return mav;
     }
@@ -101,26 +91,18 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setRoles(Set.of(roleService.findByName("USER")));
 
-        //ModelAndView mav = new ModelAndView();
-
         if(userService.findByUsername(user.getUsername()) == null) {
             if(userService.save(user)) {
-                //model.addAttribute("name", user.getFirstName());
                 redirectAttributes.addFlashAttribute("name", user.getFirstName());
                 mav.setViewName("redirect:/signup_success");
             } else {
-                //model.addAttribute("usernameError", "An error occured");
                 redirectAttributes.addFlashAttribute("usernameError", "An error occured");
-                //return showSignUpForm(model);
                 mav.setViewName("redirect:/signup");
             }
         } else {
-            //model.addAttribute("usernameError", "Username already exists");
             redirectAttributes.addFlashAttribute("usernameError", "Username already exists");
-            //return showSignUpForm(model);
             mav.setViewName("redirect:/signup");
         }
-        //return "signup_success";
 
         return mav;
     }
@@ -144,44 +126,12 @@ public class UserController {
         return "login";
     }
 
-    /*@RequestMapping("/admin")
-    public String showLoginAdmin() {
-        return "admin";
-    }
-
-    @RequestMapping("login_admin_error")
-    public String showAdminLoginError(Model model) {
-        model.addAttribute("loginError", true);
-        return "admin";
-    }*/
-
     @GetMapping("/myaccount")
     public String showMyAccount(Model model,
                                 @AuthenticationPrincipal FedditUserDetails userDetails,
-                                @ModelAttribute("passwordResult") String passwordResult) {
+                                @ModelAttribute("passwordResult") ResultObject passwordResult) {
 
-        if(!passwordResult.equals("")) {
-            try {
-                int errorCode = Integer.parseInt(passwordResult);
-                switch (errorCode) {
-                    case 1:
-                        model.addAttribute("passwordChanged", "Password changed successfully.");
-                        break;
-                    case 0:
-                        model.addAttribute("passwordError", "An error occured.");
-                        break;
-                    case -1:
-                        model.addAttribute("passwordError", "Old password isn't correct.");
-                        break;
-                    case -2:
-                        model.addAttribute("passwordError", "New password is equal to the old inserted.");
-                        break;
-                }
-            } catch (NumberFormatException ex) {
-                model.addAttribute("passwordError", "An error occured.");
-            }
-        }
-
+        model.addAttribute("passwordResult", passwordResult);
         model.addAttribute("first_name", userDetails.getFirstName());
         model.addAttribute("last_name", userDetails.getLastName());
         model.addAttribute("email", userDetails.getEmail());

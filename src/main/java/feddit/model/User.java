@@ -130,15 +130,15 @@ public class User extends DatabaseObject {
     @Override
     public String toString() {
         return super.toString() +
-                ", Username: " + this.username +
-                ", Email: " + this.email +
-                ", Password: " + this.password +
-                ", FirstName: " + this.firstName +
-                ", LastName: " + this.lastName +
-                ", BirthDate: " + this.birthDate +
-                ", Roles: " + this.roles +
-                ", Posts: " + this.posts +
-                ", Votes: " + this.votes +
-                ", Comments: " + this.comments;
+                ",\n\tUsername: " + this.username +
+                ",\n\tEmail: " + this.email +
+                ",\n\tPassword: " + this.password +
+                ",\n\tFirstName: " + this.firstName +
+                ",\n\tLastName: " + this.lastName +
+                ",\n\tBirthDate: " + this.birthDate +
+                ",\n\tRoles: " + this.roles +
+                ",\n\tPosts: " + this.posts +
+                ",\n\tVotes: " + this.votes +
+                ",\n\tComments: " + this.comments;
     }
 }

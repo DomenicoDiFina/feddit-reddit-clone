@@ -13,11 +13,9 @@
                     Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
                 </p>
                 <input type="submit" value="Sign Out" />
-                <p th:if="${passwordChanged}" th:text="${passwordChanged}" class="success"></p>
-                <p th:if="${passwordError}" th:text="${passwordError}" class="error"></p>
+                <p th:classappend="${passwordResult.getCssClass()}" th:text="${passwordResult.getMessage()}"></p>
             </form>
             <div class="left_sub_header">
-                <!--<a href="/changepassword" class="button">Change Password</a>-->
                 <button type="button" th:onclick="${'javascript:showChangePasswordForm()'}">Change password</button>
                 <a href="/" class="button">Go back</a>
             </div>

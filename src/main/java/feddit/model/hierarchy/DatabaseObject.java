@@ -38,8 +38,8 @@ public abstract class DatabaseObject {
 
     @Override
     public String toString() {
-        return "Class: " + this.getClazz() +
-                ", Creation date: " + this.creationDate +
-                ", Id: " + this.id;
+        return "\n\tClass: " + this.getClazz() +
+                ",\n\tCreation date: " + this.creationDate +
+                ",\n\tId: " + this.id;
     }
 }

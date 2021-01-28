@@ -73,8 +73,8 @@ public class Post extends ForumObject {
     @Override
     public String toString() {
         return super.toString() +
-                ", Title: " + this.title +
-                ", Comments: " + this.comments +
-                ", Votes: " + this.votes;
+                ",\n\tTitle: " + this.title +
+                ",\n\tComments: " + this.comments +
+                ",\n\tVotes: " + this.votes;
     }
 }

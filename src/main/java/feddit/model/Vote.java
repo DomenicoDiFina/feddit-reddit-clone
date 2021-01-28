@@ -65,9 +65,9 @@ public class Vote extends DatabaseObject {
     @Override
     public String toString() {
         return super.toString() +
-                ", Post: " + this.post +
-                ", User: " + this.user +
-                ", Type: " + this.type +
-                ", Comment: " + this.comment;
+                ",\n\tPost: " + this.post +
+                ",\n\tUser: " + this.user +
+                ",\n\tType: " + this.type +
+                ",\n\tComment: " + this.comment;
     }
 }

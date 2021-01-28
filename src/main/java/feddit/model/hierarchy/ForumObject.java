@@ -62,9 +62,9 @@ public abstract class ForumObject extends DatabaseObject {
     @Override
     public String toString() {
         return super.toString() +
-                ", Content: " + this.content +
-                ", Up votes: " + this.upVotes +
-                ", Down votes: " + this.downVotes +
-                ", User: " + this.user;
+                ",\n\tContent: " + this.content +
+                ",\n\tUp votes: " + this.upVotes +
+                ",\n\tDown votes: " + this.downVotes +
+                ",\n\tUser: " + this.user;
     }
 }

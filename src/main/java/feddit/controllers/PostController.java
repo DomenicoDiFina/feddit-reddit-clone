@@ -87,4 +87,11 @@ public class PostController {
         return "redirect:/";
     }
 
+    @PostMapping("/delete_comment")
+    public String deleteComment(Model model,
+                                @RequestParam("id") long commentId) {
+        this.commentService.deleteById(commentId);
+        return "redirect:/";
+    }
+
 }

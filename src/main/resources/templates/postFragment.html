@@ -5,6 +5,10 @@
         <ul>
             <li th:each="c : ${object.comments}">
                 <p th:text="${c.content}"></p>
+                <form method="post" sec:authorize="hasAuthority('ADMIN')" th:action="@{/delete_comment}">
+                    <input type="hidden" name="id" th:value="${c.id}" />
+                    <input type="submit" value="X" />
+                </form>
                 <form class="form" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
                     <div class="row">
                         <input type="text" placeholder="Insert your comment here" required

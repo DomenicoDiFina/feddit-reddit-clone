@@ -13,11 +13,11 @@ public class Comment extends ForumObject {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Comment() {
@@ -56,9 +56,9 @@ public class Comment extends ForumObject {
     @Override
     public String toString() {
         return super.toString() +
-                ", Post: " + this.post +
-                ", Comment: " + this.comment +
-                ", Comments: " + this.comments;
+                ",\n\tPost: " + this.post +
+                ",\n\tComment: " + this.comment +
+                ",\n\tComments: " + this.comments;
     }
 }
 
