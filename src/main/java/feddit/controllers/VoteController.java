@@ -50,11 +50,6 @@ public class VoteController {
             else
                 post.setDownVotes(post.getDownVotes() - 1);
 
-            if(postService.save(post)) {
-            } else {
-                redirectAttributes.addFlashAttribute("postError", "An error occured.");
-            }
-
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
             System.out.println("2: " + vote.getType());
@@ -67,10 +62,7 @@ public class VoteController {
             vote.setPost(post);
             vote.setUser(user);
 
-            if(postService.save(post)) {
-            } else {
-                redirectAttributes.addFlashAttribute("postError", "An error occured.");
-            }
+
             if (voteService.save(vote)) {
                 redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
             } else {
