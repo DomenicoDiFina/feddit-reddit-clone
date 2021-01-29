@@ -50,48 +50,48 @@ public class Logger {
     @Pointcut("execution(public * feddit.controllers.VoteController.processCommentVote*(..))")
     private void addOrDeleteCommentVotePointcut() {}
 
-    @Pointcut("execution(public * feddit.services.ForumService.save*(..))")
+    @Pointcut("execution(public * org.springframework.data.repository.CrudRepository.save*(..))")
     private void databasePointcut() {}
 
     @Before("loginPointcut()")
     private void beforeLogin(JoinPoint joinPoint) {
-        this.writeToFile("User with username " + joinPoint.getArgs()[0] + " is trying to login");
+        this.writeToFile("User with username '" + joinPoint.getArgs()[0] + "' is trying to login");
     }
 
     @AfterReturning("loginPointcut()")
     private void afterLogin(JoinPoint joinPoint) {
-        this.writeToFile("User with username " + joinPoint.getArgs()[0] + " is logged in");
+        this.writeToFile("User with username '" + joinPoint.getArgs()[0] + "' is logged in");
     }
 
     @AfterThrowing("loginPointcut()")
     private void afterLoginError(JoinPoint joinPoint) {
-        this.writeToFile("User with username " + joinPoint.getArgs()[0] + " doesnt't exist");
+        this.writeToFile("User with username '" + joinPoint.getArgs()[0] + "' doesnt't exist");
     }
 
     @After("addUserPointcut()")
     private void afterAddUser(JoinPoint joinPoint) {
-        this.writeToFile("Create user with username: " + ((User) joinPoint.getArgs()[0]).getUsername());
+        this.writeToFile("Create user with username '" + ((User) joinPoint.getArgs()[0]).getUsername() + "'");
     }
 
     @After("addPostPointcut()")
     private void afterAddPost(JoinPoint joinPoint) {
-        this.writeToFile("Create post with title: " + ((Post) joinPoint.getArgs()[3]).getTitle() +
-                " from user with username: " + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername());
+        this.writeToFile("Create post with title '" + ((Post) joinPoint.getArgs()[3]).getTitle() +
+                "' from user with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() + "'");
     }
 
     @After("deletePostPointcut()")
     private void afterDeletePost(JoinPoint joinPoint) {
-        this.writeToFile("Delete post with id: " + joinPoint.getArgs()[2] +
+        this.writeToFile("Delete post with id " + joinPoint.getArgs()[2] +
                 ". Removed by admin");
     }
 
     @After("addCommentPointcut()")
     private void afterAddComment(JoinPoint joinPoint) {
-        this.writeToFile("Create comment with content " + joinPoint.getArgs()[1] +
-                " related to " + joinPoint.getArgs()[2].toString().toLowerCase() +
+        this.writeToFile("Create comment with content '" + joinPoint.getArgs()[1] +
+                "' related to " + joinPoint.getArgs()[2].toString().toLowerCase() +
                 " with id " + joinPoint.getArgs()[3] + "" +
                 " in post with id " + joinPoint.getArgs()[4] +
-                " from user with username " + ((FedditUserDetails) joinPoint.getArgs()[5]).getUsername());
+                " from user with username '" + ((FedditUserDetails) joinPoint.getArgs()[5]).getUsername() + "'");
     }
 
     @After("deleteCommentPointcut()")
@@ -103,15 +103,15 @@ public class Logger {
 
     @After("addOrDeletePostVotePointcut()")
     private void afterPostVote(JoinPoint joinPoint) {
-        this.writeToFile("User with username " + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
-                " " + ((Vote) joinPoint.getArgs()[3]).getType().toLowerCase() +
+        this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
+                "' " + ((Vote) joinPoint.getArgs()[3]).getType().toLowerCase() +
                 " post with id " + joinPoint.getArgs()[2]);
     }
 
     @After("addOrDeleteCommentVotePointcut()")
     private void afterCommentVote(JoinPoint joinPoint) {
-        this.writeToFile("User with username " + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
-                " " + ((Vote) joinPoint.getArgs()[4]).getType().toLowerCase() +
+        this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
+                "' " + ((Vote) joinPoint.getArgs()[4]).getType().toLowerCase() +
                 " comment with id " + joinPoint.getArgs()[2] +
                 " related to post with id " + joinPoint.getArgs()[3]);
     }
@@ -126,7 +126,7 @@ public class Logger {
 
     private void printTimeReport() {
         this.writeToFile("Average milliseconds required for database operations: " +
-                this.times.stream().mapToInt(x -> x.intValue()).average().getAsDouble());
+                (int)this.times.stream().mapToInt(x -> x.intValue()).average().getAsDouble());
     }
 
     private void writeToFile(String string) {
