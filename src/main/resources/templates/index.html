@@ -44,9 +44,11 @@
                     <br>
                     <br>
                 </form>
-                <p th:text="${postAdded}" class="success"></p>
+                <!--<p th:text="${postAdded}" class="success"></p>
                 <p th:text="${postError}" class="error"></p>
-                <p th:text="${postRemoved}" class="success"></p>
+                <p th:text="${postRemoved}" class="success"></p>-->
+
+                <p th:classappend="${postResult.getCssClass()}" th:text="${postResult.getMessage()}"></p>
             </div>
 
             <div th:each="post: ${posts}" class="post">

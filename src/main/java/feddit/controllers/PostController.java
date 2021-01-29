@@ -2,6 +2,7 @@ package feddit.controllers;
 
 import feddit.model.Comment;
 import feddit.model.Post;
+import feddit.model.ResultObject;
 import feddit.security.FedditUserDetails;
 import feddit.services.CommentService;
 import feddit.services.PostService;
@@ -33,11 +34,13 @@ public class PostController {
                                        Post post) {
 
         post.setUser(userService.findByUsername(userDetails.getUsername()));
+        ResultObject result;
         if(postService.save(post)) {
-            redirectAttributes.addFlashAttribute("postAdded", "Post added successfully");
+            result = new ResultObject("S2", "success", "Post added successfully");
         } else {
-            redirectAttributes.addFlashAttribute("postError", "An error occured.");
+            result = new ResultObject("E4", "error", "An error occured.");
         }
+        redirectAttributes.addFlashAttribute("postResult", result);
         mav.setViewName("redirect:/");
         return mav;
     }
@@ -45,23 +48,26 @@ public class PostController {
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
     public ModelAndView deletePost(ModelAndView mav, RedirectAttributes redirectAttributes,
                                    @PathVariable long id){
+        ResultObject result;
 
         if (postService.remove(id)) {
-            redirectAttributes.addFlashAttribute("postRemoved", "Post removed successfully");
+            result = new ResultObject("S3", "success", "Post removed successfully");
         } else {
-            redirectAttributes.addFlashAttribute("postError", "An error occured.");
+            result = new ResultObject("E9", "error", "An error occured.");
         }
-
-        redirectAttributes.addFlashAttribute("postRemoved", "Post removed successfully");
+        redirectAttributes.addFlashAttribute("postResult", result);
         mav.setViewName("redirect:/");
         return mav;
     }
 
     @GetMapping("/view_post")
     public String showPost(Model model,
-                           @RequestParam("id") long id) {
+                           @RequestParam("id") long id,
+                           @ModelAttribute("commentResult") ResultObject commentResult)
+    {
         Post post = this.postService.findById(id);
         model.addAttribute("post", post);
+        model.addAttribute("commentResult", commentResult);
         return "post";
     }
 
@@ -76,6 +82,7 @@ public class PostController {
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setUser(this.userService.findByUsername(userDetails.getUsername()));
+        ResultObject result;
         if (parentType.equals("Comment")) {
             Comment parent = this.commentService.findById(parentId);
             comment.setComment(parent);
@@ -84,14 +91,14 @@ public class PostController {
             comment.setPost(parent);
         }
         if(commentService.save(comment)) {
-            redirectAttributes.addFlashAttribute("commentAdded", "Comment added successfully");
+            result = new ResultObject("S4", "success", "Comment added successfully");
         } else {
-            redirectAttributes.addFlashAttribute("commentError", "An error occured.");
+            result = new ResultObject("E5", "error", "An error occured.");
         }
 
         Post post = postService.findById(postId);
         model.addAttribute("post", post);
-
+        redirectAttributes.addFlashAttribute("commentResult", result);
         return "redirect:/view_post?id="+postId;
     }
 
@@ -100,14 +107,15 @@ public class PostController {
                                 @RequestParam("id") long commentId,
                                 @RequestParam("post") long postId,
                                 RedirectAttributes redirectAttributes) {
-
+    ResultObject result;
         if (this.commentService.deleteById(commentId)) {
-            redirectAttributes.addFlashAttribute("commentRemoved", "Comment removed successfully");
+            result = new ResultObject("S7", "success", "Comment removed successfully");
+
         } else {
-            redirectAttributes.addFlashAttribute("commentError", "An error occured.");
+            result = new ResultObject("E10", "error", "An error occured.");
         }
         model.addAttribute("post", postService.findById(postId));
-
+        redirectAttributes.addFlashAttribute("commentResult", result);
         return "redirect:/view_post?id="+postId;
     }
 

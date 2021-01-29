@@ -28,6 +28,7 @@
         <p th:text="${post.content}"></p>
         <p th:text="${post.creationDate}"></p>
     </div>
+    <p th:classappend="${commentResult.getCssClass()}" th:text="${commentResult.getMessage()}"></p>
     <div>
         <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
         <form class="form" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
