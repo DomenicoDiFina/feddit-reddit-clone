@@ -115,13 +115,13 @@ public class UserController {
         return "signup_success";
     }
 
-    @RequestMapping("login")
+    @RequestMapping("/login")
     public String showLogin() {
         return "login";
     }
 
 
-    @RequestMapping("login_error")
+    @RequestMapping("/login_error")
     public String showLoginError(Model model) {
         model.addAttribute("loginError", true);
         return "login";
