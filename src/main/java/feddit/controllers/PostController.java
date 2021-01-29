@@ -90,14 +90,20 @@ public class PostController {
             redirectAttributes.addFlashAttribute("commentError", "An error occured.");
         }
 
-        return "redirect:/";
+        Post post = postService.findById(postId);
+        System.out.println("post: " + post.getTitle());
+        model.addAttribute("post", post);
+
+        return "post";
     }
 
     @PostMapping("/delete_comment")
     public String deleteComment(Model model,
-                                @RequestParam("id") long commentId) {
+                                @RequestParam("id") long commentId,
+                                @RequestParam("post") long postId) {
         this.commentService.deleteById(commentId);
-        return "redirect:/";
+        model.addAttribute("post", postService.findById(postId));
+        return "post";
     }
 
 }

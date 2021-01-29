@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -100,8 +101,8 @@ public class VoteController {
 
     @PostMapping("/voteComment/{id}")
     public String processCommentVote(@AuthenticationPrincipal FedditUserDetails userDetails,
-                              RedirectAttributes redirectAttributes,
-                              @PathVariable long id, Vote vote, Model model) throws Exception {
+                                     RedirectAttributes redirectAttributes,
+                                     @PathVariable long id, @RequestParam("post") long postId, Vote vote, Model model) throws Exception {
         System.out.println("Ciao, sono qui");
         User user = userService.findByUsername(userDetails.getUsername());
         Comment comment = commentService.findById(id);
@@ -160,7 +161,11 @@ public class VoteController {
             redirectAttributes.addFlashAttribute("commentError", "An error occured.");
         }
 
-        return "redirect:/";
+        Post post = postService.findById(postId);
+        System.out.println(post.getTitle());
+        model.addAttribute("post", postService.findById(postId));
+
+        return "post";
     }
 
 }
