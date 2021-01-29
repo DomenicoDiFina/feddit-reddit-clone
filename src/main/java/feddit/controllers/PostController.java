@@ -26,14 +26,7 @@ public class PostController {
     @Autowired
     private CommentService commentService;
 
-    /*@GetMapping("/index")
-    public String showAddPostForm(Model model) {
-
-        model.addAttribute("post", new Post());
-        return "index";
-    }*/
-
-    @PostMapping("/addpost")
+    @PostMapping("/add_post")
     public ModelAndView addPost(@AuthenticationPrincipal FedditUserDetails userDetails,
                                        ModelAndView mav,
                                        RedirectAttributes redirectAttributes,

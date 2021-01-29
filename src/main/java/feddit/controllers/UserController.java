@@ -37,12 +37,9 @@ public class UserController {
     @GetMapping("")
     public String viewHomePage(Model model) {
         model.addAttribute("post", new Post());
-
         List<Post> posts = this.postService.findAll();
         Collections.sort(posts, Comparator.comparingInt(p -> p.getDownVotes() - p.getUpVotes()));
-
         model.addAttribute("posts", posts);
-
         return "index";
     }
 
@@ -57,7 +54,6 @@ public class UserController {
         ResultObject result;
         if(!oldPassword.equals(newPassword)){
             if(passwordEncoder.matches(oldPassword, u.getPassword())){
-
                 u.setPassword(passwordEncoder.encode(newPassword));
                 if(userService.save(u)) {
                     result = new ResultObject("S1", "success", "Password changed successfully.");
