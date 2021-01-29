@@ -8,6 +8,7 @@ import feddit.repositories.UserRepository;
 import feddit.repositories.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,16 +27,6 @@ public class VoteService implements ForumService<Vote> {
         return this.voteRepository.findByCommentAndUser(user,comment);
     }
 
-    @Override
-    public boolean save(Vote vote) {
-        try {
-            voteRepository.save(vote);
-            return true;
-        } catch (DataAccessException dataAccessException) {
-            return false;
-        }
-    }
-
     public boolean remove(Vote vote) {
         try{
             this.voteRepository.delete(vote);
@@ -47,5 +38,8 @@ public class VoteService implements ForumService<Vote> {
 
     }
 
-
+    @Override
+    public CrudRepository<Vote, Long> getCrudRepository() {
+        return this.voteRepository;
+    }
 }

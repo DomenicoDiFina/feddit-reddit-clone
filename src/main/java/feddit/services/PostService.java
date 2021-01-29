@@ -5,6 +5,7 @@ import feddit.model.Post;
 import feddit.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -36,13 +37,7 @@ public class PostService implements ForumService<Post> {
     }
 
     @Override
-    public boolean save(Post post) {
-        try {
-            this.postRepository.save(post);
-            return true;
-        } catch (DataAccessException dataAccessException) {
-            return false;
-        }
+    public CrudRepository<Post, Long> getCrudRepository() {
+        return this.postRepository;
     }
-
 }

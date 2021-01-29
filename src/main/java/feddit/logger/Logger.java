@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,7 +23,8 @@ public class Logger {
     private final Path path = Path.of("src/main/resources/log.txt");
     private final Set<Long> times = new HashSet<>();
 
-    public Logger() {}
+    public Logger() {
+    }
 
     @Pointcut("execution(public * feddit.services.AuthService.loadUserByUsername*(..))")
     private void loginPointcut() {}
@@ -55,17 +58,15 @@ public class Logger {
         this.writeToFile("User with username " + joinPoint.getArgs()[0] + " is trying to login");
     }
 
-    @After("loginPointcut()")
-    private void afterLogin(JoinPoint joinPoint, Object userDetails) {
+    @AfterReturning("loginPointcut()")
+    private void afterLogin(JoinPoint joinPoint) {
         this.writeToFile("User with username " + joinPoint.getArgs()[0] + " is logged in");
     }
 
-    /*
-    @AfterThrowing(pointcut="loginPointcut()", throwing="ex")
-    private afterLoginError(UsernameNotFoundException ex) {
+    @AfterThrowing("loginPointcut()")
+    private void afterLoginError(JoinPoint joinPoint) {
         this.writeToFile("User with username " + joinPoint.getArgs()[0] + " doesnt't exist");
     }
-    */
 
     @After("addUserPointcut()")
     private void afterAddUser(JoinPoint joinPoint) {
@@ -74,7 +75,7 @@ public class Logger {
 
     @After("addPostPointcut()")
     private void afterAddPost(JoinPoint joinPoint) {
-        this.writeToFile("Create post with title: " + ((Post) joinPoint.getArgs()[0]).getTitle() +
+        this.writeToFile("Create post with title: " + ((Post) joinPoint.getArgs()[3]).getTitle() +
                 " from user with username: " + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername());
     }
 
@@ -116,19 +117,23 @@ public class Logger {
     }
 
     @Around("databasePointcut()")
-    public void saveExecutionTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    private void saveExecutionTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         proceedingJoinPoint.proceed();
         this.times.add(System.currentTimeMillis() - startTime);
+        printTimeReport();
     }
 
-    // PRINT REPORT EVERY 5 MINUTES
+    private void printTimeReport() {
+        this.writeToFile("Average milliseconds required for database operations: " +
+                this.times.stream().mapToInt(x -> x.intValue()).average().getAsDouble());
+    }
 
     private void writeToFile(String string) {
         try {
-            Files.writeString(path, string);
+            Files.writeString(this.path, new Date() + "\t" + string + "\n", StandardOpenOption.APPEND);
         } catch (IOException e) {
-            System.out.println("Error: can't write to file!");
+            new IOException("Error: can't write to " + this.path);
         }
     }
 
