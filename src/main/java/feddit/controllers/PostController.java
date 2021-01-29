@@ -46,7 +46,8 @@ public class PostController {
     }
 
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
-    public ModelAndView deletePost(ModelAndView mav, RedirectAttributes redirectAttributes,
+    public ModelAndView deletePost(ModelAndView mav,
+                                   RedirectAttributes redirectAttributes,
                                    @PathVariable long id){
         ResultObject result;
 

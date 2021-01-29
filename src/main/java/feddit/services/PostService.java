@@ -1,5 +1,6 @@
 package feddit.services;
 
+import feddit.model.Comment;
 import feddit.model.Post;
 import feddit.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,7 @@ import java.util.List;
 
 
 @Service
-public class PostService {
+public class PostService implements ForumService<Post> {
 
     @Autowired
     private PostRepository postRepository;
@@ -34,7 +35,7 @@ public class PostService {
 
     }
 
-
+    @Override
     public boolean save(Post post) {
         try {
             this.postRepository.save(post);

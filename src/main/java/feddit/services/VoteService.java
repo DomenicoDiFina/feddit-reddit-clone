@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class VoteService {
+public class VoteService implements ForumService<Vote> {
 
     @Autowired
     private VoteRepository voteRepository;
@@ -26,6 +26,7 @@ public class VoteService {
         return this.voteRepository.findByCommentAndUser(user,comment);
     }
 
+    @Override
     public boolean save(Vote vote) {
         try {
             voteRepository.save(vote);
@@ -35,7 +36,7 @@ public class VoteService {
         }
     }
 
-    public boolean remove(Vote vote){
+    public boolean remove(Vote vote) {
         try{
             this.voteRepository.delete(vote);
             return true;

@@ -39,8 +39,10 @@ public class VoteController {
 
     @PostMapping("/votePost/{id}")
     public String processPostVote(@AuthenticationPrincipal FedditUserDetails userDetails,
-                                       RedirectAttributes redirectAttributes,
-                                      @PathVariable long id, Vote vote, Model model) throws Exception {
+                                  RedirectAttributes redirectAttributes,
+                                  @PathVariable long id,
+                                  Vote vote,
+                                  Model model) throws Exception {
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
         Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
@@ -115,7 +117,10 @@ public class VoteController {
     @PostMapping("/voteComment/{id}")
     public String processCommentVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                      RedirectAttributes redirectAttributes,
-                                     @PathVariable long id, @RequestParam("post") long postId, Vote vote, Model model) throws Exception {
+                                     @PathVariable long id,
+                                     @RequestParam("post") long postId,
+                                     Vote vote,
+                                     Model model) throws Exception {
 
 
         User user = userService.findByUsername(userDetails.getUsername());

@@ -1,5 +1,6 @@
 package feddit.services;
 
+import feddit.model.Comment;
 import feddit.model.User;
 import feddit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements ForumService<User> {
 
     @Autowired
     private UserRepository repository;
@@ -21,6 +22,7 @@ public class UserService {
         }
     }
 
+    @Override
     public boolean save(User user) {
         try {
             repository.save(user);

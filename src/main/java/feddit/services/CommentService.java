@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CommentService {
+public class CommentService implements ForumService<Comment> {
 
     @Autowired
     private CommentRepository commentRepository;
@@ -33,8 +33,9 @@ public class CommentService {
         }
 
     }
-    
-    public boolean save(Comment comment){
+
+    @Override
+    public boolean save(Comment comment) {
         try {
             commentRepository.save(comment);
             return true;
