@@ -74,10 +74,10 @@ public class Comment extends ForumObject {
 
     public boolean hasDownVoteByUser(long userID){
         List<Vote> votes = this.getVotes();
-        //System.out.println(votes.size());
+
         if(votes != null) {
             for (Vote vote : votes) {
-                if (vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE"))
+                if (vote.getUser().getId() == userID && vote.getComment() != null && vote.getType().equals("DOWNVOTE"))
                     return true;
             }
         }
@@ -88,7 +88,10 @@ public class Comment extends ForumObject {
         List<Vote> votes = this.getVotes();
         if(votes != null) {
             for (Vote vote : votes) {
-                if (vote.getUser().getId() == userID && vote.getType().equals("UPVOTE"))
+                System.out.println("User id:  " + vote.getUser().getId());
+                System.out.println("tipo:  " + vote.getType());
+                System.out.println("tipo:  " + vote.getComment().getId());
+                if (vote.getUser().getId() == userID && vote.getComment() != null && vote.getType().equals("UPVOTE"))
                     return true;
             }
         }

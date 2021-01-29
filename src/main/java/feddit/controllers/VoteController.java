@@ -103,15 +103,19 @@ public class VoteController {
     public String processCommentVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                      RedirectAttributes redirectAttributes,
                                      @PathVariable long id, @RequestParam("post") long postId, Vote vote, Model model) throws Exception {
-        System.out.println("Ciao, sono qui");
+
+
         User user = userService.findByUsername(userDetails.getUsername());
         Comment comment = commentService.findById(id);
+
         Optional<Vote> optVote = voteService.findByCommentAndUser(user, comment);
+
 
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
             voteService.remove(optVote.get());
+            System.out.println("VOTO UGUALE E GIA PRESENTE");
 
             if(vote.getType().equals("UPVOTE"))
                 comment.setUpVotes(comment.getUpVotes() - 1);
@@ -121,6 +125,7 @@ public class VoteController {
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
             voteService.remove(optVote.get());
+            System.out.println("VOTO DIVERSO E GIA PRESENTE");
 
             if(vote.getType().equals("UPVOTE"))
                 comment.setUpVotes(comment.getUpVotes() + 2);
@@ -137,11 +142,15 @@ public class VoteController {
             }
         }
         else {
-
             if("UPVOTE".equals(vote.getType())) {
                 comment.setUpVotes(comment.getUpVotes() + 1);
+                vote = new Vote();
+                vote.setType("UPVOTE");
             } else if("DOWNVOTE".equals(vote.getType())){
                 comment.setDownVotes(comment.getDownVotes() + 1);
+
+                vote = new Vote();
+                vote.setType("DOWNVOTE");
             }
 
             vote.setComment(comment);
@@ -159,11 +168,9 @@ public class VoteController {
             redirectAttributes.addFlashAttribute("commentError", "An error occured.");
         }
 
-        Post post = postService.findById(postId);
-        System.out.println(post.getTitle());
         model.addAttribute("post", postService.findById(postId));
 
-        return "redirect:/view_post?id="+postId;
+        return "post";
     }
 
 }

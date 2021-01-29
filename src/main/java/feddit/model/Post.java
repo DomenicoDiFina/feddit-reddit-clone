@@ -56,7 +56,7 @@ public class Post extends ForumObject {
     public boolean hasDownVoteByUser(long userID){
         List<Vote> votes = this.getVotes();
         for(Vote vote : votes){
-            if(vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE"))
+            if(vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE") && vote.getPost() != null)
                 return true;
         }
         return false;
@@ -65,7 +65,7 @@ public class Post extends ForumObject {
     public boolean hasUpVoteByUser(long userID){
         List<Vote> votes = this.getVotes();
         for(Vote vote : votes){
-            if(vote.getUser().getId() == userID && vote.getType().equals("UPVOTE"))
+            if(vote.getUser().getId() == userID && vote.getType().equals("UPVOTE") && vote.getPost() != null)
                 return true;
         }
         return false;
