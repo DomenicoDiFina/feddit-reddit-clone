@@ -1,1 +1,1 @@
-Create comment calling addComment, Post id: 1, Parent: Post with id 1, Content: sfsf
+Delete comment calling deleteComment, Id: 1, Post id: 1

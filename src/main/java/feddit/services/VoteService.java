@@ -35,8 +35,15 @@ public class VoteService {
         }
     }
 
-    public void remove(Vote vote){
-        this.voteRepository.delete(vote);
+    public boolean remove(Vote vote){
+        try{
+            this.voteRepository.delete(vote);
+            return true;
+        } catch (DataAccessException dataAccessException) {
+            return false;
+        }
+
+
     }
 
 

@@ -45,7 +45,13 @@ public class PostController {
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
     public ModelAndView deletePost(ModelAndView mav, RedirectAttributes redirectAttributes,
                                    @PathVariable long id){
-        postService.remove(id);
+
+        if (postService.remove(id)) {
+            redirectAttributes.addFlashAttribute("postRemoved", "Post removed successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("postError", "An error occured.");
+        }
+
         redirectAttributes.addFlashAttribute("postRemoved", "Post removed successfully");
         mav.setViewName("redirect:/");
         return mav;
@@ -92,8 +98,14 @@ public class PostController {
     @PostMapping("/delete_comment")
     public String deleteComment(Model model,
                                 @RequestParam("id") long commentId,
-                                @RequestParam("post") long postId) {
-        this.commentService.deleteById(commentId);
+                                @RequestParam("post") long postId,
+                                RedirectAttributes redirectAttributes) {
+
+        if (this.commentService.deleteById(commentId)) {
+            redirectAttributes.addFlashAttribute("commentRemoved", "Comment removed successfully");
+        } else {
+            redirectAttributes.addFlashAttribute("commentError", "An error occured.");
+        }
         model.addAttribute("post", postService.findById(postId));
 
         return "redirect:/view_post?id="+postId;

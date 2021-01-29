@@ -24,8 +24,14 @@ public class CommentService {
         }
     }
 
-    public void deleteById(long id) {
-        this.commentRepository.deleteById(id);
+    public boolean deleteById(long id) {
+        try{
+            this.commentRepository.deleteById(id);
+            return true;
+        }catch (DataAccessException dataAccessException) {
+            return false;
+        }
+
     }
     
     public boolean save(Comment comment){

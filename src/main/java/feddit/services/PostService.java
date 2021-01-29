@@ -24,8 +24,14 @@ public class PostService {
         return (List<Post>) this.postRepository.findAll();
     }
 
-    public void remove(long id){
-        this.postRepository.deleteById(id);
+    public boolean remove(long id){
+        try{
+            this.postRepository.deleteById(id);
+            return true;
+        } catch (DataAccessException dataAccessException) {
+            return false;
+        }
+
     }
 
 

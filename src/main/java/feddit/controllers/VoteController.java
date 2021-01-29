@@ -48,7 +48,12 @@ public class VoteController {
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
-            voteService.remove(optVote.get());
+
+            if (voteService.remove(optVote.get())) {
+                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
+            } else {
+                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            }
 
             if(vote.getType().equals("UPVOTE"))
                 post.setUpVotes(post.getUpVotes() - 1);
@@ -57,7 +62,11 @@ public class VoteController {
 
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
-            voteService.remove(optVote.get());
+            if (voteService.remove(optVote.get())) {
+                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
+            } else {
+                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            }
 
             if(vote.getType().equals("UPVOTE"))
                 post.setUpVotes(post.getUpVotes() + 2);
@@ -118,8 +127,12 @@ public class VoteController {
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
-            voteService.remove(optVote.get());
-            System.out.println("VOTO UGUALE E GIA PRESENTE");
+
+            if (voteService.remove(optVote.get())) {
+                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
+            } else {
+                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            }
 
             if(vote.getType().equals("UPVOTE"))
                 comment.setUpVotes(comment.getUpVotes() - 1);
@@ -128,7 +141,12 @@ public class VoteController {
 
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
-            voteService.remove(optVote.get());
+
+            if (voteService.remove(optVote.get())) {
+                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
+            } else {
+                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            }
 
             if(vote.getType().equals("UPVOTE")) {
                 comment.setUpVotes(comment.getUpVotes() + 2);
