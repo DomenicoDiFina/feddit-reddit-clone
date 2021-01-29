@@ -207,3 +207,12 @@ input[type=submit] {
 .dislikeClicked{
     color: red;
 }
+
+
+.likeCommentClicked{
+    color: blue;
+}
+
+.dislikeCommentClicked{
+    color: red;
+}
