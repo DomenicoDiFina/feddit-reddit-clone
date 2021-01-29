@@ -76,8 +76,12 @@ public class VoteController {
         else {
             if("UPVOTE".equals(vote.getType())) {
                 post.setUpVotes(post.getUpVotes() + 1);
+                vote = new Vote();
+                vote.setType("UPVOTE");
             } else if("DOWNVOTE".equals(vote.getType())){
                 post.setDownVotes(post.getDownVotes() + 1);
+                vote = new Vote();
+                vote.setType("DOWNVOTE");
             }
 
             vote.setPost(post);
