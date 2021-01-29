@@ -129,12 +129,17 @@ public class VoteController {
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
             voteService.remove(optVote.get());
-            System.out.println("VOTO DIVERSO E GIA PRESENTE");
 
-            if(vote.getType().equals("UPVOTE"))
+            if(vote.getType().equals("UPVOTE")) {
                 comment.setUpVotes(comment.getUpVotes() + 2);
-            else
+                vote = new Vote();
+                vote.setType("UPVOTE");
+            }
+            else {
                 comment.setDownVotes(comment.getDownVotes() + 2);
+                vote = new Vote();
+                vote.setType("DOWNVOTE");
+            }
 
             vote.setComment(comment);
             vote.setUser(user);

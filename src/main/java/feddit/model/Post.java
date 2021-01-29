@@ -5,6 +5,8 @@ import feddit.model.hierarchy.ForumObject;
 import javax.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -38,6 +40,8 @@ public class Post extends ForumObject {
 
     @Override
     public List<Comment> getComments() {
+        List<Comment> comments = this.comments;
+        Collections.sort(comments, Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
         return comments;
     }
 
