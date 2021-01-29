@@ -112,7 +112,6 @@ public class VoteController {
                 optVote.get().getType()
                         .equals(vote.getType())) {
             voteService.remove(optVote.get());
-            System.out.println("VOTO UGUALE E GIA PRESENTE");
 
             if(vote.getType().equals("UPVOTE"))
                 comment.setUpVotes(comment.getUpVotes() - 1);
@@ -122,7 +121,6 @@ public class VoteController {
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
             voteService.remove(optVote.get());
-            System.out.println("VOTO DIVERSO E GIA PRESENTE");
 
             if(vote.getType().equals("UPVOTE"))
                 comment.setUpVotes(comment.getUpVotes() + 2);
@@ -139,7 +137,7 @@ public class VoteController {
             }
         }
         else {
-            System.out.println("VOTO NON PRESENTE");
+
             if("UPVOTE".equals(vote.getType())) {
                 comment.setUpVotes(comment.getUpVotes() + 1);
             } else if("DOWNVOTE".equals(vote.getType())){
@@ -165,7 +163,7 @@ public class VoteController {
         System.out.println(post.getTitle());
         model.addAttribute("post", postService.findById(postId));
 
-        return "post";
+        return "redirect:/view_post?id="+postId;
     }
 
 }

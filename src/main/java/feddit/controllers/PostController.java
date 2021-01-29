@@ -91,10 +91,9 @@ public class PostController {
         }
 
         Post post = postService.findById(postId);
-        System.out.println("post: " + post.getTitle());
         model.addAttribute("post", post);
 
-        return "post";
+        return "redirect:/view_post?id="+postId;
     }
 
     @PostMapping("/delete_comment")
@@ -103,7 +102,8 @@ public class PostController {
                                 @RequestParam("post") long postId) {
         this.commentService.deleteById(commentId);
         model.addAttribute("post", postService.findById(postId));
-        return "post";
+
+        return "redirect:/view_post?id="+postId;
     }
 
 }
