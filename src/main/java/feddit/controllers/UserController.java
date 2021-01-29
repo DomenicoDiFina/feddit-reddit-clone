@@ -1,6 +1,7 @@
 package feddit.controllers;
 
 //import feddit.model.ChangePasswordObj;
+import feddit.model.Comment;
 import feddit.model.ResultObject;
 import feddit.model.Post;
 import feddit.model.User;
@@ -140,7 +141,12 @@ public class UserController {
 
         List<Post> posts = user.getPosts();
         Collections.sort(posts, (p1, p2) ->  p2.getCreationDate().compareTo(p1.getCreationDate()));
+
+        List<Comment> comments = user.getComments();
+        Collections.sort(comments, (c1, c2) ->  c2.getCreationDate().compareTo(c1.getCreationDate()));
+
         model.addAttribute("posts", posts);
+        model.addAttribute("comments", comments);
 
         return "myaccount";
     }
