@@ -34,7 +34,7 @@ public class PostController {
     }*/
 
     @PostMapping("/addpost")
-    public ModelAndView processAddPost(@AuthenticationPrincipal FedditUserDetails userDetails,
+    public ModelAndView addPost(@AuthenticationPrincipal FedditUserDetails userDetails,
                                        ModelAndView mav,
                                        RedirectAttributes redirectAttributes,
                                        Post post) {
@@ -50,7 +50,7 @@ public class PostController {
     }
 
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
-    public ModelAndView removePost(ModelAndView mav, RedirectAttributes redirectAttributes,
+    public ModelAndView deletePost(ModelAndView mav, RedirectAttributes redirectAttributes,
                                    @PathVariable long id){
         postService.remove(id);
         redirectAttributes.addFlashAttribute("postRemoved", "Post removed successfully");

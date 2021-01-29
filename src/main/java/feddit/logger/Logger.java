@@ -17,11 +17,48 @@ public class Logger {
     public Logger() {}
 
     @Pointcut("execution(public * feddit.controllers.UserController.processSignUp*(..))")
-    private void createUserPointcut() {}
+    private void addUserPointcut() {}
 
-    @After("createUserPointcut()")
-    private void afterCreateUser(JoinPoint joinPoint) {
+    @Pointcut("execution(public * feddit.controllers.PostController.addComment*(..))")
+    private void addCommentPointcut() {}
+
+    @Pointcut("execution(public * feddit.controllers.PostController.deleteComment*(..))")
+    private void deleteCommentPointcut() {}
+
+    @Pointcut("execution(public * feddit.controllers.PostController.addPost*(..))")
+    private void addPostPointcut() {}
+
+    @Pointcut("execution(public * feddit.controllers.PostController.deletePost*(..))")
+    private void deletePostPointcut() {}
+
+    @After("addUserPointcut()")
+    private void afterAddUser(JoinPoint joinPoint) {
         this.writeToFile("Create user calling " + joinPoint.getSignature().getName());
+    }
+
+    @After("addCommentPointcut()")
+    private void afterAddComment(JoinPoint joinPoint) {
+        this.writeToFile("Create comment calling " + joinPoint.getSignature().getName() +
+                ", Post id: " + joinPoint.getArgs()[4] +
+                ", Parent: " + joinPoint.getArgs()[2] + " with id " + joinPoint.getArgs()[3] +
+                ", Content: " + joinPoint.getArgs()[1]);
+    }
+
+    @After("deleteCommentPointcut()")
+    private void afterDeleteComment(JoinPoint joinPoint) {
+        this.writeToFile("Delete comment calling " + joinPoint.getSignature().getName() +
+                ", Id: " + joinPoint.getArgs()[1] +
+                ", Post id: " + joinPoint.getArgs()[2]);
+    }
+
+    @After("addPostPointcut()")
+    private void afterAddPost(JoinPoint joinPoint) {
+        //TODO
+    }
+
+    @After("deleteCommentPointcut()")
+    private void afterDeletePost(JoinPoint joinPoint) {
+        //TODO
     }
 
     private void writeToFile(String string) {
