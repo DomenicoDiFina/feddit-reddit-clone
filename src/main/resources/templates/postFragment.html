@@ -9,13 +9,16 @@
                 <div class="post-sidebar">
                     <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/voteComment/{id}'(id=${c.id})}" th:object="${vote}" th:method="post" >
                         <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${c.hasUpVoteByUser(#request.userPrincipal.principal.id)} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
+                        <input type="hidden" name="post" th:value="${post.id}"/>
                     </form>
 
                     <p class="date" th:with="result=${c.upVotes - c.downVotes}" th:text="${result}"></p>
 
                     <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/voteComment/{id}'(id=${c.id})}" th:object="${vote}" th:method="post" >
                         <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${c.hasDownVoteByUser(#request.userPrincipal.principal.id)} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
+                        <input type="hidden" name="post" th:value="${post.id}"/>
                     </form>
+
                 </div>
 
 
@@ -24,6 +27,7 @@
                       (#authorization.expression('isAuthenticated()') and c.user.id == #request.userPrincipal.principal.id) }"
                       th:action="@{/delete_comment}">
                     <input type="hidden" name="id" th:value="${c.id}" />
+                    <input type="hidden" name="post" th:value="${post.id}"/>
 
                     <input type="submit" value="X" />
                 </form>

@@ -75,18 +75,22 @@ public class Comment extends ForumObject {
     public boolean hasDownVoteByUser(long userID){
         List<Vote> votes = this.getVotes();
         //System.out.println(votes.size());
-        for(Vote vote : votes){
-            if(vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE"))
-                return true;
+        if(votes != null) {
+            for (Vote vote : votes) {
+                if (vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE"))
+                    return true;
+            }
         }
         return false;
     }
 
     public boolean hasUpVoteByUser(long userID){
         List<Vote> votes = this.getVotes();
-        for(Vote vote : votes){
-            if(vote.getUser().getId() == userID && vote.getType().equals("UPVOTE"))
-                return true;
+        if(votes != null) {
+            for (Vote vote : votes) {
+                if (vote.getUser().getId() == userID && vote.getType().equals("UPVOTE"))
+                    return true;
+            }
         }
         return false;
     }
