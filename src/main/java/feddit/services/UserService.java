@@ -16,7 +16,7 @@ public class UserService {
     public User findByUsername(String username) {
         try {
             return this.repository.findByUsername(username);
-        } catch (DataAccessException dataAccessException){
+        } catch (DataAccessException | UsernameNotFoundException dataAccessException ){
             return null;
         }
     }
