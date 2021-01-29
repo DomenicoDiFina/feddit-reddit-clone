@@ -174,7 +174,7 @@ public class VoteController {
 
         model.addAttribute("post", postService.findById(postId));
 
-        return "post";
+        return "redirect:/view_post?id="+postId;
     }
 
 }
