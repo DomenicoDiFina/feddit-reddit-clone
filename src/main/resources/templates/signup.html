@@ -11,7 +11,7 @@
             <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
             <h3>F(ake R)eddit, ugly by choice</h3>
 
-            <p class="error" th:text="${usernameError}" id="errorPassword"/>
+            <p th:classappend="${signupResult.getCssClass()}" th:text="${signupResult.getMessage()}" id="errorPassword"></p>
 
             <form class="form" th:action="@{/process_signup}" th:object="${user}" method="post" onsubmit="return checkPassword();">
                 <div class="row">

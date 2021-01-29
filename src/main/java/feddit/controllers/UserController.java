@@ -1,6 +1,5 @@
 package feddit.controllers;
 
-//import feddit.model.ChangePasswordObj;
 import feddit.model.Comment;
 import feddit.model.ResultObject;
 import feddit.model.Post;
@@ -19,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -35,11 +37,14 @@ public class UserController {
 
 
     @GetMapping("")
-    public String viewHomePage(Model model) {
+    public String viewHomePage(Model model,
+                               @ModelAttribute("postResult") ResultObject postResult)
+    {
         model.addAttribute("post", new Post());
         List<Post> posts = this.postService.findAll();
         Collections.sort(posts, Comparator.comparingInt(p -> p.getDownVotes() - p.getUpVotes()));
         model.addAttribute("posts", posts);
+        model.addAttribute("postResult", postResult);
         return "index";
     }
 
@@ -73,9 +78,12 @@ public class UserController {
 
     @GetMapping("/signup")
     public String showSignUpForm(Model model,
-                                 @ModelAttribute("usernameError") String usernameError) {
+                                 @ModelAttribute("usernameError") String usernameError,
+                                 @ModelAttribute("signupResult") ResultObject signupResult)
+    {
         model.addAttribute("usernameError", usernameError);
         model.addAttribute("user", new User());
+        model.addAttribute("signupResult", signupResult);
         return "signup";
     }
 
@@ -87,20 +95,31 @@ public class UserController {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setRoles(Set.of(roleService.findByName("USER")));
+        ResultObject result = null;
+
 
         if(userService.findByUsername(user.getUsername()) == null) {
-            if(userService.save(user)) {
-                redirectAttributes.addFlashAttribute("name", user.getFirstName());
-                mav.setViewName("redirect:/signup_success");
+            if ( isValidate(user.getBirthDate())) {
+                if (userService.save(user)) {
+                    redirectAttributes.addFlashAttribute("name", user.getFirstName());
+                    mav.setViewName("redirect:/signup_success");
+                } else {
+                    result = new ResultObject("E6", "error", "An error occured.");
+                    mav.setViewName("redirect:/signup");
+                }
             } else {
-                redirectAttributes.addFlashAttribute("usernameError", "An error occured");
+                result = new ResultObject("E7", "error", "There is something strange with your birthday...");
                 mav.setViewName("redirect:/signup");
             }
         } else {
-            redirectAttributes.addFlashAttribute("usernameError", "Username already exists");
+            result = new ResultObject("E8", "error", "Username already exists.");
             mav.setViewName("redirect:/signup");
         }
 
+
+
+        if (result != null)
+            redirectAttributes.addFlashAttribute("signupResult", result);
         return mav;
     }
 
@@ -145,6 +164,17 @@ public class UserController {
         model.addAttribute("comments", comments);
 
         return "myaccount";
+    }
+
+    private boolean isValidate(Date userDate){
+        DateFormat format = new SimpleDateFormat("YYYY-MM-dd", Locale.ENGLISH);
+        try {
+            if (userDate.compareTo(format.parse("2007-12-31")) > 0 && userDate.compareTo(format.parse("1921-01-01")) < 0 )
+                return true;
+        } catch (ParseException e) {
+            return false;
+        }
+        return false;
     }
 
 }
