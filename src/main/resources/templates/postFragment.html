@@ -1,15 +1,34 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.w3.org/1999/xhtml">
+
     <section layout:fragment="comment_section">
         <ul>
             <li th:each="c : ${object.comments}">
                 <p th:text="${c.content}"></p>
+                <div class="post-sidebar">
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/voteComment/{id}'(id=${c.id})}" th:object="${vote}" th:method="post" >
+                        <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${c.hasUpVoteByUser(#request.userPrincipal.principal.id)} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
+                        <input type="hidden" name="post" th:value="${post.id}"/>
+                    </form>
+
+                    <p class="date" th:with="result=${c.upVotes - c.downVotes}" th:text="${result}"></p>
+
+                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/voteComment/{id}'(id=${c.id})}" th:object="${vote}" th:method="post" >
+                        <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${c.hasDownVoteByUser(#request.userPrincipal.principal.id)} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
+                        <input type="hidden" name="post" th:value="${post.id}"/>
+                    </form>
+
+                </div>
+
+
                 <form method="post"
                       th:if="${#authorization.expression('hasAuthority(''ADMIN'')') or
                       (#authorization.expression('isAuthenticated()') and c.user.id == #request.userPrincipal.principal.id) }"
                       th:action="@{/delete_comment}">
                     <input type="hidden" name="id" th:value="${c.id}" />
+                    <input type="hidden" name="post" th:value="${post.id}"/>
+
                     <input type="submit" value="X" />
                 </form>
                 <form class="form" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
@@ -24,6 +43,7 @@
                         <input type="submit" value="Add comment" />
                     </div>
                 </form>
+
                 <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${c}"></section>
             </li>
         </ul>

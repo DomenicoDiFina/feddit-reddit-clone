@@ -20,6 +20,9 @@ public class Comment extends ForumObject {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "comment", orphanRemoval = true)
+    private List<Vote> votes;
+
     public Comment() {
     }
 
@@ -53,12 +56,43 @@ public class Comment extends ForumObject {
         this.comments = comments;
     }
 
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
     @Override
     public String toString() {
         return super.toString() +
                 ",\n\tPost: " + this.post +
                 ",\n\tComment: " + this.comment +
                 ",\n\tComments: " + this.comments;
+    }
+
+    public boolean hasDownVoteByUser(long userID){
+        List<Vote> votes = this.getVotes();
+        //System.out.println(votes.size());
+        if(votes != null) {
+            for (Vote vote : votes) {
+                if (vote.getUser().getId() == userID && vote.getType().equals("DOWNVOTE"))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasUpVoteByUser(long userID){
+        List<Vote> votes = this.getVotes();
+        if(votes != null) {
+            for (Vote vote : votes) {
+                if (vote.getUser().getId() == userID && vote.getType().equals("UPVOTE"))
+                    return true;
+            }
+        }
+        return false;
     }
 }
 
