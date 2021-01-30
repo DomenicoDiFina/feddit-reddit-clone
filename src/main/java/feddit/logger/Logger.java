@@ -19,7 +19,7 @@ import java.util.Set;
 @Aspect
 public class Logger {
 
-    private final Path path = Path.of("src/main/resources/log.txt");
+    private static final Path path = Path.of("src/main/resources/log.txt");
     private final Set<Long> times = new HashSet<>();
 
     public Logger() {
@@ -69,13 +69,13 @@ public class Logger {
 
     @After("addUserPointcut()")
     private void afterAddUser(JoinPoint joinPoint) {
-        this.writeToFile("Create user with username '" + ((User) joinPoint.getArgs()[0]).getUsername() + "'");
+        this.writeToFile("User with username '" + ((User) joinPoint.getArgs()[0]).getUsername() + "' joined Feddit");
     }
 
     @After("addPostPointcut()")
     private void afterAddPost(JoinPoint joinPoint) {
-        this.writeToFile("Create post with title '" + ((Post) joinPoint.getArgs()[3]).getTitle() +
-                "' from user with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() + "'");
+        this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
+                "' creates post with title '" + ((Post) joinPoint.getArgs()[3]).getTitle() + "'");
     }
 
     @After("deletePostPointcut()")
@@ -86,18 +86,18 @@ public class Logger {
 
     @After("addCommentPointcut()")
     private void afterAddComment(JoinPoint joinPoint) {
-        this.writeToFile("Create comment with content '" + joinPoint.getArgs()[1] +
+        this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[5]).getUsername() +
+                "' creates comment with content '" + joinPoint.getArgs()[1] +
                 "' related to " + joinPoint.getArgs()[2].toString().toLowerCase() +
-                " with id " + joinPoint.getArgs()[3] + "" +
-                " in post with id " + joinPoint.getArgs()[4] +
-                " from user with username '" + ((FedditUserDetails) joinPoint.getArgs()[5]).getUsername() + "'");
+                " with id " + joinPoint.getArgs()[3] +
+                " in post with id " + joinPoint.getArgs()[4]);
     }
 
     @After("deleteCommentPointcut()")
     private void afterDeleteComment(JoinPoint joinPoint) {
         this.writeToFile("Delete comment with id " + joinPoint.getArgs()[1] +
                 " and all related comments, if any, in Post with id " + joinPoint.getArgs()[2] +
-                " Removed by admin or user who created the comment");
+                ". Removed by admin or user who created the comment");
     }
 
     @After("addOrDeletePostVotePointcut()")
@@ -130,7 +130,8 @@ public class Logger {
 
     private void writeToFile(String string) {
         try {
-            Files.writeString(this.path, new Date() + "\t" + string + "\n", StandardOpenOption.APPEND);
+            Files.writeString(Logger.path, new Date() + "\t" + string + "\n",
+                    StandardOpenOption.APPEND, StandardOpenOption.CREATE);
         } catch (IOException e) {
             new IOException("Error: can't write to " + this.path);
         }
