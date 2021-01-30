@@ -52,7 +52,7 @@ public class UserController {
     public ModelAndView processChangePassword(ModelAndView mav,
                                         RedirectAttributes redirectAttributes,
                                         @RequestParam("old_password") String oldPassword,
-                                        @RequestParam("new_password") String newPassword) {
+                                        @RequestParam("password") String newPassword) {
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User u = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());

@@ -19,6 +19,7 @@ function checkPassword() {
  function checkErrorPassword(){
     if (!checkPassword()) {
         document.getElementById('errorPassword').innerHTML = "Passwords doesn't match.";
+        document.getElementById('errorPassword').style.color = "red"
         document.getElementById('password').style.borderColor = "red"
         document.getElementById('confirm_password').style.borderColor = "red"
     }
