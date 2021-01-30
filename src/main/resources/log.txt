@@ -1,5 +1,0 @@
-
-Fri Jan 29 20:10:41 CET 2021	User with username dario is trying to login
-Fri Jan 29 20:10:41 CET 2021	User with username dario is logged in
-Fri Jan 29 20:10:46 CET 2021	Average time required for database operations: 509.0
-Fri Jan 29 20:10:46 CET 2021	User with username dario upvote post with id 4
