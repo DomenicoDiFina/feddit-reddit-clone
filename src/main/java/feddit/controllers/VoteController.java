@@ -1,9 +1,6 @@
 package feddit.controllers;
 
-import feddit.model.Comment;
-import feddit.model.Post;
-import feddit.model.User;
-import feddit.model.Vote;
+import feddit.model.*;
 import feddit.security.FedditUserDetails;
 import feddit.services.CommentService;
 import feddit.services.PostService;
@@ -16,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
@@ -37,22 +35,22 @@ public class VoteController {
 
     @PostMapping("/votePost/{id}")
     public String processPostVote(@AuthenticationPrincipal FedditUserDetails userDetails,
-                                  RedirectAttributes redirectAttributes,
-                                  @PathVariable long id,
-                                  Vote vote,
-                                  Model model) throws Exception {
+                                        RedirectAttributes redirectAttributes,
+                                        @PathVariable long id,
+                                        Vote vote,
+                                        Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
         Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
+
+        ResultObject result = null;
 
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
 
-            if (voteService.remove(optVote.get())) {
-                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if (!voteService.remove(optVote.get())) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE"))
@@ -62,10 +60,8 @@ public class VoteController {
 
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
-            if (voteService.remove(optVote.get())) {
-                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if (!voteService.remove(optVote.get())) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE"))
@@ -75,10 +71,8 @@ public class VoteController {
 
             vote.setPost(post);
             vote.setUser(user);
-            if (voteService.save(vote)) {
-                redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if (!voteService.save(vote)) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
         }
         else {
@@ -94,18 +88,18 @@ public class VoteController {
 
             vote.setPost(post);
             vote.setUser(user);
-            if (voteService.save(vote)) {
-                redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if (!voteService.save(vote)) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
         }
 
-        if(postService.save(post)) {
-        } else {
-            redirectAttributes.addFlashAttribute("postError", "An error occured.");
+        if (!postService.save(post)) {
+            result = new ResultObject("E7", "error", "An error occured.");
         }
 
+        if(result != null) {
+            redirectAttributes.addFlashAttribute("postResult", result);
+        }
         return "redirect:/";
     }
 
@@ -116,8 +110,8 @@ public class VoteController {
                                      @PathVariable long id,
                                      @RequestParam("post") long postId,
                                      Vote vote,
-                                     Model model) throws Exception {
-
+                                     Model model) {
+        ResultObject result = null;
 
         User user = userService.findByUsername(userDetails.getUsername());
         Comment comment = commentService.findById(id);
@@ -129,10 +123,8 @@ public class VoteController {
                 optVote.get().getType()
                         .equals(vote.getType())) {
 
-            if (voteService.remove(optVote.get())) {
-                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if(!voteService.remove(optVote.get())) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE"))
@@ -143,10 +135,8 @@ public class VoteController {
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
 
-            if (voteService.remove(optVote.get())) {
-                redirectAttributes.addFlashAttribute("voteRemoved", "Vote removed successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if(!voteService.remove(optVote.get())) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE")) {
@@ -163,10 +153,8 @@ public class VoteController {
             vote.setComment(comment);
             vote.setUser(user);
 
-            if (voteService.save(vote)) {
-                redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if(!voteService.save(vote)) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
         }
         else {
@@ -184,19 +172,19 @@ public class VoteController {
             vote.setComment(comment);
             vote.setUser(user);
 
-            if (voteService.save(vote)) {
-                redirectAttributes.addFlashAttribute("voteAdded", "Vote added successfully");
-            } else {
-                redirectAttributes.addFlashAttribute("voteError", "An error occured.");
+            if(!voteService.save(vote)) {
+                result = new ResultObject("E7", "error", "An error occured.");
             }
         }
 
-        if(commentService.save(comment)) {
-        } else {
-            redirectAttributes.addFlashAttribute("commentError", "An error occured.");
+        if (!commentService.save(comment)) {
+            result = new ResultObject("E7", "error", "An error occured.");
         }
 
         model.addAttribute("post", postService.findById(postId));
+        if(result != null) {
+            redirectAttributes.addFlashAttribute("commentResult", result);
+        }
 
         return "redirect:/view_post?id="+postId;
     }
