@@ -42,4 +42,5 @@ public abstract class DatabaseObject {
                 ",\n\tCreation date: " + this.creationDate +
                 ",\n\tId: " + this.id;
     }
+
 }

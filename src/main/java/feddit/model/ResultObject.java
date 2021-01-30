@@ -1,13 +1,12 @@
 package feddit.model;
 
 public class ResultObject {
+    
     private String code;
     private String message;
     private String type;
 
-    public ResultObject() {
-
-    }
+    public ResultObject() {}
 
     public ResultObject(String id, String type, String message) {
         this.code = id;
@@ -39,7 +38,4 @@ public class ResultObject {
         this.type = type;
     }
 
-    public String getCssClass() {
-        return this.type;
-    }
 }

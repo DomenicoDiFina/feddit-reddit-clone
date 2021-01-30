@@ -53,10 +53,11 @@ public class VoteController {
                 result = new ResultObject("E10", "error", "An error occured.");
             }
 
-            if(vote.getType().equals("UPVOTE"))
+            if(vote.getType().equals(Vote.UPVOTE)) {
                 post.setUpVotes(post.getUpVotes() - 1);
-            else
+            } else {
                 post.setDownVotes(post.getDownVotes() - 1);
+            }
 
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
@@ -64,7 +65,7 @@ public class VoteController {
                 result = new ResultObject("E11", "error", "An error occured.");
             }
 
-            if(vote.getType().equals("UPVOTE"))
+            if(vote.getType().equals(Vote.UPVOTE))
                 post.setUpVotes(post.getUpVotes() + 2);
             else
                 post.setDownVotes(post.getDownVotes() + 2);
@@ -76,14 +77,14 @@ public class VoteController {
             }
         }
         else {
-            if("UPVOTE".equals(vote.getType())) {
+            if(Vote.UPVOTE.equals(vote.getType())) {
                 post.setUpVotes(post.getUpVotes() + 1);
                 vote = new Vote();
-                vote.setType("UPVOTE");
-            } else if("DOWNVOTE".equals(vote.getType())){
+                vote.setType(Vote.UPVOTE);
+            } else if(Vote.DOWNVOTE.equals(vote.getType())){
                 post.setDownVotes(post.getDownVotes() + 1);
                 vote = new Vote();
-                vote.setType("DOWNVOTE");
+                vote.setType(Vote.DOWNVOTE);
             }
 
             vote.setPost(post);
@@ -127,7 +128,7 @@ public class VoteController {
                 result = new ResultObject("E15", "error", "An error occured.");
             }
 
-            if(vote.getType().equals("UPVOTE"))
+            if(vote.getType().equals(Vote.UPVOTE))
                 comment.setUpVotes(comment.getUpVotes() - 1);
             else
                 comment.setDownVotes(comment.getDownVotes() - 1);
@@ -139,15 +140,15 @@ public class VoteController {
                 result = new ResultObject("E16", "error", "An error occured.");
             }
 
-            if(vote.getType().equals("UPVOTE")) {
+            if(vote.getType().equals(Vote.UPVOTE)) {
                 comment.setUpVotes(comment.getUpVotes() + 2);
                 vote = new Vote();
-                vote.setType("UPVOTE");
+                vote.setType(Vote.UPVOTE);
             }
             else {
                 comment.setDownVotes(comment.getDownVotes() + 2);
                 vote = new Vote();
-                vote.setType("DOWNVOTE");
+                vote.setType(Vote.DOWNVOTE);
             }
 
             vote.setComment(comment);
@@ -158,15 +159,15 @@ public class VoteController {
             }
         }
         else {
-            if("UPVOTE".equals(vote.getType())) {
+            if(Vote.UPVOTE.equals(vote.getType())) {
                 comment.setUpVotes(comment.getUpVotes() + 1);
                 vote = new Vote();
-                vote.setType("UPVOTE");
-            } else if("DOWNVOTE".equals(vote.getType())){
+                vote.setType(Vote.UPVOTE);
+            } else if(Vote.DOWNVOTE.equals(vote.getType())){
                 comment.setDownVotes(comment.getDownVotes() + 1);
 
                 vote = new Vote();
-                vote.setType("DOWNVOTE");
+                vote.setType(Vote.DOWNVOTE);
             }
 
             vote.setComment(comment);

@@ -51,15 +51,15 @@ public class Comment extends ForumObject {
 
     @Override
     public List<Comment> getComments() {
-        List<Comment> comments = this.comments;
-        Collections.sort(comments, Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
-        return comments;
+        Collections.sort(this.comments, Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
+        return this.comments;
     }
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
+    @Override
     public List<Vote> getVotes() {
         return votes;
     }
@@ -68,35 +68,5 @@ public class Comment extends ForumObject {
         this.votes = votes;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                ",\n\tPost: " + this.post +
-                ",\n\tComment: " + this.comment +
-                ",\n\tComments: " + this.comments;
-    }
-
-    public boolean hasDownVoteByUser(long userID){
-        List<Vote> votes = this.getVotes();
-
-        if(votes != null) {
-            for (Vote vote : votes) {
-                if (vote.getUser().getId() == userID && vote.getComment() != null && vote.getType().equals("DOWNVOTE"))
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean hasUpVoteByUser(long userID){
-        List<Vote> votes = this.getVotes();
-        if(votes != null) {
-            for (Vote vote : votes) {
-                if (vote.getUser().getId() == userID && vote.getComment() != null && vote.getType().equals("UPVOTE"))
-                    return true;
-            }
-        }
-        return false;
-    }
 }
 

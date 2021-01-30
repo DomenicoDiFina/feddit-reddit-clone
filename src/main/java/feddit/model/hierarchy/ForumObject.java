@@ -2,6 +2,7 @@ package feddit.model.hierarchy;
 
 import feddit.model.Comment;
 import feddit.model.User;
+import feddit.model.Vote;
 
 import javax.persistence.*;
 import java.util.List;
@@ -59,16 +60,19 @@ public abstract class ForumObject extends DatabaseObject {
 
     public abstract List<Comment> getComments();
 
+    public abstract List<Vote> getVotes();
+
     public int getCommentsNumber() {
-        return this.getComments().stream().mapToInt(comment -> comment.getCommentsNumber() + 1).sum();
+        return this.getComments()
+                .stream()
+                .mapToInt(comment -> comment.getCommentsNumber() + 1)
+                .sum();
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                ",\n\tContent: " + this.content +
-                ",\n\tUp votes: " + this.upVotes +
-                ",\n\tDown votes: " + this.downVotes +
-                ",\n\tUser: " + this.user;
+    public boolean hasVoteByUser(long userId, String type) {
+        return this.getVotes()
+                .stream()
+                .anyMatch(vote -> vote.getUser().getId() == userId && vote.getType().equals(type));
     }
+
 }

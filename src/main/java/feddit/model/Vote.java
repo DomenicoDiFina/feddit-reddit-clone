@@ -8,6 +8,9 @@ import javax.persistence.*;
 @Table(name = "votes")
 public class Vote extends DatabaseObject {
 
+    public static final String UPVOTE = "UPVOTE";
+    public static final String DOWNVOTE = "DOWNVOTE";
+
     public Vote() {}
 
     @Override
@@ -62,12 +65,4 @@ public class Vote extends DatabaseObject {
         this.comment = comment;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                ",\n\tPost: " + this.post +
-                ",\n\tUser: " + this.user +
-                ",\n\tType: " + this.type +
-                ",\n\tComment: " + this.comment;
-    }
 }

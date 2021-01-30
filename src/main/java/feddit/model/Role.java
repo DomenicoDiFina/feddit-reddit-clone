@@ -27,9 +27,4 @@ public class Role extends DatabaseObject {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                ",\n\tDescription: " + this.description;
-    }
 }

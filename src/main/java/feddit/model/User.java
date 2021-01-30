@@ -127,18 +127,4 @@ public class User extends DatabaseObject {
         this.comments = comments;
     }
 
-    @Override
-    public String toString() {
-        return super.toString() +
-                ",\n\tUsername: " + this.username +
-                ",\n\tEmail: " + this.email +
-                ",\n\tPassword: " + this.password +
-                ",\n\tFirstName: " + this.firstName +
-                ",\n\tLastName: " + this.lastName +
-                ",\n\tBirthDate: " + this.birthDate +
-                ",\n\tRoles: " + this.roles +
-                ",\n\tPosts: " + this.posts +
-                ",\n\tVotes: " + this.votes +
-                ",\n\tComments: " + this.comments;
-    }
 }

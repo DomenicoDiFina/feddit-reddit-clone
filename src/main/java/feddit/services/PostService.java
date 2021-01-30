@@ -39,4 +39,5 @@ public class PostService implements ForumService<Post> {
     public CrudRepository<Post, Long> getCrudRepository() {
         return this.postRepository;
     }
+
 }
