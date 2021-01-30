@@ -58,6 +58,22 @@ button:hover, .button:hover {
 .main {
     padding: 1rem;
     border: 1px solid black;
+    display: grid;
+    grid-template-columns: 60% 40%;
+}
+
+.grid_right {
+    grid-column: 2/3;
+}
+
+.grid_right p {
+    margin: auto;
+    max-width: 500px;
+}
+
+.grid_left {
+    grid-column: 1/2;
+    grid-row: 1;
 }
 
 table {
@@ -109,12 +125,25 @@ input[type=submit] {
     cursor: pointer;
 }
 
+.add_post {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.add_post textarea {
+    grid-column: 1/3;
+    min-height: 100px;
+    margin-top: 0.5rem;
+    resize: none;
+}
+
 .post {
     border: 1px black solid;
     padding: 0.5rem;
     display: grid;
     grid-template-columns: 5% 95%;
-    max-width: 60%;
     min-height: 10rem;
     margin-bottom: 1rem;
 }
@@ -134,10 +163,6 @@ input[type=submit] {
 
 .post-sidebar p {
     margin: 5px;
-}
-
-.upvote {
-
 }
 
 .post-content {
@@ -182,11 +207,19 @@ input[type=submit] {
     word-break: break-all;
 }
 
+.post-title p {
+    margin: 0;
+}
+
 .post-text {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     padding-top: 0.5rem;
     word-break: break-all;
+}
+
+.post-text p {
+    margin: 0;
 }
 
 .post-footer {
@@ -200,6 +233,25 @@ input[type=submit] {
     margin: 0.5rem 0.5rem 0.5rem 0;
 }
 
+.full_post {
+    min-width: 1000px;
+    max-width: fit-content;
+    border: 1px black solid;
+    padding: 0.5rem;
+}
+
+.full_post .post-text {
+    max-width: 1000px;
+}
+
+.full_post .post-header {
+    max-width: 1000px;
+}
+
+.full_post .post-title {
+    max-width: 1000px;
+}
+
 .likeClicked{
     color: blue;
 }
@@ -208,11 +260,89 @@ input[type=submit] {
     color: red;
 }
 
-
-.likeCommentClicked{
-    color: blue;
+ul {
+    list-style-type: none;
+    margin-bottom: 0px;
 }
 
-.dislikeCommentClicked{
-    color: red;
+li {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border: 1px black solid;
+}
+
+details {
+
+}
+
+details > summary {
+    color: gray;
+    outline: none;
+}
+
+.comment_container {
+    min-width: 1000px;
+}
+
+.border {
+    border: 1px black solid;
+}
+
+
+.comment_container .content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.content .side {
+    display: flex;
+}
+
+.side button {
+    border: none;
+    cursor: pointer;
+}
+
+.content p {
+    width: 100%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+.comment_container .add_comment {
+    display: flex;
+    align-items: center;
+}
+
+.add_comment input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
+
+.myposts {
+    grid-row: 1;
+    margin: 0.5rem;
+}
+
+.mycomments {
+    grid-row: 2;
+    margin: 0.5rem;
+}
+
+.myinfo {
+    grid-column: 2/3;
+    margin: 0.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid grey;
+}
+
+th, td {
+    padding: 3px;
+    border: 1px solid grey;
 }

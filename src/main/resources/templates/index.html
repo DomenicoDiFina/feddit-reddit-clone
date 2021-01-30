@@ -1,91 +1,81 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta charset="ISO-8859-1">
-        <title>Feddit</title>
-        <link th:href="@{/css/main.css}" rel="stylesheet" />
-        <script src="https://kit.fontawesome.com/4131186a96.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <!-- HEADER -->
-        <div class="header">
-            <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
-            <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
-            <div>
-                <div class="left_sub_header" sec:authorize="isAuthenticated()">
-                    <p><a href="/myaccount" class="button">Account</a></p>
-                </div>
-                <div class="left_sub_header" sec:authorize="isAnonymous()">
-                    <p><a href="/signup" class="button" >Sign Up</a></p>
-                    <p><a href="/login" class="button" >Login</a></p>
-                </div>
-            </div>
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Feddit</title>
+    <link th:href="@{/css/main.css}" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/4131186a96.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<!-- HEADER -->
+<div class="header">
+    <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
+    <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
+    <div>
+        <div class="left_sub_header" sec:authorize="isAuthenticated()">
+            <p><a href="/myaccount" class="button">Account</a></p>
         </div>
-        <!-- MAIN BODY -->
-        <div class="main">
+        <div class="left_sub_header" sec:authorize="isAnonymous()">
+            <p><a href="/signup" class="button" >Sign Up</a></p>
+            <p><a href="/login" class="button" >Login</a></p>
+        </div>
+    </div>
+</div>
+<!-- MAIN BODY -->
+<div class="main">
 
-            <div class="add_post" sec:authorize="isAuthenticated()">
-                <form class="form" th:action="@{/add_post}" th:object="${post}" method="post">
-                    <div class="row">
-                        <label for="title">Title</label>
-                        <input type="text" th:field="*{title}" id="title" name="title" autofocus="autofocus" required/>
-                    </div>
+    <div class="grid_right" sec:authorize="isAuthenticated()">
+        <form class="form add_post" th:action="@{/add_post}" th:object="${post}" method="post">
+            <input type="text" th:field="*{title}" id="title" name="title" autofocus="autofocus" placeholder="Title" required/>
 
-                    <div class="row">
-                        <label for="content">Content</label>
-                        <input type="text" th:field="*{content}" id="content" name="content" autofocus="autofocus" required/>
-                    </div>
+            <input type="submit" value="Add Post" />
 
-                    <div class="row">
-                        <input type="submit" value="Add Post" />
-                    </div>
+            <textarea type="text" th:field="*{content}" id="content" name="content" autofocus="autofocus" placeholder="Content" required></textarea>
+        </form>
+        <!--<p th:text="${postAdded}" class="success"></p>
+        <p th:text="${postError}" class="error"></p>
+        <p th:text="${postRemoved}" class="success"></p>-->
 
-                    <br>
-                    <br>
+        <p th:classappend="${postResult.getCssClass()}" th:text="${postResult.getMessage()}"></p>
+    </div>
+    <div class="grid_left">
+        <div th:each="post: ${posts}" class="post">
+            <div class="post-sidebar">
+                <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                    <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${post.hasUpVoteByUser(#request.userPrincipal.principal.id)} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
                 </form>
-                <!--<p th:text="${postAdded}" class="success"></p>
-                <p th:text="${postError}" class="error"></p>
-                <p th:text="${postRemoved}" class="success"></p>-->
 
-                <p th:classappend="${postResult.getCssClass()}" th:text="${postResult.getMessage()}"></p>
+
+                <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
+
+                <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                    <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${post.hasDownVoteByUser(#request.userPrincipal.principal.id)} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
+                </form>
             </div>
-
-            <div th:each="post: ${posts}" class="post">
-                <div class="post-sidebar">
-                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-                        <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${post.hasUpVoteByUser(#request.userPrincipal.principal.id)} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
+            <div class="post-content">
+                <div class="post-header">
+                    Posted by <p class="user" th:text="${post.user.username}"></p>
+                    <p class="date" th:text="${post.creationDate}"></p>
+                    <form class="remove-post" sec:authorize="hasAuthority('ADMIN')" action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
+                        <input type="hidden" name="_method" value="delete" />
+                        <input type="submit" value="X" />
                     </form>
-
-
-                    <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
-
-                    <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-                        <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${post.hasDownVoteByUser(#request.userPrincipal.principal.id)} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
-                    </form>
+                    <!--<p th:text="${postRemoved}" class="success"></p>-->
                 </div>
-                <div class="post-content">
-                    <div class="post-header">
-                        Posted by <p class="user" th:text="${post.user.username}"></p>
-                        <p class="date" th:text="${post.creationDate}"></p>
-                        <form class="remove-post" sec:authorize="hasAuthority('ADMIN')" action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
-                            <input type="hidden" name="_method" value="delete" />
-                            <input type="submit" value="X" />
-                        </form>
-                        <!--<p th:text="${postRemoved}" class="success"></p>-->
-                    </div>
-                    <div class="post-title">
-                        <p th:text="${post.title}"></p>
-                    </div>
-                    <div class="post-text">
-                        <p th:text="${post.content}"></p>
-                    </div>
-                    <div class="post-footer">
-                        <p th:text="${post.getCommentsNumber()}  + ' comments'"> </p>
-                        <a class="button" th:href="@{/view_post?id={id}(id=${post.id})}">View full discussion</a>
-                    </div>
+                <div class="post-title">
+                    <p th:text="${post.title}"></p>
+                </div>
+                <div class="post-text">
+                    <p th:text="${post.content}"></p>
+                </div>
+                <div class="post-footer">
+                    <p th:text="${post.getCommentsNumber()}  + ' comments'"> </p>
+                    <a class="button" th:href="@{/view_post?id={id}(id=${post.id})}">View full discussion</a>
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</div>
+</body>
 </html>

@@ -9,40 +9,49 @@
     <script src="https://kit.fontawesome.com/4131186a96.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <!-- HEADER -->
-    <div class="header">
-        <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
-        <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
-        <div>
-            <div class="left_sub_header" sec:authorize="isAuthenticated()">
-                <a href="/" class="button">Go back</a>
-            </div>
-            <div class="left_sub_header" sec:authorize="isAnonymous()">
-                <p><a href="/signup" class="button" >Sign Up</a></p>
-                <p><a href="/login" class="button" >Login</a></p>
-            </div>
+<!-- HEADER -->
+<div class="header">
+    <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
+    <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
+    <div>
+        <div class="left_sub_header" sec:authorize="isAuthenticated()">
+            <a href="/" class="button">Go back</a>
+        </div>
+        <div class="left_sub_header" sec:authorize="isAnonymous()">
+            <p><a href="/signup" class="button" >Sign Up</a></p>
+            <p><a href="/login" class="button" >Login</a></p>
         </div>
     </div>
-    <div>
-        <h3 th:text="${post.title}"></h3>
-        <p th:text="${post.content}"></p>
-        <p th:text="${post.creationDate}"></p>
-    </div>
-    <p th:classappend="${commentResult.getCssClass()}" th:text="${commentResult.getMessage()}"></p>
-    <div>
-        <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
-        <form class="form" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
-            <div class="row">
-                <input type="text" placeholder="Insert your comment here" required
-                       name="content" th:value="${content}"/>
-                <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
-                <input type="hidden" name="parent_id" th:value="${post.id}"/>
-                <input type="hidden" name="post" th:value="${post.id}"/>
-            </div>
-            <div class="row item-right">
-                <input type="submit" value="Add comment" />
-            </div>
+</div>
+
+<div class="full_post">
+    <div class="post-header">
+        Posted by <p class="user" th:text="${post.user.username}"></p>
+        <p class="date" th:text="${post.creationDate}"></p>
+        <form class="remove-post" sec:authorize="hasAuthority('ADMIN')" action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
+            <input type="hidden" name="_method" value="delete" />
+            <input type="submit" value="X" />
         </form>
     </div>
+    <div class="post-title">
+        <p th:text="${post.title}"></p>
+    </div>
+    <div class="post-text">
+        <p th:text="${post.content}"></p>
+    </div>
+    <p th:classappend="${commentResult.getCssClass()}" th:text="${commentResult.getMessage()}"></p>
+
+    <div class="comment_container">
+        <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
+        <form class="add_comment" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
+            <input type="text" placeholder="Insert your comment here" required
+                   name="content" th:value="${content}"/>
+            <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
+            <input type="hidden" name="parent_id" th:value="${post.id}"/>
+            <input type="hidden" name="post" th:value="${post.id}"/>
+            <input type="submit" value="Add comment" />
+        </form>
+    </div>
+</div>
 </body>
 </html>
