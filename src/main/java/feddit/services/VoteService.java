@@ -4,7 +4,6 @@ import feddit.model.Comment;
 import feddit.model.Post;
 import feddit.model.User;
 import feddit.model.Vote;
-import feddit.repositories.UserRepository;
 import feddit.repositories.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

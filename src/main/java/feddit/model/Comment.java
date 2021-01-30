@@ -92,9 +92,6 @@ public class Comment extends ForumObject {
         List<Vote> votes = this.getVotes();
         if(votes != null) {
             for (Vote vote : votes) {
-                System.out.println("User id:  " + vote.getUser().getId());
-                System.out.println("tipo:  " + vote.getType());
-                System.out.println("tipo:  " + vote.getComment().getId());
                 if (vote.getUser().getId() == userID && vote.getComment() != null && vote.getType().equals("UPVOTE"))
                     return true;
             }

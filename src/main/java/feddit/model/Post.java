@@ -4,7 +4,6 @@ import feddit.model.hierarchy.ForumObject;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

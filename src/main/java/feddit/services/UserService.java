@@ -1,6 +1,5 @@
 package feddit.services;
 
-import feddit.model.Comment;
 import feddit.model.User;
 import feddit.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
