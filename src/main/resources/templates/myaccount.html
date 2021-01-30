@@ -43,24 +43,7 @@
             </form>
         </div>
         <div class="main">
-            <h2>My account</h2>
-            <table>
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>E-mail</th>
-                    <th>Birth Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <td th:text="${first_name}">First Name</td>
-                    <td th:text="${last_name}">Last Name</td>
-                    <td th:text="${email}">E-mail</td>
-                    <td th:text="${birth_date}">Birth Date</td>
-                </tbody>
-            </table>
-
+            <div class="myposts">
             <h2>My posts</h2>
             <table>
                 <thead>
@@ -83,7 +66,8 @@
 
             </tbody>
         </table>
-    </div>
+        </div>
+
 
     <div class="mycomments">
         <h2>My comments</h2>
