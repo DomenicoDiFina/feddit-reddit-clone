@@ -50,7 +50,7 @@ public class VoteController {
                         .equals(vote.getType())) {
 
             if (!voteService.remove(optVote.get())) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E10", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE"))
@@ -61,7 +61,7 @@ public class VoteController {
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
             if (!voteService.remove(optVote.get())) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E11", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE"))
@@ -72,7 +72,7 @@ public class VoteController {
             vote.setPost(post);
             vote.setUser(user);
             if (!voteService.save(vote)) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E12", "error", "An error occured.");
             }
         }
         else {
@@ -89,12 +89,12 @@ public class VoteController {
             vote.setPost(post);
             vote.setUser(user);
             if (!voteService.save(vote)) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E13", "error", "An error occured.");
             }
         }
 
         if (!postService.save(post)) {
-            result = new ResultObject("E7", "error", "An error occured.");
+            result = new ResultObject("E14", "error", "An error occured.");
         }
 
         if(result != null) {
@@ -124,7 +124,7 @@ public class VoteController {
                         .equals(vote.getType())) {
 
             if(!voteService.remove(optVote.get())) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E15", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE"))
@@ -136,7 +136,7 @@ public class VoteController {
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
 
             if(!voteService.remove(optVote.get())) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E16", "error", "An error occured.");
             }
 
             if(vote.getType().equals("UPVOTE")) {
@@ -154,7 +154,7 @@ public class VoteController {
             vote.setUser(user);
 
             if(!voteService.save(vote)) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E17", "error", "An error occured.");
             }
         }
         else {
@@ -173,12 +173,12 @@ public class VoteController {
             vote.setUser(user);
 
             if(!voteService.save(vote)) {
-                result = new ResultObject("E7", "error", "An error occured.");
+                result = new ResultObject("E18", "error", "An error occured.");
             }
         }
 
         if (!commentService.save(comment)) {
-            result = new ResultObject("E7", "error", "An error occured.");
+            result = new ResultObject("E19", "error", "An error occured.");
         }
 
         model.addAttribute("post", postService.findById(postId));
