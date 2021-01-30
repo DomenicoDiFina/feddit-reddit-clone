@@ -10,7 +10,7 @@
     <body>
         <!-- HEADER -->
         <div class="header">
-            <img src="../static/images/logo.png" th:src="@{images/logo.png}"/>
+            <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
             <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
             <div>
                 <div class="left_sub_header" sec:authorize="isAuthenticated()">
