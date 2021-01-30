@@ -26,19 +26,9 @@ public class VoteService implements ForumService<Vote> {
         return this.voteRepository.findByCommentAndUser(user,comment);
     }
 
-    public boolean remove(Vote vote) {
-        try{
-            this.voteRepository.delete(vote);
-            return true;
-        } catch (DataAccessException dataAccessException) {
-            return false;
-        }
-
-
-    }
-
     @Override
     public CrudRepository<Vote, Long> getCrudRepository() {
         return this.voteRepository;
     }
+
 }

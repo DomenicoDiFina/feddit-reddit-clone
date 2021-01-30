@@ -19,27 +19,19 @@ public class Vote extends DatabaseObject {
     }
 
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private Post post;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "type")
     private String type;
 
     @ManyToOne
-    @JoinColumn(name = "comment_id", referencedColumnName = "id")
+    @JoinColumn(name = "post_id")
+    private Post post;
+
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
     private Comment comment;
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
 
     public User getUser() {
         return user;
@@ -55,6 +47,14 @@ public class Vote extends DatabaseObject {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public Comment getComment() {

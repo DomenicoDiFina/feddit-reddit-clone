@@ -14,7 +14,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
         return StreamSupport
                 .stream(this.findAll().spliterator(), false)
                 .filter(user -> user.getUsername().equals(username))
-                .findAny().orElseThrow( () -> new UsernameNotFoundException("User not found"));
+                .findAny().orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
 }

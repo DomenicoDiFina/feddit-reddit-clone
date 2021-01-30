@@ -41,7 +41,9 @@ public class VoteController {
                                         Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
+
         Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
+        //Optional<Vote> optVote = post.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
 
         ResultObject result = null;
 
@@ -49,7 +51,7 @@ public class VoteController {
                 optVote.get().getType()
                         .equals(vote.getType())) {
 
-            if (!voteService.remove(optVote.get())) {
+            if (!voteService.deleteById(optVote.get().getId())) {
                 result = new ResultObject("E10", "error", "An error occured.");
             }
 
@@ -61,7 +63,7 @@ public class VoteController {
 
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
-            if (!voteService.remove(optVote.get())) {
+            if (!voteService.deleteById(optVote.get().getId())) {
                 result = new ResultObject("E11", "error", "An error occured.");
             }
 
@@ -118,13 +120,13 @@ public class VoteController {
         Comment comment = commentService.findById(id);
 
         Optional<Vote> optVote = voteService.findByCommentAndUser(user, comment);
-
+        //Optional<Vote> optVote = comment.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
 
         if (optVote.isPresent() &&
                 optVote.get().getType()
                         .equals(vote.getType())) {
 
-            if(!voteService.remove(optVote.get())) {
+            if(!voteService.deleteById(optVote.get().getId())) {
                 result = new ResultObject("E15", "error", "An error occured.");
             }
 
@@ -136,7 +138,7 @@ public class VoteController {
         }
         else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
 
-            if(!voteService.remove(optVote.get())) {
+            if(!voteService.deleteById(optVote.get().getId())) {
                 result = new ResultObject("E16", "error", "An error occured.");
             }
 

@@ -51,7 +51,7 @@ public class PostController {
                                    @PathVariable long id){
         ResultObject result;
 
-        if (postService.remove(id)) {
+        if (postService.deleteById(id)) {
             result = new ResultObject("S3", "success", "Post removed successfully");
         } else {
             result = new ResultObject("E9", "error", "An error occured.");

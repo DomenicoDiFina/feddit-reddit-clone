@@ -13,7 +13,7 @@
                     Welcome <b>[[${#request.userPrincipal.principal.fullName}]]</b>
                 </p>
                 <input type="submit" value="Sign Out" />
-                <p th:classappend="${passwordResult.getCssClass()}" th:text="${passwordResult.getMessage()}" id="errorPassword"></p>
+                <p th:classappend="${passwordResult.getType()}" th:text="${passwordResult.getMessage()}" id="errorPassword"></p>
             </form>
             <div class="left_sub_header">
                 <button type="button" th:onclick="${'javascript:showChangePasswordForm()'}">Change password</button>
