@@ -96,6 +96,7 @@ public class UserController {
         user.setPassword(encodedPassword);
         user.setRoles(Set.of(roleService.findByName("USER")));
         ResultObject result = null;
+        mav.setViewName("redirect:/signup");
 
 
         if(userService.findByUsername(user.getUsername()) == null) {
@@ -105,15 +106,12 @@ public class UserController {
                     mav.setViewName("redirect:/signup_success");
                 } else {
                     result = new ResultObject("E6", "error", "An error occured.");
-                    mav.setViewName("redirect:/signup");
                 }
             } else {
                 result = new ResultObject("E7", "error", "There is something strange with your birthday...");
-                mav.setViewName("redirect:/signup");
             }
         } else {
             result = new ResultObject("E8", "error", "Username already exists.");
-            mav.setViewName("redirect:/signup");
         }
 
 
