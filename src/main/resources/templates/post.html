@@ -39,7 +39,7 @@
     <div class="post-text">
         <p th:text="${post.content}"></p>
     </div>
-    <p th:classappend="${commentResult.getCssClass()}" th:text="${commentResult.getMessage()}"></p>
+    <p th:classappend="${commentResult.getType()}" th:text="${commentResult.getMessage()}"></p>
 
     <div class="comment_container">
         <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
