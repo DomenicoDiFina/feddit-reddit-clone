@@ -21,7 +21,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
@@ -36,102 +36,46 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-    @Configuration
-    @Order(1)
-    public static class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
-
-        public AdminSecurityConfig() {
-            super();
-        }
-
-        @Bean
-        public UserDetailsService adminDetailsService() {
-            return new AdminAuthService();
-        }
-
-        @Bean
-        public DaoAuthenticationProvider adminAuthenticationProvider() {
-            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-            authProvider.setUserDetailsService(adminDetailsService());
-            authProvider.setPasswordEncoder(passwordEncoder());
-
-            return authProvider;
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(adminAuthenticationProvider());
-        }
-
-        @Override
-        //https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                    .antMatchers("/myaccount").authenticated() //<- list of pages that need to be authorized (my account? change password?)
-                    .antMatchers("/changepassword").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .formLogin().loginPage("/admin")
-                    .usernameParameter("username")
-                    .defaultSuccessUrl("/")
-                    .failureUrl("/login_admin_error")
-                    .permitAll()
-                    .and()
-                    .logout().logoutSuccessUrl("/").permitAll();
-        }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new AuthService();
     }
-    */
 
-    @Configuration
-    @Order(2)
-    public static class UserSecurityConfig extends WebSecurityConfigurerAdapter {
+    @Bean
+    public DaoAuthenticationProvider userAuthenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService());
+        authProvider.setPasswordEncoder(passwordEncoder());
 
-        public UserSecurityConfig() {
-            super();
-        }
+        return authProvider;
+    }
 
-        @Bean
-        public UserDetailsService userDetailsService() {
-            return new AuthService();
-        }
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
+        handler.setUseReferer(true);
+        return handler;
+    }
 
-        @Bean
-        public DaoAuthenticationProvider userAuthenticationProvider() {
-            DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-            authProvider.setUserDetailsService(userDetailsService());
-            authProvider.setPasswordEncoder(passwordEncoder());
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.authenticationProvider(userAuthenticationProvider());
+    }
 
-            return authProvider;
-        }
-
-        @Bean
-        public AuthenticationSuccessHandler successHandler() {
-            SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
-            handler.setUseReferer(true);
-            return handler;
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(userAuthenticationProvider());
-        }
-
-        @Override
-        //https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
-        protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                    .antMatchers("/myaccount").authenticated() //<- list of pages that need to be authorized (my account? change password?)
-                    .antMatchers("/changepassword").authenticated()
-                    .anyRequest().permitAll()
-                    .and()
-                    .formLogin().loginPage("/login").successHandler(successHandler())
-                    .usernameParameter("username")
-                    .defaultSuccessUrl("/")
-                    .failureUrl("/login_error")
-                    .permitAll()
-                    .and()
-                    .logout().logoutSuccessUrl("/").permitAll();
-        }
+    @Override
+    //https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/myaccount").authenticated() //<- list of pages that need to be authorized (my account? change password?)
+                .antMatchers("/changepassword").authenticated()
+                .anyRequest().permitAll()
+                .and()
+                .formLogin().loginPage("/login").successHandler(successHandler())
+                .usernameParameter("username")
+                .defaultSuccessUrl("/")
+                .failureUrl("/login_error")
+                .permitAll()
+                .and()
+                .logout().logoutSuccessUrl("/").permitAll();
     }
 }
