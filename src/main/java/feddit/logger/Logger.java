@@ -103,7 +103,7 @@ public class Logger {
     @After("addOrDeletePostVotePointcut()")
     private void afterPostVote(JoinPoint joinPoint) {
         this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
-                "' " + ((Vote) joinPoint.getArgs()[3]).getType().toLowerCase() +
+                "' " + ((Vote) joinPoint.getArgs()[5]).getType().toLowerCase() +
                 " post with id " + joinPoint.getArgs()[2]);
     }
 

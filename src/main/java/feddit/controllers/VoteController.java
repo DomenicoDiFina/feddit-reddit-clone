@@ -33,17 +33,32 @@ public class VoteController {
     @Autowired
     private CommentService commentService;
 
-    @PostMapping("/votePost/{id}")
+    @PostMapping("/vote/{id}")
     public String processPostVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                         RedirectAttributes redirectAttributes,
                                         @PathVariable long id,
+                                        @RequestParam("typeObj") String typeObject,
+                                        @RequestParam("post") long postId,
                                         Vote vote,
                                         Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
-        Post post = postService.findById(id);
+        Optional<Vote> optVote = Optional.empty();
+        Post post = null;
+        Comment comment = null;
 
-        Optional<Vote> optVote = voteService.findByPostAndUser(user, post);
-        //Optional<Vote> optVote = post.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
+        if(typeObject.equals("POST")){
+            post = postService.findById(id);
+
+            optVote = voteService.findByPostAndUser(user, post);
+            //Optional<Vote> optVote = post.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
+        }
+        else{
+            comment = commentService.findById(id);
+
+            optVote = voteService.findByCommentAndUser(user, comment);
+            //Optional<Vote> optVote = comment.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
+        }
+
 
         ResultObject result = null;
 
@@ -56,9 +71,15 @@ public class VoteController {
             }
 
             if(vote.getType().equals(Vote.UPVOTE)) {
-                post.setUpVotes(post.getUpVotes() - 1);
+                if(typeObject.equals("POST"))
+                    post.setUpVotes(post.getUpVotes() - 1);
+                else
+                    comment.setUpVotes(comment.getUpVotes() - 1);
             } else {
-                post.setDownVotes(post.getDownVotes() - 1);
+                if(typeObject.equals("POST"))
+                    post.setDownVotes(post.getDownVotes() - 1);
+                else
+                    comment.setDownVotes(comment.getDownVotes() - 1);
             }
 
         }
@@ -67,12 +88,35 @@ public class VoteController {
                 result = new ResultObject("E11", "error", "An error occured.");
             }
 
-            if(vote.getType().equals(Vote.UPVOTE))
-                post.setUpVotes(post.getUpVotes() + 2);
-            else
-                post.setDownVotes(post.getDownVotes() + 2);
+            if(vote.getType().equals(Vote.UPVOTE)) {
+                if (typeObject.equals("POST")) {
+                    post.setUpVotes(post.getUpVotes() + 1);
+                    post.setDownVotes(post.getDownVotes() - 1);
+                } else {
+                    comment.setUpVotes(comment.getUpVotes() + 1);
+                    comment.setDownVotes(comment.getDownVotes() - 1);
+                }
+                vote = new Vote();
+                vote.setType(Vote.UPVOTE);
+            }
 
-            vote.setPost(post);
+            else{
+                if (typeObject.equals("POST")) {
+                    post.setUpVotes(post.getUpVotes() - 1);
+                    post.setDownVotes(post.getDownVotes() + 1);
+                } else {
+                    comment.setUpVotes(comment.getUpVotes() - 1);
+                    comment.setDownVotes(comment.getDownVotes() + 1);
+                }
+                vote = new Vote();
+                vote.setType(Vote.DOWNVOTE);
+            }
+
+            if(typeObject.equals("POST"))
+                vote.setPost(post);
+            else
+                vote.setComment(comment);
+
             vote.setUser(user);
             if (!voteService.save(vote)) {
                 result = new ResultObject("E12", "error", "An error occured.");
@@ -80,34 +124,60 @@ public class VoteController {
         }
         else {
             if(Vote.UPVOTE.equals(vote.getType())) {
-                post.setUpVotes(post.getUpVotes() + 1);
+                if(typeObject.equals("POST"))
+                    post.setUpVotes(post.getUpVotes() + 1);
+                else
+                    comment.setUpVotes(comment.getUpVotes() + 1);
+
                 vote = new Vote();
                 vote.setType(Vote.UPVOTE);
             } else if(Vote.DOWNVOTE.equals(vote.getType())){
-                post.setDownVotes(post.getDownVotes() + 1);
+                if(typeObject.equals("POST"))
+                    post.setDownVotes(post.getDownVotes() + 1);
+                else
+                    comment.setDownVotes(comment.getDownVotes() + 1);
+
                 vote = new Vote();
                 vote.setType(Vote.DOWNVOTE);
             }
 
-            vote.setPost(post);
+            if(typeObject.equals("POST"))
+                vote.setPost(post);
+            else
+                vote.setComment(comment);
+
             vote.setUser(user);
+
             if (!voteService.save(vote)) {
                 result = new ResultObject("E13", "error", "An error occured.");
             }
         }
 
-        if (!postService.save(post)) {
-            result = new ResultObject("E14", "error", "An error occured.");
+        if(typeObject.equals("POST")) {
+            if (!postService.save(post)) {
+                result = new ResultObject("E14", "error", "An error occured.");
+            }
+        }
+        else{
+            if (!commentService.save(comment)) {
+                result = new ResultObject("E19", "error", "An error occured.");
+            }
         }
 
         if(result != null) {
             redirectAttributes.addFlashAttribute("postResult", result);
         }
-        return "redirect:/";
+
+        if(typeObject.equals("POST"))
+            return "redirect:/";
+        else {
+            model.addAttribute("post", postService.findById(postId));
+            return "redirect:/view_post?id=" + postId;
+        }
     }
 
 
-    @PostMapping("/voteComment/{id}")
+    /*@PostMapping("/voteComment/{id}")
     public String processCommentVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                      RedirectAttributes redirectAttributes,
                                      @PathVariable long id,
@@ -190,6 +260,6 @@ public class VoteController {
         }
 
         return "redirect:/view_post?id="+postId;
-    }
+    }*/
 
 }

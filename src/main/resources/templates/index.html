@@ -42,15 +42,19 @@
             <div class="grid_left">
                 <div th:each="post: ${posts}" class="post">
                     <div class="post-sidebar">
-                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
                             <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
+                            <input type="hidden" name="typeObj" th:value="POST"/>
+                            <input type="hidden" name="post" th:value="${post.id}"/>
                         </form>
 
 
                         <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
 
-                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/votePost/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
                             <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
+                            <input type="hidden" name="typeObj" th:value="POST"/>
+                            <input type="hidden" name="post" th:value="${post.id}"/>
                         </form>
                     </div>
                     <div class="post-content">
