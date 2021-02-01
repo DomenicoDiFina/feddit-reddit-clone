@@ -39,6 +39,7 @@ public class VoteController {
                                         @PathVariable long id,
                                         @RequestParam("typeObj") String typeObject,
                                         @RequestParam("post") long postId,
+                                        @RequestParam("place") String place,
                                         Vote vote,
                                         Model model) {
         User user = userService.findByUsername(userDetails.getUsername());
@@ -168,8 +169,12 @@ public class VoteController {
             redirectAttributes.addFlashAttribute("postResult", result);
         }
 
-        if(typeObject.equals("POST"))
-            return "redirect:/";
+        if(typeObject.equals("POST")) {
+            if(place.equals("INDEX"))
+                return "redirect:/";
+            else
+                return "redirect:/view_post?id=" + postId;
+        }
         else {
             model.addAttribute("post", postService.findById(postId));
             return "redirect:/view_post?id=" + postId;

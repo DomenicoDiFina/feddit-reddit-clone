@@ -46,6 +46,7 @@
                             <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
                             <input type="hidden" name="typeObj" th:value="POST"/>
                             <input type="hidden" name="post" th:value="${post.id}"/>
+                            <input type="hidden" name="place" th:value="INDEX"/>
                         </form>
 
 
@@ -55,6 +56,7 @@
                             <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
                             <input type="hidden" name="typeObj" th:value="POST"/>
                             <input type="hidden" name="post" th:value="${post.id}"/>
+                            <input type="hidden" name="place" th:value="INDEX"/>
                         </form>
                     </div>
                     <div class="post-content">
