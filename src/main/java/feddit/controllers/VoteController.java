@@ -1,6 +1,7 @@
 package feddit.controllers;
 
 import feddit.model.*;
+import feddit.model.hierarchy.ForumObject;
 import feddit.security.FedditUserDetails;
 import feddit.services.CommentService;
 import feddit.services.PostService;
@@ -31,149 +32,77 @@ public class VoteController {
     @Autowired
     private CommentService commentService;
 
+
     @PostMapping("/vote/{id}")
     public String processVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                         RedirectAttributes redirectAttributes,
                                         @PathVariable long id,
-                                        @RequestParam("typeObj") String typeObject,
+                                        @RequestParam("parent_type") String parentType,
                                         @RequestParam("post") long postId,
-                                        @RequestParam("place") String place,
-                                        Vote vote,
+                                        @RequestParam("page") String page,
+                                        @RequestParam("vote_type") String voteType,
                                         Model model) {
+
         User user = userService.findByUsername(userDetails.getUsername());
-        Optional<Vote> optVote = Optional.empty();
-        Post post = null;
-        Comment comment = null;
+        ForumObject voted;
+        Vote newVote = new Vote();
+        newVote.setUser(user);
+        newVote.setType(voteType);
 
-        if(typeObject.equalsIgnoreCase("post")){
-            post = postService.findById(id);
-
-            optVote = voteService.findByPostAndUser(user, post);
-            //Optional<Vote> optVote = post.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
-        }
-        else{
-            comment = commentService.findById(id);
-
-            optVote = voteService.findByCommentAndUser(user, comment);
-            //Optional<Vote> optVote = comment.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
-        }
-
-
+        boolean isUpVote = voteType.equalsIgnoreCase(Vote.UP_VOTE);
         ResultObject result = null;
 
-        if (optVote.isPresent() &&
-                optVote.get().getType()
-                        .equals(vote.getType())) {
+        if (parentType.equalsIgnoreCase("post")) {
+            voted = postService.findById(id);
+            newVote.setPost((Post) voted);
+        } else {
+            voted = commentService.findById(id);
+            newVote.setComment((Comment) voted);
+        }
 
-            if (!voteService.deleteById(optVote.get().getId())) {
+        if (isUpVote) {
+            voted.setUpVotes(voted.getUpVotes() + 1);
+        } else {
+            voted.setDownVotes(voted.getDownVotes() + 1);
+        }
+
+
+        Optional<Vote> previousVote = voted.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
+
+        if (previousVote.isPresent()) {
+            if (!previousVote.get().getType().equalsIgnoreCase(newVote.getType())) {
+                if (isUpVote) {
+                    voted.setDownVotes(voted.getDownVotes() - 1);
+                } else {
+                    voted.setUpVotes(voted.getUpVotes() - 1);
+                }
+            } else {
+                if (isUpVote) {
+                    voted.setUpVotes(voted.getUpVotes() - 1);
+                } else {
+                    voted.setDownVotes(voted.getDownVotes() - 1);
+                }
+            }
+            if (!voteService.deleteById(previousVote.get().getId())) {
                 result = new ResultObject("E10", "error", "An error occured.");
             }
-
-            if(vote.getType().equals(Vote.UP_VOTE)) {
-                if(typeObject.equalsIgnoreCase("post"))
-                    post.setUpVotes(post.getUpVotes() - 1);
-                else
-                    comment.setUpVotes(comment.getUpVotes() - 1);
-            } else {
-                if(typeObject.equalsIgnoreCase("post"))
-                    post.setDownVotes(post.getDownVotes() - 1);
-                else
-                    comment.setDownVotes(comment.getDownVotes() - 1);
-            }
-
-        }
-        else if (optVote.isPresent() && !optVote.get().getType().equals(vote.getType())){
-            if (!voteService.deleteById(optVote.get().getId())) {
-                result = new ResultObject("E11", "error", "An error occured.");
-            }
-
-            if(vote.getType().equals(Vote.UP_VOTE)) {
-                if (typeObject.equalsIgnoreCase("post")) {
-                    post.setUpVotes(post.getUpVotes() + 1);
-                    post.setDownVotes(post.getDownVotes() - 1);
-                } else {
-                    comment.setUpVotes(comment.getUpVotes() + 1);
-                    comment.setDownVotes(comment.getDownVotes() - 1);
-                }
-                vote = new Vote();
-                vote.setType(Vote.UP_VOTE);
-            }
-
-            else{
-                if (typeObject.equalsIgnoreCase("post")) {
-                    post.setUpVotes(post.getUpVotes() - 1);
-                    post.setDownVotes(post.getDownVotes() + 1);
-                } else {
-                    comment.setUpVotes(comment.getUpVotes() - 1);
-                    comment.setDownVotes(comment.getDownVotes() + 1);
-                }
-                vote = new Vote();
-                vote.setType(Vote.DOWN_VOTE);
-            }
-
-            if(typeObject.equalsIgnoreCase("post"))
-                vote.setPost(post);
-            else
-                vote.setComment(comment);
-
-            vote.setUser(user);
-            if (!voteService.save(vote)) {
-                result = new ResultObject("E12", "error", "An error occured.");
-            }
-        }
-        else {
-            if(Vote.UP_VOTE.equals(vote.getType())) {
-                if(typeObject.equalsIgnoreCase("post"))
-                    post.setUpVotes(post.getUpVotes() + 1);
-                else
-                    comment.setUpVotes(comment.getUpVotes() + 1);
-
-                vote = new Vote();
-                vote.setType(Vote.UP_VOTE);
-            } else if(Vote.DOWN_VOTE.equals(vote.getType())){
-                if(typeObject.equalsIgnoreCase("post"))
-                    post.setDownVotes(post.getDownVotes() + 1);
-                else
-                    comment.setDownVotes(comment.getDownVotes() + 1);
-
-                vote = new Vote();
-                vote.setType(Vote.DOWN_VOTE);
-            }
-
-            if(typeObject.equalsIgnoreCase("post"))
-                vote.setPost(post);
-            else
-                vote.setComment(comment);
-
-            vote.setUser(user);
-
-            if (!voteService.save(vote)) {
-                result = new ResultObject("E13", "error", "An error occured.");
-            }
         }
 
-        if(typeObject.equalsIgnoreCase("post")) {
-            if (!postService.save(post)) {
-                result = new ResultObject("E14", "error", "An error occured.");
-            }
-        }
-        else{
-            if (!commentService.save(comment)) {
-                result = new ResultObject("E19", "error", "An error occured.");
-            }
+        if (!voteService.save(newVote)) {
+            result = new ResultObject("E11", "error", "An error occured.");
         }
 
-        if(result != null) {
+        if (result != null) {
             redirectAttributes.addFlashAttribute("postResult", result);
         }
 
-        if(typeObject.equalsIgnoreCase("post")) {
-            if(place.equals("INDEX"))
+        if (parentType.equalsIgnoreCase("post")) {
+            if (page.equalsIgnoreCase("index")) {
                 return "redirect:/";
-            else
+            } else {
                 return "redirect:/view_post?id=" + postId;
-        }
-        else {
+            }
+        } else {
             model.addAttribute("post", postService.findById(postId));
             return "redirect:/view_post?id=" + postId;
         }

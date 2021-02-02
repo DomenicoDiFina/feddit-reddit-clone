@@ -57,10 +57,10 @@ public class UserController {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User u = userService.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
         ResultObject result;
-        if(!oldPassword.equals(newPassword)){
-            if(passwordEncoder.matches(oldPassword, u.getPassword())){
+        if (!oldPassword.equals(newPassword)){
+            if (passwordEncoder.matches(oldPassword, u.getPassword())){
                 u.setPassword(passwordEncoder.encode(newPassword));
-                if(userService.save(u)) {
+                if (userService.save(u)) {
                     result = new ResultObject("S1", "success", "Password changed successfully.");
                 } else {
                     result = new ResultObject("E1", "error", "An error occured.");
