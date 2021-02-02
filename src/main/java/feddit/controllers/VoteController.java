@@ -45,7 +45,7 @@ public class VoteController {
         Post post = null;
         Comment comment = null;
 
-        if(typeObject.equals("POST")){
+        if(typeObject.equalsIgnoreCase("post")){
             post = postService.findById(id);
 
             optVote = voteService.findByPostAndUser(user, post);
@@ -70,12 +70,12 @@ public class VoteController {
             }
 
             if(vote.getType().equals(Vote.UP_VOTE)) {
-                if(typeObject.equals("POST"))
+                if(typeObject.equalsIgnoreCase("post"))
                     post.setUpVotes(post.getUpVotes() - 1);
                 else
                     comment.setUpVotes(comment.getUpVotes() - 1);
             } else {
-                if(typeObject.equals("POST"))
+                if(typeObject.equalsIgnoreCase("post"))
                     post.setDownVotes(post.getDownVotes() - 1);
                 else
                     comment.setDownVotes(comment.getDownVotes() - 1);
@@ -88,7 +88,7 @@ public class VoteController {
             }
 
             if(vote.getType().equals(Vote.UP_VOTE)) {
-                if (typeObject.equals("POST")) {
+                if (typeObject.equalsIgnoreCase("post")) {
                     post.setUpVotes(post.getUpVotes() + 1);
                     post.setDownVotes(post.getDownVotes() - 1);
                 } else {
@@ -100,7 +100,7 @@ public class VoteController {
             }
 
             else{
-                if (typeObject.equals("POST")) {
+                if (typeObject.equalsIgnoreCase("post")) {
                     post.setUpVotes(post.getUpVotes() - 1);
                     post.setDownVotes(post.getDownVotes() + 1);
                 } else {
@@ -111,7 +111,7 @@ public class VoteController {
                 vote.setType(Vote.DOWN_VOTE);
             }
 
-            if(typeObject.equals("POST"))
+            if(typeObject.equalsIgnoreCase("post"))
                 vote.setPost(post);
             else
                 vote.setComment(comment);
@@ -123,7 +123,7 @@ public class VoteController {
         }
         else {
             if(Vote.UP_VOTE.equals(vote.getType())) {
-                if(typeObject.equals("POST"))
+                if(typeObject.equalsIgnoreCase("post"))
                     post.setUpVotes(post.getUpVotes() + 1);
                 else
                     comment.setUpVotes(comment.getUpVotes() + 1);
@@ -131,7 +131,7 @@ public class VoteController {
                 vote = new Vote();
                 vote.setType(Vote.UP_VOTE);
             } else if(Vote.DOWN_VOTE.equals(vote.getType())){
-                if(typeObject.equals("POST"))
+                if(typeObject.equalsIgnoreCase("post"))
                     post.setDownVotes(post.getDownVotes() + 1);
                 else
                     comment.setDownVotes(comment.getDownVotes() + 1);
@@ -140,7 +140,7 @@ public class VoteController {
                 vote.setType(Vote.DOWN_VOTE);
             }
 
-            if(typeObject.equals("POST"))
+            if(typeObject.equalsIgnoreCase("post"))
                 vote.setPost(post);
             else
                 vote.setComment(comment);
@@ -152,7 +152,7 @@ public class VoteController {
             }
         }
 
-        if(typeObject.equals("POST")) {
+        if(typeObject.equalsIgnoreCase("post")) {
             if (!postService.save(post)) {
                 result = new ResultObject("E14", "error", "An error occured.");
             }
