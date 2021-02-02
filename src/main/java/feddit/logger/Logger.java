@@ -100,7 +100,7 @@ public class Logger {
     @After("addOrDeleteVotePointcut()")
     private void afterPostVote(JoinPoint joinPoint) {
         String log = "User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
-                "' " + ((Vote) joinPoint.getArgs()[6]).getType().toLowerCase();
+                "' " + (joinPoint.getArgs()[6].toString().toLowerCase());
         if ("post".equalsIgnoreCase(joinPoint.getArgs()[3].toString())) {
             log += " post with id " + joinPoint.getArgs()[2];
         } else {
