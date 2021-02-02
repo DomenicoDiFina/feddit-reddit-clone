@@ -32,7 +32,7 @@ public class VoteController {
     private CommentService commentService;
 
     @PostMapping("/vote/{id}")
-    public String processPostVote(@AuthenticationPrincipal FedditUserDetails userDetails,
+    public String processVote(@AuthenticationPrincipal FedditUserDetails userDetails,
                                         RedirectAttributes redirectAttributes,
                                         @PathVariable long id,
                                         @RequestParam("typeObj") String typeObject,
