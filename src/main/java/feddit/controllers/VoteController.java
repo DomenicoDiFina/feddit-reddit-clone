@@ -66,7 +66,6 @@ public class VoteController {
             voted.setDownVotes(voted.getDownVotes() + 1);
         }
 
-
         Optional<Vote> previousVote = voted.getVotes().stream().filter(v -> v.getUser().equals(user)).findAny();
 
         if (previousVote.isPresent()) {
@@ -76,26 +75,28 @@ public class VoteController {
                 } else {
                     voted.setUpVotes(voted.getUpVotes() - 1);
                 }
+                if (!voteService.save(newVote)) {
+                    result = new ResultObject("E10", "error", "An error occured.");
+                }
             } else {
                 if (isUpVote) {
-                    voted.setUpVotes(voted.getUpVotes() - 1);
+                    voted.setUpVotes(voted.getUpVotes() - 2);
                 } else {
-                    voted.setDownVotes(voted.getDownVotes() - 1);
+                    voted.setDownVotes(voted.getDownVotes() - 2);
                 }
             }
             if (!voteService.deleteById(previousVote.get().getId())) {
-                result = new ResultObject("E10", "error", "An error occured.");
+                result = new ResultObject("E11", "error", "An error occured.");
             }
-        }
-
-        if (!voteService.save(newVote)) {
-            result = new ResultObject("E11", "error", "An error occured.");
+        } else {
+            if (!voteService.save(newVote)) {
+                result = new ResultObject("E12", "error", "An error occured.");
+            }
         }
 
         if (result != null) {
             redirectAttributes.addFlashAttribute("postResult", result);
         }
-
         if (parentType.equalsIgnoreCase("post")) {
             if (page.equalsIgnoreCase("index")) {
                 return "redirect:/";
