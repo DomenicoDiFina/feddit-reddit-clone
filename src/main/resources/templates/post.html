@@ -10,67 +10,69 @@
 </head>
 <body>
 <!-- HEADER -->
-<div class="header">
-    <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
-    <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
-    <div>
-        <div class="left_sub_header" sec:authorize="isAuthenticated()">
-            <a href="/" class="button">Go back</a>
+    <div class="header">
+        <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
+        <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
+        <div>
+            <div class="left_sub_header" sec:authorize="isAuthenticated()">
+                <a href="/" class="button">Go back</a>
+            </div>
+            <div class="left_sub_header" sec:authorize="isAnonymous()">
+                <p><a href="/signup" class="button" >Sign Up</a></p>
+                <p><a href="/login" class="button" >Login</a></p>
+            </div>
         </div>
-        <div class="left_sub_header" sec:authorize="isAnonymous()">
-            <p><a href="/signup" class="button" >Sign Up</a></p>
-            <p><a href="/login" class="button" >Login</a></p>
+    </div>
+
+    <div class="full_post">
+        <div class="post-sidebar">
+            <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
+                <input type="hidden" name="typeObj" th:value="POST"/>
+                <input type="hidden" name="post" th:value="${post.id}"/>
+                <input type="hidden" name="place" th:value="POST"/>
+            </form>
+
+
+            <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
+
+            <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
+                <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
+                <input type="hidden" name="typeObj" th:value="POST"/>
+                <input type="hidden" name="post" th:value="${post.id}"/>
+                <input type="hidden" name="place" th:value="POST"/>
+            </form>
         </div>
+        <div class="post-content">
+            <div class="post-header">
+                Posted by <p class="user" th:text="${post.user.username}"></p>
+                <p class="date" th:text="${post.creationDate}"></p>
+                <form class="remove-post" sec:authorize="hasAuthority('ADMIN')" action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
+                    <input type="hidden" name="_method" value="delete" />
+                    <input type="submit" value="X" />
+                </form>
+            </div>
+            <div class="post-title">
+                <p th:text="${post.title}"></p>
+            </div>
+            <div class="post-text">
+                <p th:text="${post.content}"></p>
+            </div>
+            <p th:classappend="${commentResult.getType()}" th:text="${commentResult.getMessage()}"></p>
+        </div>
+            <div class="comment_container">
+                <section layout:include="@{/post_fragment.html} :: comment_section" th:with="object=${post}"></section>
+                <form class="add_comment" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
+                    <input type="text" placeholder="Insert your comment here" required
+                           name="content" th:value="${content}"/>
+                    <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
+                    <input type="hidden" name="parent_id" th:value="${post.id}"/>
+                    <input type="hidden" name="post" th:value="${post.id}"/>
+                    <input type="submit" value="Add comment" />
+                </form>
+            </div>
+        <!--</div>-->
     </div>
-</div>
-
-<div class="full_post">
-    <div class="post-header">
-        Posted by <p class="user" th:text="${post.user.username}"></p>
-        <p class="date" th:text="${post.creationDate}"></p>
-        <form class="remove-post" sec:authorize="hasAuthority('ADMIN')" action="#" th:action="@{'/removePost/{id}'(id=${post.id})}" th:method="delete" >
-            <input type="hidden" name="_method" value="delete" />
-            <input type="submit" value="X" />
-        </form>
-    </div>
-    <div class="post-sidebar">
-        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-            <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
-            <input type="hidden" name="typeObj" th:value="POST"/>
-            <input type="hidden" name="post" th:value="${post.id}"/>
-            <input type="hidden" name="place" th:value="POST"/>
-        </form>
-
-
-        <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
-
-        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-            <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
-            <input type="hidden" name="typeObj" th:value="POST"/>
-            <input type="hidden" name="post" th:value="${post.id}"/>
-            <input type="hidden" name="place" th:value="POST"/>
-        </form>
-    </div>
-    <div class="post-title">
-        <p th:text="${post.title}"></p>
-    </div>
-    <div class="post-text">
-        <p th:text="${post.content}"></p>
-    </div>
-    <p th:classappend="${commentResult.getType()}" th:text="${commentResult.getMessage()}"></p>
-
-    <div class="comment_container">
-        <section layout:include="@{/post_fragment.html} :: comment_section" th:with="object=${post}"></section>
-        <form class="add_comment" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
-            <input type="text" placeholder="Insert your comment here" required
-                   name="content" th:value="${content}"/>
-            <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
-            <input type="hidden" name="parent_id" th:value="${post.id}"/>
-            <input type="hidden" name="post" th:value="${post.id}"/>
-            <input type="submit" value="Add comment" />
-        </form>
-    </div>
-</div>
 </body>
 <script type="text/javascript">
     var post_summary = document.getElementsByClassName("post_summary")[0];
