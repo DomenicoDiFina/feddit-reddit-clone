@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
@@ -39,6 +38,7 @@ public class VoteController {
                                         @PathVariable long id,
                                         Vote vote,
                                         Model model) {
+
         User user = userService.findByUsername(userDetails.getUsername());
         Post post = postService.findById(id);
 
@@ -55,7 +55,7 @@ public class VoteController {
                 result = new ResultObject("E10", "error", "An error occured.");
             }
 
-            if(vote.getType().equals(Vote.UPVOTE)) {
+            if(vote.getType().equals(Vote.UP_VOTE)) {
                 post.setUpVotes(post.getUpVotes() - 1);
             } else {
                 post.setDownVotes(post.getDownVotes() - 1);
@@ -67,7 +67,7 @@ public class VoteController {
                 result = new ResultObject("E11", "error", "An error occured.");
             }
 
-            if(vote.getType().equals(Vote.UPVOTE))
+            if(vote.getType().equals(Vote.UP_VOTE))
                 post.setUpVotes(post.getUpVotes() + 2);
             else
                 post.setDownVotes(post.getDownVotes() + 2);
@@ -79,14 +79,14 @@ public class VoteController {
             }
         }
         else {
-            if(Vote.UPVOTE.equals(vote.getType())) {
+            if(Vote.UP_VOTE.equals(vote.getType())) {
                 post.setUpVotes(post.getUpVotes() + 1);
                 vote = new Vote();
-                vote.setType(Vote.UPVOTE);
-            } else if(Vote.DOWNVOTE.equals(vote.getType())){
+                vote.setType(Vote.UP_VOTE);
+            } else if(Vote.DOWN_VOTE.equals(vote.getType())){
                 post.setDownVotes(post.getDownVotes() + 1);
                 vote = new Vote();
-                vote.setType(Vote.DOWNVOTE);
+                vote.setType(Vote.DOWN_VOTE);
             }
 
             vote.setPost(post);
@@ -114,8 +114,8 @@ public class VoteController {
                                      @RequestParam("post") long postId,
                                      Vote vote,
                                      Model model) {
-        ResultObject result = null;
 
+        ResultObject result = null;
         User user = userService.findByUsername(userDetails.getUsername());
         Comment comment = commentService.findById(id);
 
@@ -126,11 +126,11 @@ public class VoteController {
                 optVote.get().getType()
                         .equals(vote.getType())) {
 
-            if(!voteService.deleteById(optVote.get().getId())) {
+            if (!voteService.deleteById(optVote.get().getId())) {
                 result = new ResultObject("E15", "error", "An error occured.");
             }
 
-            if(vote.getType().equals(Vote.UPVOTE))
+            if (vote.getType().equals(Vote.UP_VOTE))
                 comment.setUpVotes(comment.getUpVotes() - 1);
             else
                 comment.setDownVotes(comment.getDownVotes() - 1);
@@ -142,15 +142,15 @@ public class VoteController {
                 result = new ResultObject("E16", "error", "An error occured.");
             }
 
-            if(vote.getType().equals(Vote.UPVOTE)) {
+            if(vote.getType().equals(Vote.UP_VOTE)) {
                 comment.setUpVotes(comment.getUpVotes() + 2);
                 vote = new Vote();
-                vote.setType(Vote.UPVOTE);
+                vote.setType(Vote.UP_VOTE);
             }
             else {
                 comment.setDownVotes(comment.getDownVotes() + 2);
                 vote = new Vote();
-                vote.setType(Vote.DOWNVOTE);
+                vote.setType(Vote.DOWN_VOTE);
             }
 
             vote.setComment(comment);
@@ -161,15 +161,15 @@ public class VoteController {
             }
         }
         else {
-            if(Vote.UPVOTE.equals(vote.getType())) {
+            if(Vote.UP_VOTE.equals(vote.getType())) {
                 comment.setUpVotes(comment.getUpVotes() + 1);
                 vote = new Vote();
-                vote.setType(Vote.UPVOTE);
-            } else if(Vote.DOWNVOTE.equals(vote.getType())){
+                vote.setType(Vote.UP_VOTE);
+            } else if(Vote.DOWN_VOTE.equals(vote.getType())){
                 comment.setDownVotes(comment.getDownVotes() + 1);
 
                 vote = new Vote();
-                vote.setType(Vote.DOWNVOTE);
+                vote.setType(Vote.DOWN_VOTE);
             }
 
             vote.setComment(comment);
@@ -189,7 +189,7 @@ public class VoteController {
             redirectAttributes.addFlashAttribute("commentResult", result);
         }
 
-        return "redirect:/view_post?id="+postId;
+        return "redirect:/view_post?id=" + postId;
     }
 
 }
