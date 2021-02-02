@@ -1,10 +1,8 @@
 package feddit.model;
 
 import feddit.model.hierarchy.DatabaseObject;
-
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,7 +25,7 @@ public class User extends DatabaseObject {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private Date birthDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -36,19 +34,18 @@ public class User extends DatabaseObject {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
-    @OneToMany(mappedBy = "user", orphanRemoval=true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "user", orphanRemoval=true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Vote> votes;
 
-    @OneToMany(mappedBy = "user", orphanRemoval=true)
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Comment> comments;
 
-    public User() {
-    }
+    public User() {}
 
     @Override
     public String getClazz() {

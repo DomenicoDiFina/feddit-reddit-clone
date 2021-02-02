@@ -15,14 +15,13 @@ public class Post extends ForumObject {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "post", orphanRemoval=true)
+    @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", orphanRemoval = true)
     private List<Vote> votes;
 
-    public Post() {
-    }
+    public Post() {}
 
     @Override
     public String getClazz() {
@@ -39,9 +38,8 @@ public class Post extends ForumObject {
 
     @Override
     public List<Comment> getComments() {
-        List<Comment> comments = this.comments;
-        Collections.sort(comments, Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
-        return comments;
+        this.comments.sort(Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
+        return this.comments;
     }
 
     public void setComments(List<Comment> comments) {
