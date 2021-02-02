@@ -35,7 +35,7 @@ public class PostController {
 
         post.setUser(userService.findByUsername(userDetails.getUsername()));
         ResultObject result;
-        if(postService.save(post)) {
+        if (postService.save(post)) {
             result = new ResultObject("S2", "success", "Post added successfully");
         } else {
             result = new ResultObject("E4", "error", "An error occured.");
@@ -48,9 +48,9 @@ public class PostController {
     @RequestMapping(value="/removePost/{id}", method = RequestMethod.DELETE)
     public ModelAndView deletePost(ModelAndView mav,
                                    RedirectAttributes redirectAttributes,
-                                   @PathVariable long id){
-        ResultObject result;
+                                   @PathVariable long id) {
 
+        ResultObject result;
         if (postService.deleteById(id)) {
             result = new ResultObject("S3", "success", "Post removed successfully");
         } else {
@@ -64,8 +64,8 @@ public class PostController {
     @GetMapping("/view_post")
     public String showPost(Model model,
                            @RequestParam("id") long id,
-                           @ModelAttribute("commentResult") ResultObject commentResult)
-    {
+                           @ModelAttribute("commentResult") ResultObject commentResult) {
+
         Post post = this.postService.findById(id);
         model.addAttribute("post", post);
         model.addAttribute("commentResult", commentResult);
@@ -80,6 +80,7 @@ public class PostController {
                              @RequestParam("post") long postId,
                              @AuthenticationPrincipal FedditUserDetails userDetails,
                              RedirectAttributes redirectAttributes) {
+
         Comment comment = new Comment();
         comment.setContent(content);
         comment.setUser(this.userService.findByUsername(userDetails.getUsername()));
@@ -91,7 +92,7 @@ public class PostController {
             Post parent = this.postService.findById(parentId);
             comment.setPost(parent);
         }
-        if(commentService.save(comment)) {
+        if (commentService.save(comment)) {
             result = new ResultObject("S4", "success", "Comment added successfully");
         } else {
             result = new ResultObject("E5", "error", "An error occured.");
@@ -100,7 +101,7 @@ public class PostController {
         Post post = postService.findById(postId);
         model.addAttribute("post", post);
         redirectAttributes.addFlashAttribute("commentResult", result);
-        return "redirect:/view_post?id="+postId;
+        return "redirect:/view_post?id=" + postId;
     }
 
     @PostMapping("/delete_comment")
@@ -108,10 +109,10 @@ public class PostController {
                                 @RequestParam("id") long commentId,
                                 @RequestParam("post") long postId,
                                 RedirectAttributes redirectAttributes) {
-    ResultObject result;
+
+        ResultObject result;
         if (this.commentService.deleteById(commentId)) {
             result = new ResultObject("S7", "success", "Comment removed successfully");
-
         } else {
             result = new ResultObject("E10", "error", "An error occured.");
         }
