@@ -97,6 +97,7 @@ public class VoteController {
         if (result != null) {
             redirectAttributes.addFlashAttribute("postResult", result);
         }
+
         if (parentType.equalsIgnoreCase("post")) {
             if (page.equalsIgnoreCase("index")) {
                 return "redirect:/";
@@ -107,6 +108,7 @@ public class VoteController {
             model.addAttribute("post", postService.findById(postId));
             return "redirect:/view_post?id=" + postId;
         }
+
     }
 
 }

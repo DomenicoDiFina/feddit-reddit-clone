@@ -13,7 +13,7 @@
                     <div class="side">
                         <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${c.id})}" th:method="post" >
                             <button type="submit" name="vote_type" th:value="UP_VOTE"
-                                    th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing">
+                                    th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'UP_VOTE')} ? likeClicked : nothing">
                                 <i class="far fa-thumbs-up"></i>
                             </button>
                             <input type="hidden" name="post" th:value="${post.id}"/>
@@ -25,7 +25,7 @@
 
                         <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${c.id})}" th:method="post" >
                             <button type="submit" name="vote_type" th:value="DOWN_VOTE"
-                                    th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" >
+                                    th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWN_VOTE')} ? dislikeClicked : nothing" >
                                 <i class="far fa-thumbs-down"></i>
                             </button>
                             <input type="hidden" name="post" th:value="${post.id}"/>

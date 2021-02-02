@@ -98,7 +98,6 @@ public class UserController {
         ResultObject result = null;
         mav.setViewName("redirect:/signup");
 
-
         if(userService.findByUsername(user.getUsername()) == null) {
             if (isValidDate(user.getBirthDate())) {
                 if (userService.save(user)) {
@@ -113,8 +112,6 @@ public class UserController {
         } else {
             result = new ResultObject("E8", "error", "Username already exists.");
         }
-
-
 
         if (result != null)
             redirectAttributes.addFlashAttribute("signupResult", result);
@@ -164,7 +161,7 @@ public class UserController {
         return "my_account";
     }
 
-    private boolean isValidDate(Date userDate){
+    private boolean isValidDate(Date userDate) {
         DateFormat format = new SimpleDateFormat("YYYY-MM-dd", Locale.ENGLISH);
         try {
             return userDate.compareTo(format.parse("2007-12-31")) < 0 && userDate.compareTo(format.parse("1921-01-01")) > 0;
