@@ -17,7 +17,7 @@ public class UserService implements ForumService<User> {
     public User findByUsername(String username) {
         try {
             return this.userRepository.findByUsername(username);
-        } catch (DataAccessException | UsernameNotFoundException dataAccessException ){
+        } catch (DataAccessException | UsernameNotFoundException dataAccessException) {
             return null;
         }
     }
