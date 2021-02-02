@@ -11,20 +11,26 @@
             <li th:each="c : ${object.comments}" class="comment_container border">
                 <div class="content">
                     <div class="side">
-                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${c.id})}" th:object="${vote}" th:method="post" >
-                            <button type="submit" th:value="UPVOTE" th:attr="name='type'" th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing"><i class="far fa-thumbs-up"></i></button>
+                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${c.id})}" th:method="post" >
+                            <button type="submit" name="vote_type" th:value="UP_VOTE"
+                                    th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'UPVOTE')} ? likeClicked : nothing">
+                                <i class="far fa-thumbs-up"></i>
+                            </button>
                             <input type="hidden" name="post" th:value="${post.id}"/>
-                            <input type="hidden" name="typeObj" th:value="${c.getClazz()}"/>
-                            <input type="hidden" name="place" th:value="POST"/>
+                            <input type="hidden" name="parent_type" th:value="${c.getClazz()}"/>
+                            <input type="hidden" name="page" th:value="post"/>
                         </form>
 
                         <p th:with="result=${c.upVotes - c.downVotes}" th:text="${result}"></p>
 
-                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${c.id})}" th:object="${vote}" th:method="post" >
-                            <button type="submit" th:value="DOWNVOTE" th:attr="name='type'" th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" ><i class="far fa-thumbs-down"></i></button>
+                        <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${c.id})}" th:method="post" >
+                            <button type="submit" name="vote_type" th:value="DOWN_VOTE"
+                                    th:classappend="${c.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWNVOTE')} ? dislikeClicked : nothing" >
+                                <i class="far fa-thumbs-down"></i>
+                            </button>
                             <input type="hidden" name="post" th:value="${post.id}"/>
-                            <input type="hidden" name="typeObj" th:value="${c.getClazz()}"/>
-                            <input type="hidden" name="place" th:value="POST"/>
+                            <input type="hidden" name="parent_type" th:value="${c.getClazz()}"/>
+                            <input type="hidden" name="page" th:value="post"/>
                         </form>
                     </div>
 
