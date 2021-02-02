@@ -5,8 +5,8 @@
 <link th:href="@{/css/main.css}" rel="stylesheet" />
 
 <section layout:fragment="comment_section" class="comment_section">
-    <ul>
-        <details>
+    <ul th:if="${not object.comments.isEmpty()}">
+        <details th:class="${object.getClazz().toLowerCase()} + '_summary'">
             <summary>Show comments</summary>
             <li th:each="c : ${object.comments}" class="comment_container border">
                 <div class="content">
@@ -37,7 +37,7 @@
                     </form>
                 </div>
 
-                <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${c}"></section>
+                <section layout:include="@{/post_fragment.html} :: comment_section" th:with="object=${c}"></section>
 
                 <form class="add_comment" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
                     <input type="text" placeholder="Insert your comment here" required
