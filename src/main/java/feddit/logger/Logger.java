@@ -43,11 +43,8 @@ public class Logger {
     @Pointcut("execution(public * feddit.controllers.PostController.deleteComment*(..))")
     private void deleteCommentPointcut() {}
 
-    @Pointcut("execution(public * feddit.controllers.VoteController.processPostVote*(..))")
-    private void addOrDeletePostVotePointcut() {}
-
-    @Pointcut("execution(public * feddit.controllers.VoteController.processCommentVote*(..))")
-    private void addOrDeleteCommentVotePointcut() {}
+    @Pointcut("execution(public * feddit.controllers.VoteController.processVote*(..))")
+    private void addOrDeleteVotePointcut() {}
 
     @Pointcut("execution(public * org.springframework.data.repository.CrudRepository.save*(..))")
     private void databasePointcut() {}
@@ -100,19 +97,17 @@ public class Logger {
                 ". Removed by admin or user who created the comment");
     }
 
-    @After("addOrDeletePostVotePointcut()")
+    @After("addOrDeleteVotePointcut()")
     private void afterPostVote(JoinPoint joinPoint) {
-        this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
-                "' " + ((Vote) joinPoint.getArgs()[6]).getType().toLowerCase() +
-                " post with id " + joinPoint.getArgs()[2]);
-    }
-
-    @After("addOrDeleteCommentVotePointcut()")
-    private void afterCommentVote(JoinPoint joinPoint) {
-        this.writeToFile("User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
-                "' " + ((Vote) joinPoint.getArgs()[4]).getType().toLowerCase() +
-                " comment with id " + joinPoint.getArgs()[2] +
-                " related to post with id " + joinPoint.getArgs()[3]);
+        String log = "User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
+                "' " + ((Vote) joinPoint.getArgs()[6]).getType().toLowerCase();
+        if (joinPoint.getArgs()[3].equals("Post")) {
+            log += " post with id " + joinPoint.getArgs()[2];
+        } else {
+            log += " comment with id " + joinPoint.getArgs()[2] +
+                    " related to post with id " + joinPoint.getArgs()[4];
+        }
+        this.writeToFile(log);
     }
 
     @Around("databasePointcut()")
