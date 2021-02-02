@@ -167,7 +167,7 @@ public class VoteController {
             redirectAttributes.addFlashAttribute("postResult", result);
         }
 
-        if(typeObject.equals("POST")) {
+        if(typeObject.equalsIgnoreCase("post")) {
             if(place.equals("INDEX"))
                 return "redirect:/";
             else

@@ -101,7 +101,7 @@ public class Logger {
     private void afterPostVote(JoinPoint joinPoint) {
         String log = "User with username '" + ((FedditUserDetails) joinPoint.getArgs()[0]).getUsername() +
                 "' " + ((Vote) joinPoint.getArgs()[6]).getType().toLowerCase();
-        if (joinPoint.getArgs()[3].equals("Post")) {
+        if ("post".equalsIgnoreCase(joinPoint.getArgs()[3].toString())) {
             log += " post with id " + joinPoint.getArgs()[2];
         } else {
             log += " comment with id " + joinPoint.getArgs()[2] +
