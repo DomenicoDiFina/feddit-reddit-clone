@@ -21,7 +21,7 @@
             </div>
         </div>
         <div id="changePasswordForm" class="container hidden">
-            <form th:action="@{/process_changepassword}" class="form" method="post" onsubmit="return checkPassword();" >
+            <form th:action="@{/process_change_password}" class="form" method="post" onsubmit="return checkPassword();" >
                 <div class="row">
                     <label for="old_password">Old password</label>
                     <input type="password" id="old_password" name="old_password" autofocus="autofocus" />
@@ -76,8 +76,7 @@
                             <th>Upvotes</th>
                             <th>Downvotes</th>
                             <th>Creation Date</th>
-                            <th>Post Title</th>
-                            <th>Comment</th>
+                            <th>Parent</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -86,8 +85,10 @@
                             <td th:text="${comment.upVotes}"></td>
                             <td th:text="${comment.downVotes}"></td>
                             <td th:text="${comment.creationDate}"></td>
-                            <td th:text="${#strings.abbreviate(comment.post?.content,15)}"></td>
-                            <td th:text="${#strings.abbreviate(comment.comment?.content,15)}"></td>
+                            <td th:text="${comment.post == null ?
+                                            #strings.abbreviate(comment.comment?.content, 15) :
+                                            #strings.abbreviate(comment.post?.content, 15)}">
+                            </td>
                         </tr>
                     </tbody>
                 </table>

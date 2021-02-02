@@ -23,8 +23,7 @@ public abstract class ForumObject extends DatabaseObject {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     protected User user;
 
-    public ForumObject() {
-    }
+    public ForumObject() {}
 
     public String getContent() {
         return content;

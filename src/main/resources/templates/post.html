@@ -60,7 +60,7 @@
     <p th:classappend="${commentResult.getType()}" th:text="${commentResult.getMessage()}"></p>
 
     <div class="comment_container">
-        <section layout:include="@{/postFragment.html} :: comment_section" th:with="object=${post}"></section>
+        <section layout:include="@{/post_fragment.html} :: comment_section" th:with="object=${post}"></section>
         <form class="add_comment" method="post" th:action="@{/add_comment}" sec:authorize="isAuthenticated()">
             <input type="text" placeholder="Insert your comment here" required
                    name="content" th:value="${content}"/>
@@ -72,4 +72,8 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
+    var post_summary = document.getElementsByClassName("post_summary")[0];
+    post_summary.setAttribute("open", "true");
+</script>
 </html>

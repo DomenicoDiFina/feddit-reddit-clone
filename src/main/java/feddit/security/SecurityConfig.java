@@ -1,11 +1,9 @@
 package feddit.security;
 
-//import feddit.services.AdminAuthService;
 import feddit.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
 
@@ -63,19 +60,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    //https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tutorial
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/myaccount").authenticated() //<- list of pages that need to be authorized (my account? change password?)
-                .antMatchers("/changepassword").authenticated()
+                .antMatchers("/my_account").authenticated()
                 .anyRequest().permitAll()
                 .and()
-                .formLogin().loginPage("/login").successHandler(successHandler())
-                .usernameParameter("username")
-                .defaultSuccessUrl("/")
-                .failureUrl("/login_error")
-                .permitAll()
+                    .formLogin().loginPage("/login").successHandler(successHandler())
+                    .usernameParameter("username")
+                    .defaultSuccessUrl("/")
+                    .failureUrl("/login_error")
+                    .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/").permitAll();
+                    .logout().logoutSuccessUrl("/").permitAll();
     }
+
 }

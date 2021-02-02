@@ -14,7 +14,7 @@
             <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
             <div>
                 <div class="left_sub_header" sec:authorize="isAuthenticated()">
-                    <p><a href="/myaccount" class="button">Account</a></p>
+                    <p><a href="/my_account" class="button">Account</a></p>
                 </div>
                 <div class="left_sub_header" sec:authorize="isAnonymous()">
                     <p><a href="/signup" class="button" >Sign Up</a></p>

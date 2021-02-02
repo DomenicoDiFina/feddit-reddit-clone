@@ -42,13 +42,13 @@ public class UserController {
     {
         model.addAttribute("post", new Post());
         List<Post> posts = this.postService.findAll();
-        Collections.sort(posts, Comparator.comparingInt(p -> p.getDownVotes() - p.getUpVotes()));
+        posts.sort(Comparator.comparingInt(p -> p.getDownVotes() - p.getUpVotes()));
         model.addAttribute("posts", posts);
         model.addAttribute("postResult", postResult);
         return "index";
     }
 
-    @RequestMapping(value = "/process_changepassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/process_change_password", method = RequestMethod.POST)
     public ModelAndView processChangePassword(ModelAndView mav,
                                         RedirectAttributes redirectAttributes,
                                         @RequestParam("old_password") String oldPassword,
@@ -72,7 +72,7 @@ public class UserController {
             result = new ResultObject("E3", "error", "New password is equal to the old inserted.");
         }
         redirectAttributes.addFlashAttribute("passwordResult", result);
-        mav.setViewName("redirect:/myaccount");
+        mav.setViewName("redirect:/my_account");
         return mav;
     }
 
@@ -100,7 +100,7 @@ public class UserController {
 
 
         if(userService.findByUsername(user.getUsername()) == null) {
-            if ( isValidate(user.getBirthDate())) {
+            if (isValidDate(user.getBirthDate())) {
                 if (userService.save(user)) {
                     redirectAttributes.addFlashAttribute("name", user.getFirstName());
                     mav.setViewName("redirect:/signup_success");
@@ -140,7 +140,7 @@ public class UserController {
         return "login";
     }
 
-    @GetMapping("/myaccount")
+    @GetMapping("/my_account")
     public String showMyAccount(Model model,
                                 @AuthenticationPrincipal FedditUserDetails userDetails,
                                 @ModelAttribute("passwordResult") ResultObject passwordResult) {
@@ -161,18 +161,16 @@ public class UserController {
         model.addAttribute("posts", posts);
         model.addAttribute("comments", comments);
 
-        return "myaccount";
+        return "my_account";
     }
 
-    private boolean isValidate(Date userDate){
+    private boolean isValidDate(Date userDate){
         DateFormat format = new SimpleDateFormat("YYYY-MM-dd", Locale.ENGLISH);
         try {
-            if (userDate.compareTo(format.parse("2007-12-31")) > 0 && userDate.compareTo(format.parse("1921-01-01")) < 0 )
-                return true;
+            return userDate.compareTo(format.parse("2007-12-31")) < 0 && userDate.compareTo(format.parse("1921-01-01")) > 0;
         } catch (ParseException e) {
             return false;
         }
-        return false;
     }
 
 }

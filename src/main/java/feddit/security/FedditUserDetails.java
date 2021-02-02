@@ -2,7 +2,6 @@ package feddit.security;
 
 import feddit.model.Comment;
 import feddit.model.Post;
-import feddit.model.Role;
 import feddit.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,7 +11,6 @@ import java.sql.Date;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -56,14 +54,11 @@ public class FedditUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
-        return roles
+        return user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getDescription()))
                 .collect(Collectors.toList());
     }
-
-    /*** TO CHECK IF IS CORRECT ***/
 
     public long getId() {return user.getId();}
 

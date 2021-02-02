@@ -6,7 +6,6 @@ import feddit.model.User;
 import feddit.model.Vote;
 import feddit.repositories.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +17,12 @@ public class VoteService implements ForumService<Vote> {
     @Autowired
     private VoteRepository voteRepository;
 
-    public Optional<Vote> findByPostAndUser(User user, Post post){
-        return this.voteRepository.findByPostAndUser(user,post);
+    public Optional<Vote> findByPostAndUser(User user, Post post) {
+        return this.voteRepository.findByPostAndUser(user, post);
     }
 
     public Optional<Vote> findByCommentAndUser(User user, Comment comment) {
-        return this.voteRepository.findByCommentAndUser(user,comment);
+        return this.voteRepository.findByCommentAndUser(user, comment);
     }
 
     @Override

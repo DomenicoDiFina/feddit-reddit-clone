@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Table(name = "votes")
 public class Vote extends DatabaseObject {
 
-    public static final String UPVOTE = "UPVOTE";
-    public static final String DOWNVOTE = "DOWNVOTE";
+    public static final String UP_VOTE = "UPVOTE";
+    public static final String DOWN_VOTE = "DOWNVOTE";
 
     public Vote() {}
 

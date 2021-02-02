@@ -1,23 +1,14 @@
 package feddit.services;
 
-import feddit.model.Comment;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.repository.CrudRepository;
-
-import java.util.Optional;
 
 public interface ForumService<T> {
 
     CrudRepository<T, Long> getCrudRepository();
 
     default T findById(long id) {
-        Optional<T> optional = this.getCrudRepository().findById(id);
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
-            //TODO new Exception
-            return null;
-        }
+        return this.getCrudRepository().findById(id).get();
     }
 
     default boolean deleteById(long id) {

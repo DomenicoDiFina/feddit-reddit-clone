@@ -19,14 +19,13 @@ public class Comment extends ForumObject {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comment", orphanRemoval = true)
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "comment", orphanRemoval = true)
     private List<Vote> votes;
 
-    public Comment() {
-    }
+    public Comment() {}
 
     @Override
     public String getClazz() {
@@ -51,7 +50,7 @@ public class Comment extends ForumObject {
 
     @Override
     public List<Comment> getComments() {
-        Collections.sort(this.comments, Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
+        this.comments.sort(Comparator.comparingInt(c -> c.getDownVotes() - c.getUpVotes()));
         return this.comments;
     }
 
