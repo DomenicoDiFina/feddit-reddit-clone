@@ -11,7 +11,9 @@
     <!-- HEADER -->
         <div class="header">
             <a href="/"><img src="../static/images/logo.png" th:src="@{images/logo.png}"/></a>
-            <h3 sec:authorize="isAuthenticated()">[[${#request.userPrincipal.principal.fullName}]]</h3>
+            <a href="/my_account" class="no-text-decoration" sec:authorize="isAuthenticated()">
+                <h3>[[${#request.userPrincipal.principal.fullName}]]</h3>
+            </a>
             <div>
                 <div class="left_sub_header" sec:authorize="isAuthenticated()">
                     <p><a href="/my_account" class="button">Account</a></p>

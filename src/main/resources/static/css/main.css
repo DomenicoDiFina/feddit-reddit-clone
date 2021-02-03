@@ -358,3 +358,8 @@ th, td {
     padding: 3px;
     border: 1px solid grey;
 }
+
+.no-text-decoration {
+    text-decoration: none;
+    color: inherit;
+}
