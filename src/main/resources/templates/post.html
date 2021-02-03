@@ -27,26 +27,28 @@
     <div class="full_post">
         <div class="post-sidebar">
             <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-                <button type="submit" th:value="UP_VOTE"
+                <button type="submit" name="vote_type" th:value="UP_VOTE"
                         th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'UP_VOTE')} ? likeClicked : nothing">
                     <i class="far fa-thumbs-up"></i>
                 </button>
                 <input type="hidden" name="typeObj" th:value="${post.getClazz()}"/>
                 <input type="hidden" name="post" th:value="${post.id}"/>
-                <input type="hidden" name="place" th:value="POST"/>
+                <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
+                <input type="hidden" name="page" th:value="post"/>
             </form>
 
 
             <p class="date" th:with="result=${post.upVotes - post.downVotes}" th:text="${result}"></p>
 
             <form action="#" sec:authorize="isAuthenticated()" th:action="@{'/vote/{id}'(id=${post.id})}" th:object="${vote}" th:method="post" >
-                <button type="submit" th:value="DOWN_VOTE"
+                <button type="submit" name="vote_type" th:value="DOWN_VOTE"
                         th:classappend="${post.hasVoteByUser(#request.userPrincipal.principal.id, 'DOWN_VOTE')} ? dislikeClicked : nothing" >
                     <i class="far fa-thumbs-down"></i>
                 </button>
                 <input type="hidden" name="typeObj" th:value="${post.getClazz()}"/>
                 <input type="hidden" name="post" th:value="${post.id}"/>
-                <input type="hidden" name="place" th:value="POST"/>
+                <input type="hidden" name="parent_type" th:value="${post.getClazz()}"/>
+                <input type="hidden" name="page" th:value="post"/>
             </form>
         </div>
         <div class="post-content">
@@ -77,7 +79,6 @@
                     <input type="submit" value="Add comment" />
                 </form>
             </div>
-        <!--</div>-->
     </div>
 </body>
 <script type="text/javascript">
